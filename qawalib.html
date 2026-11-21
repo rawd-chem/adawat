@@ -116,10 +116,10 @@ input:focus,select:focus{outline:3px solid #C9E5B6;border-color:var(--g2)}
           <li>سجّلي الدخول بحساب Gmail الشخصي (إيميل الوزارة قد لا يعمل).</li>
           <li>أول مرة: اقرئي الشروط ووافقي عليها.</li>
           <li>اضغطي <b>Create API key</b>، وإن سألك عن مشروع اختاري <b>Create key in a new project</b>.</li>
-          <li>انسخي المفتاح (يبدأ بـ AIza) والصقيه هنا.</li>
+          <li>اضغطي على المفتاح، ثم زر النسخ ⧉ بجانب API Key (يبدأ بـ AQ. أو AIza)، والصقيه هنا.</li>
         </ol>
       </details>
-      <div class="gkrow"><input type="password" id="gkIn" placeholder="الصقي المفتاح هنا (AIza…)" autocomplete="off" dir="ltr"><button class="go" id="gkSave" type="button">حفظ</button></div>
+      <div class="gkrow"><input type="password" id="gkIn" placeholder="الصقي المفتاح هنا (AQ.… أو AIza…)" autocomplete="off" dir="ltr"><button class="go" id="gkSave" type="button">حفظ</button></div>
       <div class="note" id="gkMsg"></div>
     </div>
     <div id="gkOn" class="note" style="display:none;margin:0 0 10px">🔑 قراءة الصور مفعّلة بمفتاحك. <button class="lnk" id="gkDel" type="button">حذف المفتاح</button></div>
@@ -830,7 +830,7 @@ var LOGO_B64="iVBORw0KGgoAAAANSUhEUgAAAaQAAAE/CAYAAAAJ7be1AADT0UlEQVR42uxdd5wdVf
   })();
   impEl("gkSave").addEventListener("click",async function(){
     var k=impEl("gkIn").value.trim(),msg=impEl("gkMsg");
-    if(!/^AIza[\w-]{20,}$/.test(k)){msg.textContent="المفتاح غير صحيح. انسخيه كاملًا، يبدأ بـ AIza.";msg.style.color="#B3261E";return}
+    if(!/^(AIza[\w-]{20,}|AQ\.[\w.\-]{20,})$/.test(k)){msg.textContent="المفتاح غير صحيح. انسخيه كاملًا بزر النسخ (يبدأ بـ AQ. أو AIza).";msg.style.color="#B3261E";return}
     msg.style.color="";msg.textContent="جارٍ التحقق من المفتاح…";
     try{var list=await gemModels(k);if(!list.length)throw new Error("none");GMODEL=list;localStorage.setItem(GK,k);impEl("gkIn").value="";msg.textContent="";gkUI();impStatus("تم تفعيل قراءة الصور. اختاري صور الاختبار.")}
     catch(e){msg.style.color="#B3261E";msg.textContent=(e.status===400||e.status===403)?"المفتاح غير مقبول. تأكدي أنك نسختيه كاملًا.":"تعذّر التحقق. تأكدي من الإنترنت ثم أعيدي المحاولة."}

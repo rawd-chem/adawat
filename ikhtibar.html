@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>الاختبار الإلكتروني</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#141B3D;--teal:#14B8A6;--coral:#FF6B57;--amber:#FFC145;--purple:#7C5CFA;--cream:#FFF6E9;--muted:#5B6180;--line:#E6DECF}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Tajawal',system-ui,sans-serif;color:var(--navy);font-size:17px}
+main{max-width:760px;margin:18px auto 0;padding:0 12px 120px}
+.box{background:#fff;border-radius:22px;padding:18px;box-shadow:0 10px 26px rgba(20,27,61,.09);margin-bottom:14px}
+.center{text-align:center}
+label.f{display:block;font-weight:800;margin:10px 0 6px}
+input[type=text],input[type=number],select{width:100%;font-family:inherit;font-size:18px;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--navy)}
+input:focus,select:focus{outline:none;border-color:var(--purple)}
+.btn{font-family:inherit;font-weight:800;font-size:18px;border:none;border-radius:13px;padding:14px 22px;cursor:pointer}
+.btn.t{background:var(--teal)}.btn.a{background:var(--amber);color:var(--navy)}.btn.c{background:var(--coral)}.btn.g{background:#EEF0F7;color:var(--navy)}
+.btn.w{width:100%}
+.btn:disabled{opacity:.5}
+.sec{display:flex;align-items:center;gap:10px;background:linear-gradient(112deg,#19234f,#293566);color:#fff;border-radius:16px;padding:10px 14px;font-weight:800;margin:20px 0 10px}
+.sec span{margin-inline-start:auto;background:var(--amber);color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px}
+.q{background:#fff;border:1px solid #e6e9f1;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 12px 26px rgba(28,39,82,.07);border-right:5px solid #d9dff0}
+.q.done{border-right-color:var(--teal)}
+.q .n{display:inline-grid;place-items:center;min-width:30px;height:30px;border-radius:10px;background:#EEF0F7;font-weight:800;margin-left:8px}
+.q .t{font-weight:800;font-size:19px;line-height:1.7}
+.q .l{color:#9AA0B8;font-size:13px;font-weight:700;margin-top:4px}
+.ops{display:grid;gap:8px;margin-top:12px}
+.ops.two{grid-template-columns:1fr 1fr}
+.op{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:700;font-size:17px;cursor:pointer;background:#FCFBF8;line-height:1.5}
+.op i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #BFC5D6}
+.op.on{border-color:var(--purple);background:#F3F0FF}.op.on i{border:7px solid var(--purple)}
+.op.ok{border-color:var(--teal);background:#E9F8F6}.op.bad{border-color:var(--coral);background:#FFF1EE}
+.bar{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -8px 24px rgba(20,27,61,.12);padding:10px 14px;display:flex;align-items:center;gap:12px;z-index:5}
+.bar .pr{flex:1}.bar .pr b{font-size:15px}
+.trk{height:10px;background:#EEF0F7;border-radius:999px;overflow:hidden;margin-top:6px}.trk div{height:100%;background:linear-gradient(90deg,var(--teal),var(--purple));width:0}
+.clock{font-weight:800;font-size:20px;background:#141B3D;color:#fff;border-radius:12px;padding:6px 12px;font-variant-numeric:tabular-nums}
+.clock.low{background:var(--coral)}
+.big{font-size:56px;font-weight:800;margin:6px 0}
+.msg{font-weight:700;color:var(--muted);line-height:1.8}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#F6F4FF;border-radius:16px;padding:12px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:14px;color:var(--muted);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th{background:var(--navy);color:#fff;padding:10px 8px;font-weight:800;text-align:right}
+td{padding:9px 8px;border-bottom:1px solid var(--line)}
+tr:nth-child(even) td{background:#FFFBF4}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tools .btn{font-size:15px;padding:10px 14px}
+.pill{display:inline-block;border-radius:999px;padding:3px 12px;font-weight:800;font-size:14px}
+.pill.on{background:#E9F8F6;color:#0F8F7E}.pill.off{background:#FFF1EE;color:#C2412D}
+.hard li{margin-bottom:6px;line-height:1.6}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;border-radius:14px;padding:12px 18px;font-weight:700;z-index:9;display:none;max-width:90vw;text-align:center}
+.dup{color:#C2412D;font-size:13px;font-weight:800}
+@media (max-width:520px){.ops.two{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.stat b{font-size:22px}}
+</style>
+<style media="screen" data-theme>
+/* shared look (matches مولّد الاسترجاع) */
+:root{--navy:#1b2552;--cream:#f5f7fc;--coral:#ef6b58;--teal:#0fa99c;--amber:#ffc64d;--purple:#7965dc;--muted:#697393;--line:#e2e7f1;
+  --shadow-soft:0 12px 32px rgba(28,39,82,.075);--shadow-card:0 16px 34px rgba(28,39,82,.09)}
+body{background-color:#f5f7fc!important;background-image:radial-gradient(ellipse at 7% 9%,rgba(20,184,170,.11),transparent 29%),radial-gradient(ellipse at 96% 28%,rgba(123,97,255,.08),transparent 30%),linear-gradient(180deg,#f8f9fd 0%,#f3f6fb 100%)!important;color:#1b2552;min-height:100vh}
+header.th{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:20px clamp(16px,3.2vw,48px);background:linear-gradient(112deg,#19234f 0%,#293566 57%,#37547e 100%);border-bottom:4px solid #19b4a6;box-shadow:0 12px 30px rgba(24,34,77,.2);color:#fff;text-align:right}
+header.th::before,header.th::after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%}
+header.th::before{width:360px;height:360px;inset-inline-end:8%;top:-265px;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 52px rgba(255,255,255,.02)}
+header.th::after{width:170px;height:170px;inset-inline-end:18%;bottom:-132px;background:rgba(20,184,170,.13)}
+header.th .logo{flex:0 0 52px;width:52px;height:52px;border-radius:17px;background:linear-gradient(145deg,#29c7b7,#0c9e91);border:3px solid rgba(255,255,255,.26);color:#fff;box-shadow:0 8px 20px rgba(9,157,144,.25);font-size:23px;font-weight:800;display:grid;place-items:center}
+header.th h1{margin:0;font-size:clamp(21px,2vw,27px);font-weight:800;color:#fff}
+header.th .slogan{font-size:14px;color:#ffda78;font-weight:700;margin-top:2px}
+header.th .hnav{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+header.th .hnav a{border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:10px 14px;background:rgba(255,255,255,.075);color:#f2f4ff;font-size:14px;font-weight:700;text-decoration:none;transition:background .18s,transform .18s}
+header.th .hnav a:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
+.btn{border-radius:13px;background:linear-gradient(140deg,#202b5c,#303e78);color:#fff;box-shadow:0 5px 12px rgba(28,39,82,.12);transition:transform .16s,box-shadow .16s,filter .16s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 18px rgba(28,39,82,.16);filter:saturate(1.08)}
+.btn.teal,.btn.t{background:linear-gradient(135deg,#11b6a7,#0c988d);color:#fff;box-shadow:0 5px 14px rgba(15,169,156,.2)}
+.btn.coral,.btn.c,.btn.big{background:linear-gradient(135deg,#f47b65,#e65c4d);color:#fff;box-shadow:0 5px 14px rgba(239,107,88,.18)}
+.btn.amber,.btn.a{background:linear-gradient(135deg,#ffd469,#ffbd3e);color:#252c56;box-shadow:0 5px 14px rgba(255,193,69,.22)}
+.btn.p,.btn.purple{background:linear-gradient(135deg,#8a76e6,#6c56d6);color:#fff;box-shadow:0 5px 14px rgba(123,97,255,.18)}
+.btn.ghost,.btn.l,.btn.g{background:#fff;color:#1b2552;border:1px solid #dfe4ef;box-shadow:0 4px 10px rgba(28,39,82,.05)}
+.panel,.card:not(a),#app>.box{background:rgba(255,255,255,.96);border:1px solid rgba(219,226,240,.95)!important;border-radius:22px;box-shadow:var(--shadow-soft)}
+input[type=date],input[type=number],input[type=text],select,textarea{border:1px solid #dbe1ee!important;border-radius:12px;background:#fff;color:#1b2552}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#19b4a6!important;box-shadow:0 0 0 3px rgba(20,184,170,.14)}
+::selection{background:rgba(20,184,170,.2);color:#1b2552}
+@media (max-width:560px){header.th{padding:14px;gap:10px}header.th .logo{flex-basis:45px;width:45px;height:45px;border-radius:14px;font-size:20px}header.th h1{font-size:20px}header.th .slogan{font-size:12px}header.th .hnav{flex:1 0 100%;margin:4px 0 0}header.th .hnav a{flex:1;text-align:center}}
+header.th>div:not(.logo){min-width:0;flex:1 1 220px}
+</style>
+</head>
+<body>
+<header class="th"><div class="logo">📱</div><div><div class="slogan" id="hb" style="margin:0 0 2px">الاختبار الإلكتروني</div><h1 id="ht">…</h1><div class="slogan" id="hs" style="color:#d7dcf0"></div></div></header>
+<main id="app"><div class="box center msg">جاري التحميل…</div></main>
+<div class="toast" id="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const CFG={apiKey:"AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k",authDomain:"chem-labs-3c9de.firebaseapp.com",projectId:"chem-labs-3c9de",storageBucket:"chem-labs-3c9de.firebasestorage.app",messagingSenderId:"396927110815",appId:"1:396927110815:web:e569138e0fca5e94b39caa"};
+const $=id=>document.getElementById(id), app=$('app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const UNSUP={'⁻':'-','⁺':'+','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
+const supH=h=>h.replace(/[⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'<sup style="direction:ltr;unicode-bidi:isolate;font-size:.68em">'+[...m].map(c=>UNSUP[c]).join('')+'</sup>');
+const bidiH=h=>h.replace(/([A-Za-z0-9\[][A-Za-z0-9+\-−→×.,⁺⁻⁰-⁹¹²³₀-₉\[\]\/ ]*[A-Za-z0-9⁺⁻⁰-⁹¹²³₀-₉\]])/g,'⁦$1⁩');
+const T=s=>supH(esc(bidiH(String(s==null?'':s))));
+const BLRE=/(\.{4,}|…{2,}|_{3,}|ـ{4,})/g;
+const TQ=s=>T(s).replace(BLRE,' ________ ');
+function toast(t){const e=$('toast'); e.textContent=t; e.style.display='block'; clearTimeout(toast.i); toast.i=setTimeout(()=>e.style.display='none',2600);}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const LET=['أ','ب','ج','د','هـ','و'];
+const SECN={mcq:'اختاري الإجابة الصحيحة',tf:'صح أم خطأ',bl:'اختاري الكلمة المناسبة للفراغ',mt:'صِلي كل عبارة بما يناسبها'};
+const ORD=['mcq','tf','bl','mt'];
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+let db; try{db=firebase.initializeApp(CFG,'etest').firestore();}catch(e){}
+const P=new URLSearchParams(location.search), TID=(P.get('t')||'').replace(/[^A-Za-z0-9]/g,''), KEY=P.get('k')||'';
+
+function head(t,s,b){$('ht').textContent=t; $('hs').textContent=s||''; if(b) $('hb').textContent=b; document.title=t;}
+function fail(m){app.innerHTML=`<div class="box center msg">${m}</div>`;}
+
+/* ================= STUDENT ================= */
+let TEST=null, ANS={}, ORDER=[], timerId=null, endAt=0, sent=false;
+async function student(){
+  let snap; try{snap=await db.collection('etests').doc(TID).get();}catch(e){return fail('تعذّر الاتصال. تأكدي من الإنترنت ثم حدّثي الصفحة.');}
+  if(!snap.exists) return fail('الرابط غير صحيح. تأكدي منه مع معلمتك.');
+  TEST=snap.data(); head(TEST.title,[TEST.subj,TEST.teacher?'المعلمة: '+TEST.teacher:''].filter(Boolean).join(' · '));
+  const done=LS.get('et_done_'+TID,null);
+  if(done) return showResult(done,true);
+  if(TEST.open===false) return fail('🔒 الاختبار مغلق حاليًا.');
+  const saved=LS.get('et_draft_'+TID,null);
+  app.innerHTML=`<div class="box"><div class="msg" style="margin-bottom:6px">عدد الأسئلة: <b>${TEST.qs.length}</b>${TEST.mins?` · الزمن: <b>${TEST.mins} دقيقة</b>`:''}</div>
+  <label class="f">اسمك الثلاثي</label><input type="text" id="nm" autocomplete="name" value="${esc(saved&&saved.name||'')}">
+  ${TEST.askCls!==false?`<label class="f">الفصل / الشعبة</label><input type="text" id="cl" value="${esc(saved&&saved.cls||'')}" placeholder="مثال: 2/1">`:''}
+  <div style="margin-top:16px"><button class="btn w t" id="go">ابدئي الاختبار</button></div>
+  <p class="msg" style="font-size:14px;margin:12px 0 0">اقرئي كل سؤال بهدوء، وتقدرين ترجعين وتغيّرين إجابتك قبل التسليم.</p></div>`;
+  $('go').onclick=()=>{const name=$('nm').value.trim().replace(/\s+/g,' '); if(name.split(' ').length<2){toast('اكتبي اسمك الثلاثي');return;} const cls=$('cl')?$('cl').value.trim():''; start(name,cls,saved);};
+}
+function start(name,cls,saved){
+  const qs=TEST.qs.map((q,i)=>Object.assign({i},q));
+  if(saved&&saved.order&&saved.order.length===qs.length){ORDER=saved.order; ANS=saved.ans||{};}
+  else{ORDER=[]; ORD.forEach(k=>{const g=qs.filter(q=>q.k===k); ORDER.push(...shuffle(g.map(q=>q.i)));}); ANS={};}
+  const OPT={}; const SO=(saved&&saved.opt)||{};
+  qs.forEach(q=>{if(q.o) OPT[q.i]=SO[q.i]&&SO[q.i].length===q.o.length?SO[q.i]:(q.k==='tf'?q.o.slice():shuffle(q.o.slice()));});
+  const draft=()=>LS.set('et_draft_'+TID,{name,cls,order:ORDER,ans:ANS,opt:OPT,started:(saved&&saved.started)||Date.now()});
+  draft();
+  let h='', cur='', n=0;
+  ORDER.forEach(i=>{const q=qs[i]; if(q.k!==cur){cur=q.k; n=0; const c=qs.filter(x=>x.k===cur).length; h+=`<div class="sec">${SECN[cur]}<span>${c}</span></div>`;}
+    n++; const o=OPT[i]; const two=q.k==='tf'||(o&&o.every(x=>String(x).length<22));
+    h+=`<div class="q" id="q${i}"><div class="t"><span class="n">${n}</span>${q.k==='mt'?'<span>'+TQ(q.q)+'</span>':TQ(q.q)}</div>`;
+    if(q.k==='mt') h+=`<select data-i="${i}" style="margin-top:12px"><option value="">— اختاري —</option>${o.map(x=>`<option${ANS[i]===x?' selected':''}>${esc(x)}</option>`).join('')}</select>`;
+    else h+=`<div class="ops${two?' two':''}">${o.map((x,k)=>`<div class="op${ANS[i]===x?' on':''}" data-i="${i}" data-v="${esc(x)}"><i></i><span>${q.k==='tf'?'':LET[k]+') '}${T(x)}</span></div>`).join('')}</div>`;
+    h+=`</div>`;});
+  h+=`<div class="box center"><button class="btn w c" id="send">سلّمي الاختبار</button></div>`;
+  app.innerHTML=h;
+  document.body.insertAdjacentHTML('beforeend',`<div class="bar"><div class="pr"><b id="pc"></b><div class="trk"><div id="pb"></div></div></div>${TEST.mins?'<div class="clock" id="ck"></div>':''}</div>`);
+  const upd=()=>{const c=Object.keys(ANS).filter(k=>ANS[k]).length; $('pc').textContent='أجبتِ '+c+' من '+qs.length; $('pb').style.width=(100*c/qs.length)+'%'; qs.forEach(q=>{const e=$('q'+q.i); if(e) e.classList.toggle('done',!!ANS[q.i]);});};
+  app.addEventListener('click',e=>{const op=e.target.closest('.op'); if(!op||sent) return; const i=op.dataset.i; ANS[i]=op.dataset.v; op.parentNode.querySelectorAll('.op').forEach(x=>x.classList.toggle('on',x===op)); draft(); upd();});
+  app.addEventListener('change',e=>{const s=e.target.closest('select[data-i]'); if(!s) return; ANS[s.dataset.i]=s.value; draft(); upd();});
+  $('send').onclick=()=>{const left=qs.length-Object.keys(ANS).filter(k=>ANS[k]).length; if(left&&!$('send').dataset.sure){$('send').dataset.sure=1; $('send').textContent='باقي '+left+' بدون إجابة · اضغطي مرة ثانية للتسليم'; const f=qs.find(q=>!ANS[q.i]); if(f) $('q'+f.i).scrollIntoView({behavior:'smooth',block:'center'}); return;} submit(name,cls);};
+  upd();
+  if(TEST.mins){const st=(saved&&saved.started)||Date.now(); endAt=st+TEST.mins*60000; const tick=()=>{const s=Math.max(0,Math.round((endAt-Date.now())/1000)); $('ck').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); $('ck').classList.toggle('low',s<=60); if(s<=0){clearInterval(timerId); toast('انتهى الوقت، تم تسليم إجاباتك'); submit(name,cls);}}; tick(); timerId=setInterval(tick,1000);}
+}
+async function submit(name,cls){
+  if(sent) return; sent=true; clearInterval(timerId); const b=$('send'); if(b){b.disabled=true; b.textContent='جاري التسليم…';}
+  let K; try{K=(await db.collection('etests_key').doc(TID).get()).data();}catch(e){}
+  if(!K){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('تعذّر الاتصال، حاولي مرة ثانية');}
+  const qs=TEST.qs; let sc=0; const wrong=[]; const ans=qs.map((q,i)=>ANS[i]||'');
+  qs.forEach((q,i)=>{if(ans[i]&&ans[i]===K.a[i]) sc++; else wrong.push(i);});
+  const rec={t:TID,name,cls,sc,tot:qs.length,ans,wrong,at:firebase.firestore.FieldValue.serverTimestamp(),ms:Date.now()};
+  try{await db.collection('etests_subs').add(rec);}catch(e){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('ما وصل التسليم، تأكدي من الإنترنت وحاولي مرة ثانية');}
+  const done={name,sc,tot:qs.length,ans,key:TEST.showKey?K.a:null}; LS.set('et_done_'+TID,done); try{localStorage.removeItem('et_draft_'+TID);}catch(e){}
+  const bar=document.querySelector('.bar'); if(bar) bar.remove(); scrollTo(0,0); showResult(done,false);
+}
+function showResult(d,again){
+  let h=`<div class="box center"><div style="font-size:46px">🎉</div><div style="font-weight:800;font-size:22px">${again?'سلّمتِ هذا الاختبار من قبل':'تم تسليم اختبارك'}</div><div class="msg">${esc(d.name)}</div>`;
+  if(TEST.showScore!==false) h+=`<div class="big">${d.sc} <span style="font-size:24px;color:#5B6180">من ${d.tot}</span></div><div class="msg">${d.sc/d.tot>=.9?'ممتاز! استمري 🌟':d.sc/d.tot>=.7?'أحسنتِ، راجعي الأسئلة اللي أخطأتِ فيها':'راجعي دروسك مرة ثانية، وتقدرين تتحسنين 💪'}</div>`;
+  else h+=`<div class="msg" style="margin-top:8px">وصلت إجاباتك لمعلمتك.</div>`;
+  h+=`</div>`;
+  if(TEST.showKey&&d.key){h+=`<div class="sec">الإجابات الصحيحة</div>`; TEST.qs.forEach((q,i)=>{const ok=d.ans[i]===d.key[i]; h+=`<div class="q ${ok?'done':''}"><div class="t"><span class="n">${ok?'✓':'✗'}</span>${TQ(q.q)}</div><div class="ops"><div class="op ok"><span>${T(d.key[i])}</span></div>${ok||!d.ans[i]?'':`<div class="op bad"><span>إجابتك: ${T(d.ans[i])}</span></div>`}</div></div>`;});}
+  app.innerHTML=h;
+}
+
+/* ================= TEACHER ================= */
+let SUBS=[], SORT='name';
+async function teacher(){
+  let snap; try{snap=await db.collection('etests').doc(TID).get();}catch(e){return fail('تعذّر الاتصال. تأكدي من الإنترنت.');}
+  if(!snap.exists) return fail('الرابط غير صحيح.');
+  TEST=snap.data(); if(!TEST.th||await sha(KEY)!==TEST.th) return fail('رابط النتائج غير صحيح.');
+  head(TEST.title,TEST.subj,'نتائج الاختبار');
+  const mine=LS.get('et_mine',[]); if(!mine.some(x=>x.id===TID)){mine.unshift({id:TID,k:KEY,title:TEST.title,subj:TEST.subj,at:Date.now()}); LS.set('et_mine',mine);}
+  let K=null; try{K=(await db.collection('etests_key').doc(TID).get()).data();}catch(e){}
+  const stu=location.href.split('?')[0]+'?t='+TID;
+  app.innerHTML=`<div class="box"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b>حالة الاختبار:</b><span class="pill" id="st"></span><button class="btn g" id="tog" style="font-size:15px;padding:8px 14px"></button></div>
+  <div class="tools"><button class="btn t" id="cpL">انسخي رابط الطالبات</button></div>
+  <div class="msg" style="font-size:14px;direction:ltr;text-align:left;word-break:break-all">${esc(stu)}</div></div>
+  <div class="box"><div class="stats"><div class="stat"><b id="sN">0</b><span>سلّمت</span></div><div class="stat"><b id="sA">—</b><span>المتوسط</span></div><div class="stat"><b id="sF">—</b><span>الدرجة من</span></div></div>
+  <div class="tools"><button class="btn a" id="cpS">انسخي الأسماء والدرجات</button><button class="btn" id="csv">نزّلي Excel</button><button class="btn g" id="srt">ترتيب: بالاسم</button></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>الاسم</th><th>الفصل</th><th>الدرجة</th></tr></thead><tbody id="tb"><tr><td colspan="4" class="msg">لم تسلّم أي طالبة بعد</td></tr></tbody></table></div>
+  <p class="msg" style="font-size:13px">الجدول يتحدّث تلقائيًا كلما سلّمت طالبة.</p></div>
+  <div class="box"><b>أكثر الأسئلة خطأ</b><ol class="hard" id="hd"><li class="msg">تظهر بعد التسليم</li></ol></div>`;
+  const setSt=()=>{const o=TEST.open!==false; $('st').className='pill '+(o?'on':'off'); $('st').textContent=o?'مفتوح للطالبات':'مغلق'; $('tog').textContent=o?'أغلقي الاختبار':'افتحي الاختبار';}; setSt();
+  $('tog').onclick=async()=>{const o=TEST.open===false; try{await db.collection('etests').doc(TID).update({open:o}); TEST.open=o; setSt(); toast(o?'تم فتح الاختبار':'تم إغلاق الاختبار');}catch(e){toast('تعذّر التحديث');}};
+  $('cpL').onclick=()=>copy(stu,'تم نسخ رابط الطالبات');
+  $('srt').onclick=()=>{SORT=SORT==='name'?'cls':SORT==='cls'?'sc':SORT==='sc'?'time':'name'; $('srt').textContent='ترتيب: '+({name:'بالاسم',cls:'بالفصل',sc:'بالدرجة',time:'بوقت التسليم'})[SORT]; render();};
+  $('cpS').onclick=()=>copy(rows().map(s=>s.name+'\t'+s.sc).join('\n'),'تم النسخ، الصقيها في Excel أو مدرستي');
+  $('csv').onclick=()=>{const L=[['الاسم','الفصل','الدرجة','من']].concat(rows().map(s=>[s.name,s.cls||'',s.sc,s.tot])); const csv='﻿'+L.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=('درجات-'+TEST.title).replace(/[\\/:*?"<>|\s]+/g,'-')+'.csv'; document.body.appendChild(a); a.click(); a.remove();};
+  function rows(){const S=SUBS.slice(); if(SORT==='name') S.sort((a,b)=>a.name.localeCompare(b.name,'ar')); else if(SORT==='cls') S.sort((a,b)=>String(a.cls||'').localeCompare(String(b.cls||''),'ar',{numeric:true})||a.name.localeCompare(b.name,'ar')); else if(SORT==='sc') S.sort((a,b)=>b.sc-a.sc); else S.sort((a,b)=>a.ms-b.ms); return S;}
+  function render(){const S=rows(); const cnt={}; SUBS.forEach(s=>{const k=s.name.replace(/\s+/g,' ').trim(); cnt[k]=(cnt[k]||0)+1;});
+    $('sN').textContent=SUBS.length; $('sF').textContent=TEST.qs.length; $('sA').textContent=SUBS.length?(SUBS.reduce((a,s)=>a+s.sc,0)/SUBS.length).toFixed(1):'—';
+    if(S.length) $('tb').innerHTML=S.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.name)}${cnt[s.name.replace(/\s+/g,' ').trim()]>1?' <span class="dup">مكرر</span>':''}</td><td>${esc(s.cls||'')}</td><td><b>${s.sc}</b> من ${s.tot}</td></tr>`).join('');
+    const W=TEST.qs.map(()=>0); SUBS.forEach(s=>(s.wrong||[]).forEach(i=>W[i]++));
+    const top=W.map((w,i)=>[w,i]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,3);
+    $('hd').innerHTML=top.length?top.map(([w,i])=>`<li>${TQ(TEST.qs[i].q)}<div class="msg" style="font-size:14px">أخطأت فيه ${w} من ${SUBS.length}${K?' · الصحيح: '+T(K.a[i]):''}</div></li>`).join(''):'<li class="msg">ما فيه أخطاء متكررة</li>';}
+  db.collection('etests_subs').where('t','==',TID).onSnapshot(q=>{SUBS=q.docs.map(d=>d.data()); render();},()=>toast('تعذّر تحديث النتائج'));
+}
+function copy(t,m){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(m)).catch(()=>{const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy'); toast(m);}catch(e){toast('تعذّر النسخ');} a.remove();});}
+
+/* ================= HOME (teacher's list) ================= */
+function home(){
+  head('الاختبار الإلكتروني','اختباراتك اللي أنشأتيها من هذا الجهاز');
+  const mine=LS.get('et_mine',[]);
+  app.innerHTML=mine.length?`<div class="box">${mine.map(m=>`<a href="?t=${esc(m.id)}&k=${encodeURIComponent(m.k)}" style="display:block;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);padding:12px 4px"><b>${esc(m.title)}</b><div class="msg" style="font-size:14px">${esc(m.subj||'')} · ${new Date(m.at).toLocaleDateString('ar-SA')}</div></a>`).join('')}</div>`:`<div class="box center msg">أنشئي الاختبار من «مولّد المراجعة النهائية»: جهّزي الاختبار التجريبي ثم اضغطي «اختبار إلكتروني».</div>`;
+}
+
+if(!db) fail('تعذّر تحميل الاختبار. تأكدي من الإنترنت ثم حدّثي الصفحة.');
+else if(TID&&KEY) teacher(); else if(TID) student(); else home();
+</script>
+</body>
+</html>

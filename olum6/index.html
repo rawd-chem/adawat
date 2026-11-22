@@ -204,7 +204,7 @@ async function home(){
   app.querySelectorAll('.les:not(.lock)').forEach(e=>e.onclick=()=>enterLesson(e.dataset.l));
   const want=P.get('l'); P.delete('l'); if(want&&isOpen(want)){history.replaceState(null,'',location.pathname); enterLesson(want);}
 }
-function lesson(id){const l=LES.find(x=>x.id===id); const best=myDone(); hdr('<button id="bk">الدروس</button>'); $('bk').onclick=home;
+function lesson(id){const l=LES.find(x=>x.id===id); const best=myDone(); hdr('<button id="bk">🏠 الرئيسية</button>'); $('bk').onclick=home;
   const st=studied(id);
   app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">الوحدة ${AR(l.unit)} · الدرس ${AR(l.id.split("-")[1])}</div><div class="q" style="margin:2px 0 0">${esc(l.title)}</div></div>
   <div class="card stp${st?' done':''}"><div class="sn">١</div><div style="flex:1"><b style="font-size:17px">📖 كتابي الذكي</b><div class="msg" style="font-size:13px">ذاكري الدرس أولًا: صفحات الكتاب مع الزبدة والفروق والفخاخ${st?' · ✔️ ذاكرتِه':''}</div></div><button class="btn" id="study" style="padding:8px 14px">${st?'راجعي':'ابدئي'}</button></div>
@@ -212,7 +212,7 @@ function lesson(id){const l=LES.find(x=>x.id===id); const best=myDone(); hdr('<b
   <div class="games${st?'':' locked'}">${GAMES.filter(g=>l[g.k]).map(g=>{const r=best[l.id+'_'+g.k]; return `<div class="gm" data-g="${g.k}"><div>${g.e}</div><b>${g.n}</b><small>${g.d}</small><br>${r!=null?`<span class="best">✔️ نتيجتكِ: ${AR(r)}</span><span class="tr">والآن تدريب</span>`:`<span class="nw">🎯 محاولة محسوبة</span>`}</div>`;}).join('')}</div>`;
   $('study').onclick=()=>goStudy(id);
   app.querySelectorAll('.gm').forEach(e=>e.onclick=()=>{if(!studied(id)){toast('ذاكري الدرس في كتابي الذكي أولًا 📖');return;} ({quiz,pairs,sort,diff,order})[e.dataset.g](l);});}
-function frame(l,title,inner){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=()=>l?lesson(l.id):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
+function frame(l,title,inner){hdr('<button id="hm">🏠 الرئيسية</button><button id="bk">→ رجوع</button>'); $('hm').onclick=home; $('bk').onclick=()=>l?lesson(l.id):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
 async function finish(l,game,score,extra){const key=l?l.id+'_'+game:'speed'; track('game_'+game); const r=await saveScore(key,score);
   const e=score>=90?'🏆':score>=70?'🌟':score>=50?'👏':'💪';
   const ch=score>=80?pick(CHEER.hi):score>=50?pick(CHEER.mid):pick(CHEER.lo);
@@ -267,7 +267,7 @@ function mountain(){const path=MP.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' '
   <path d="${path}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 12" opacity=".9"/>
   <line x1="180" y1="40" x2="180" y2="8" stroke="#2b2350" stroke-width="3"/><path d="M180 8 L208 16 L180 25Z" fill="#ff6fa6"/>
   <text x="180" y="474" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">البداية</text></svg>`;}
-async function board(){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=home;
+async function board(){hdr('<button id="bk">🏠 الرئيسية</button>'); $('bk').onclick=home;
   app.innerHTML=`<div class="card"><b style="font-size:19px">🏔️ تحدّي القمة</b><div class="msg" style="font-size:13px">كل نقطة ترفعكِ خطوة نحو القمة 🚩</div><div class="mtn" id="mt" style="margin-top:8px">${mountain()}</div><div id="mv"></div><div id="pl" class="msg" style="margin-top:6px">جارٍ التحميل…</div></div><div class="card"><b style="font-size:17px">👭 المجموعات</b><div id="gl" class="msg" style="margin-top:8px"></div></div>`;
   try{const q=await db.collection('olum6_players').get(); const L=q.docs.map(d=>Object.assign({id:d.id},d.data())).filter(p=>p.id[0]==='s'&&(p.total||0)>0).sort((a,b)=>(b.total||0)-(a.total||0));
     $('pl').innerHTML=L.length?L.map((p,i)=>`<div class="rank r${i+1}${WHO&&WHO.id===p.id?' meR':''}"><div class="p">${i<3?['🥇','🥈','🥉'][i]:AR(i+1)}</div><span>${AVS[+p.id.slice(1)]||''} ${esc((p.name||'').split(' ')[0])}</span><b>${AR(p.total||0)}</b></div>`).join(''):'لم تبدأ أي طالبة بعد، كوني الأولى!';

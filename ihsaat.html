@@ -40,7 +40,7 @@ main{max-width:1000px;margin:18px auto;padding:0 14px 40px}
 </style>
 </head>
 <body>
-<header><div class="logo">📊</div><div><h1>إحصاءات أدوات المعلمة</h1><div class="sl">أعداد استخدام مجهولة الهوية · تتحدّث عند فتح الصفحة</div></div></header>
+<header><div class="logo">📊</div><div><h1>إحصاءات أدوات المعلمة</h1><div class="sl">أعداد استخدام مجهولة الهوية · استخدامكِ أنتِ لا يُحسب · تتحدّث عند فتح الصفحة</div></div></header>
 <main>
   <div class="box"><h2>الإجمالي</h2><div class="tiles" id="tiles"><div class="msg">جارٍ التحميل…</div></div></div>
   <div class="box"><h2>آخر ١٤ يومًا</h2><div class="bars" id="bars"></div></div>
@@ -52,6 +52,7 @@ main{max-width:1000px;margin:18px auto;padding:0 14px 40px}
   <p class="msg" style="font-size:13px;text-align:center">لا تُحفظ أي أسماء أو بيانات شخصية للمعلمات. «الأجهزة» = عدد الأجهزة المختلفة التي فتحت الأداة.</p>
 </main>
 <script>
+try{localStorage.setItem('adawat_me','1')}catch(e){}
 const P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
 const B="https://firestore.googleapis.com/v1/projects/"+P+"/databases/(default)/documents";
 const $=id=>document.getElementById(id);

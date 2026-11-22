@@ -287,7 +287,7 @@ async function board(){hdr('<button id="bk">🏠 الرئيسية</button>'); $(
   catch(e){$('pl').textContent='تعذّر التحميل، تأكدي من الإنترنت.';}}
 
 /* ---------- teacher ---------- */
-async function admin(){hdr('<span style="font-weight:800">لوحة المعلمة</span>');
+async function admin(){try{localStorage.setItem('adawat_me','1')}catch(e){}hdr('<span style="font-weight:800">لوحة المعلمة</span>');
   app.innerHTML=`<div class="card"><b>تقدّم الطالبات</b><div style="overflow-x:auto;margin-top:8px" id="tb">جارٍ التحميل…</div><p class="msg" style="font-size:12px">النسبة = متوسط أفضل نتائج الطالبة في ألعاب الدرس. الأحمر يحتاج مراجعة.</p></div>
   <div class="card"><b>الدروس المفتوحة للطالبات</b><div class="chk" id="ck" style="margin-top:8px"></div><button class="btn tl w" id="sv" style="margin-top:10px">احفظي</button></div>
   <div class="card"><b>إدارة</b><p class="msg" style="font-size:13px;margin:4px 0 8px">إذا نسيت طالبة رقمها السري، امسحيه فتختار رقمًا جديدًا عند الدخول (نقاطها تبقى).</p><div class="names" id="rs"></div><button class="btn gh w" id="rg" style="margin-top:10px">تصفير نقاط المجموعات</button>
@@ -325,7 +325,7 @@ async function admin(){hdr('<span style="font-weight:800">لوحة المعلم�
   function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
   window.adawatTrack=function(tool,ev){
     try{
-      if(navigator.onLine===false)return;
+      if(navigator.onLine===false)return; try{if(localStorage.getItem("adawat_me"))return;}catch(e){}
       var f=[inc(ev)];
       if(ev==="open"){try{var k="adawat_dev_"+tool;if(!localStorage.getItem(k)){localStorage.setItem(k,"1");f.push(inc("devices"))}}catch(e){}}
       var w=[{transform:{document:D+"/adawat_stats/"+tool,fieldTransforms:f}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc(tool+"_"+ev)]}}];

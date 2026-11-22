@@ -2934,7 +2934,7 @@ $('word').onclick=()=>{if(M)saveFile(fname('docx'),buildDocx());};
   function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
   window.adawatTrack=function(tool,ev){
     try{
-      if(navigator.onLine===false)return;
+      if(navigator.onLine===false)return; try{if(localStorage.getItem("adawat_me"))return;}catch(e){}
       var f=[inc(ev)];
       if(ev==="open"){try{var k="adawat_dev_"+tool;if(!localStorage.getItem(k)){localStorage.setItem(k,"1");f.push(inc("devices"))}}catch(e){}}
       var w=[{transform:{document:D+"/adawat_stats/"+tool,fieldTransforms:f}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc(tool+"_"+ev)]}}];

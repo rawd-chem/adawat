@@ -22,7 +22,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(28,39,82,.13
 .card p{margin:0;color:var(--muted);font-size:16px;line-height:1.7}
 .card ul{margin:2px 0 0;padding:0 18px 0 0;color:var(--navy);font-size:15px;line-height:1.9;font-weight:700}
 .go{margin-top:auto;align-self:flex-start;background:var(--c);color:#fff;font-weight:800;border-radius:13px;padding:10px 20px;font-size:16px;box-shadow:0 5px 12px rgba(28,39,82,.12)}
-.c1{--c:#12a99d}.c2{--c:#7761d9}.c3{--c:#e96552}.c4{--c:#e0a21b}
+.c1{--c:#12a99d}.c2{--c:#7761d9}.c3{--c:#e96552}.c4{--c:#e0a21b}.c5{--c:#2f80ed}
 .soon{opacity:.75;pointer-events:none}.soon .go{background:#B9BED3}
 .how{margin-top:24px;background:rgba(255,255,255,.96);border:1px solid #dbe2f0;border-radius:22px;padding:20px 22px;box-shadow:0 12px 32px rgba(28,39,82,.075)}
 .how h3{margin:0 0 10px;font-size:20px;font-weight:800}
@@ -93,12 +93,20 @@ header.th>div:not(.logo){min-width:0;flex:1 1 220px}
       <ul><li>ملخص أسئلة لكل درس</li><li>اختبار تجريبي بنموذجين ومفتاح، ونسخة Word</li><li>جدول مراجعة وبطاقات وتقييم ذاتي</li></ul>
       <span class="go">افتحي المساعد</span>
     </a>
+    <a class="card c5" href="https://rawd-chem.github.io/adawat/qawalib.html">
+      <div class="ic">📝</div>
+      <span class="tag">لكل اختبار</span>
+      <h2>مساعد قوالب الاختبارات</h2>
+      <p>ملف Word جاهز بترويسة المدرسة وأقسام الأسئلة، تكتبين عليه أو يُقرأ من صور اختباركِ.</p>
+      <ul><li>قراءة الاختبار من الصور</li><li>تحويله إلى اختبار إلكتروني بضغطة</li></ul>
+      <span class="go">افتحي المساعد</span>
+    </a>
     <a class="card c4" href="https://rawd-chem.github.io/adawat/ikhtibar.html">
       <div class="ic">📱</div>
       <span class="tag">دون تصحيح ولا رصد</span>
       <h2>الاختبار الإلكتروني</h2>
       <p>رابط ورمز QR تفتحه الطالبات بالجوال، يُصحَّح تلقائيًا، وتظهر لكِ الدرجات جاهزة.</p>
-      <ul><li>تنشئينه من «مساعد المراجعة النهائية»</li><li>نسخ الدرجات أو تنزيلها Excel</li><li>إغلاق الاختبار متى شئتِ</li></ul>
+      <ul><li>تنشئينه من «مساعد المراجعة» أو «مساعد القوالب»</li><li>اختبار بدرجات أو تدريب ذاتي</li><li>نسخ الدرجات أو تنزيلها Excel</li><li>إغلاق الاختبار متى شئتِ</li></ul>
       <span class="go">اختباراتي</span>
     </a>
   </div>
@@ -113,5 +121,28 @@ header.th>div:not(.logo){min-width:0;flex:1 1 220px}
   </div>
 </main>
 <footer>الأسئلة مأخوذة من كتب الطالب، راجعيها قبل استخدامها<br>للتواصل: t9569272@mkhg.moe.gov.sa</footer>
+
+<!--TRACK--><script>/* adawat usage counter (anonymous counts only) */
+(function(){
+  var P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+  var D="projects/"+P+"/databases/(default)/documents";
+  var URL_="https://firestore.googleapis.com/v1/"+D+":commit?key="+K;
+  function day(){return new Date(Date.now()+3*3600e3).toISOString().slice(0,10)}
+  function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
+  window.adawatTrack=function(tool,ev){
+    try{
+      if(navigator.onLine===false)return;
+      var f=[inc(ev)];
+      if(ev==="open"){try{var k="adawat_dev_"+tool;if(!localStorage.getItem(k)){localStorage.setItem(k,"1");f.push(inc("devices"))}}catch(e){}}
+      var w=[{transform:{document:D+"/adawat_stats/"+tool,fieldTransforms:f}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc(tool+"_"+ev)]}}];
+      fetch(URL_,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:w}),keepalive:true}).catch(function(){});
+    }catch(e){}
+  };
+  window.adawatAutoTrack=function(tool,map){
+    try{adawatTrack(tool,"open")}catch(e){}
+    document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("button[id]");if(b&&map[b.id])adawatTrack(tool,map[b.id])},true);
+  };
+})();
+adawatAutoTrack("home",{});</script><!--/TRACK-->
 </body>
 </html>

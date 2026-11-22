@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>إحصاءات أدوات المعلمة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1b2552;--teal:#12a99d;--coral:#e96552;--amber:#ffc64d;--purple:#7761d9;--muted:#697393;--line:#e2e7f1}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Tajawal',system-ui,sans-serif;color:var(--navy);background:#f5f7fc;background-image:radial-gradient(ellipse at 7% 9%,rgba(20,184,170,.11),transparent 29%),radial-gradient(ellipse at 96% 28%,rgba(123,97,255,.08),transparent 30%)}
+header{display:flex;align-items:center;gap:14px;padding:20px clamp(16px,3vw,44px);background:linear-gradient(112deg,#19234f 0%,#293566 57%,#37547e 100%);border-bottom:4px solid #19b4a6;color:#fff}
+.logo{width:52px;height:52px;border-radius:17px;background:linear-gradient(145deg,#29c7b7,#0c9e91);display:grid;place-items:center;font-size:24px;border:3px solid rgba(255,255,255,.26)}
+h1{margin:0;font-size:clamp(20px,2.2vw,27px);font-weight:800}.sl{color:#ffda78;font-weight:700;font-size:14px}
+main{max-width:1000px;margin:18px auto;padding:0 14px 40px}
+.box{background:#fff;border:1px solid #dbe2f0;border-radius:22px;padding:18px;box-shadow:0 12px 32px rgba(28,39,82,.075);margin-bottom:16px}
+.box h2{margin:0 0 12px;font-size:20px;font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{border-radius:18px;padding:14px;color:#fff;background:var(--c)}.tile b{display:block;font-size:32px;font-weight:800}.tile span{font-weight:700;font-size:14px;opacity:.95}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.tl{border:1px solid var(--line);border-top:5px solid var(--c);border-radius:18px;padding:14px}
+.tl h3{margin:0 0 8px;font-size:17px;font-weight:800}
+.tl div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-weight:700;font-size:15px}.tl div:last-child{border-bottom:0}.tl div b{color:var(--c)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:170px;padding-top:10px;direction:ltr}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;font-weight:700;color:var(--muted)}
+.bar i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#29c7b7,#7761d9);min-height:2px}
+.bar em{font-style:normal;color:var(--navy);font-size:12px;margin-bottom:3px}
+.rep{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.rep.done{opacity:.55}
+.rep .h{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:800;color:var(--muted)}
+.pill{border-radius:999px;padding:2px 10px;background:#fff5f3;color:#c2412d}.pill.ok{background:#e9f8f6;color:#0f8f7e}
+.rep .q{font-weight:800;font-size:16px;line-height:1.7;margin:6px 0 2px}.rep .a{color:var(--muted);font-weight:700;font-size:14px}
+.rep .n{background:#fffbf0;border-radius:10px;padding:8px 10px;margin-top:6px;font-size:14px}
+.btn{border:0;border-radius:12px;padding:9px 14px;font:inherit;font-weight:800;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#11b6a7,#0c988d);color:#fff}
+.btn.g{background:#EEF0F7;color:var(--navy)}
+.tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.msg{color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+<header><div class="logo">📊</div><div><h1>إحصاءات أدوات المعلمة</h1><div class="sl">أعداد استخدام مجهولة الهوية · تتحدّث عند فتح الصفحة</div></div></header>
+<main>
+  <div class="box"><h2>الإجمالي</h2><div class="tiles" id="tiles"><div class="msg">جارٍ التحميل…</div></div></div>
+  <div class="box"><h2>آخر ١٤ يومًا</h2><div class="bars" id="bars"></div></div>
+  <div class="box"><h2>تفاصيل كل أداة</h2><div class="tools" id="tools"></div></div>
+  <div class="box"><h2>🚩 بلاغات الأسئلة</h2>
+    <div class="tabs"><button class="btn g" data-f="new">الجديدة</button><button class="btn g" data-f="all">الكل</button><button class="btn" id="cpy">انسخي البلاغات الجديدة</button></div>
+    <div id="reps"><div class="msg">جارٍ التحميل…</div></div>
+  </div>
+  <p class="msg" style="font-size:13px;text-align:center">لا تُحفظ أي أسماء أو بيانات شخصية للمعلمات. «الأجهزة» = عدد الأجهزة المختلفة التي فتحت الأداة.</p>
+</main>
+<script>
+const P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+const B="https://firestore.googleapis.com/v1/projects/"+P+"/databases/(default)/documents";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const N=n=>Number(n||0).toLocaleString('ar-SA');
+const TOOLS={recall:['مساعد الاسترجاع','#12a99d'],plans:['مساعد الخطط','#7761d9'],review:['مساعد المراجعة','#e96552'],templates:['مساعد القوالب','#3f8f3a'],etest:['الاختبار الإلكتروني','#e0a21b'],practice:['التدريب الذاتي','#2f80ed'],home:['الصفحة الرئيسية','#1b2552']};
+const EV={open:'مرات الفتح',devices:'أجهزة مختلفة',recall:'أسئلة استرجاع',projector:'وضع العرض',qod:'سؤال اليوم',export:'طباعة أو تنزيل',offline:'نسخة دون إنترنت',bank:'تحميل بنك جاهز',plan:'خطط جُهّزت',review:'مراجعات جُهّزت',word:'اختبارات Word',etest_open:'فتح نافذة الاختبار',docx:'قوالب Word',img_read:'قراءة اختبار من صور',key_saved:'تفعيل مفتاح Gemini',created:'اختبارات أُنشئت',submit:'تسليمات الطالبات',results_view:'فتح صفحة النتائج'};
+const val=v=>v?(v.integerValue!=null?+v.integerValue:v.doubleValue!=null?+v.doubleValue:v.stringValue!=null?v.stringValue:v.timestampValue||''):'';
+async function list(col,size){let out=[],t='';do{const r=await fetch(B+'/'+col+'?key='+K+'&pageSize='+(size||300)+(t?'&pageToken='+t:''));if(!r.ok)throw new Error(r.status);const j=await r.json();out=out.concat(j.documents||[]);t=j.nextPageToken||'';}while(t&&out.length<2000);return out;}
+const id=d=>d.name.split('/').pop();
+const flds=d=>{const o={};for(const k in (d.fields||{}))o[k]=val(d.fields[k]);return o;};
+async function load(){
+  try{
+    const st=await list('adawat_stats'); const S={}; st.forEach(d=>S[id(d)]=flds(d));
+    let legacy=0; try{const r=await fetch(B+'/khutat_stats/plans?key='+K); if(r.ok) legacy=+val(((await r.json()).fields||{}).n)||0;}catch(e){}
+    const sum=(t,e)=>(S[t]&&S[t][e])||0;
+    const devs=Object.keys(TOOLS).reduce((a,t)=>Math.max(a,sum(t,'devices')),0);
+    $('tiles').innerHTML=[
+      ['أجهزة استخدمت الأدوات (أعلى أداة)',devs,'#1b2552'],
+      ['أسئلة استرجاع عُرضت',sum('recall','recall'),'#12a99d'],
+      ['خطط علاجية وإثرائية',Math.max(legacy,sum('plans','plan')),'#7761d9'],
+      ['مراجعات جُهّزت',sum('review','review'),'#e96552'],
+      ['اختبارات إلكترونية أُنشئت',sum('etest','created'),'#e0a21b'],
+      ['تسليمات الطالبات',sum('etest','submit'),'#c2410c'],
+    ].map(([l,n,c])=>`<div class="tile" style="--c:${c}"><b>${N(n)}</b><span>${l}</span></div>`).join('');
+    $('tools').innerHTML=Object.keys(TOOLS).filter(t=>S[t]).map(t=>`<div class="tl" style="--c:${TOOLS[t][1]}"><h3>${TOOLS[t][0]}</h3>${Object.keys(S[t]).sort((a,b)=>(a==='open'?-2:a==='devices'?-1:0)-(b==='open'?-2:b==='devices'?-1:0)).map(e=>`<div><span>${EV[e]||e}</span><b>${N(S[t][e])}</b></div>`).join('')}</div>`).join('')||'<div class="msg">لا توجد بيانات بعد.</div>';
+    const dl=await list('adawat_daily'); const D={}; dl.forEach(d=>{const f=flds(d);let n=0;for(const k in f) if(!/_open$/.test(k)) n+=+f[k]||0; D[id(d)]=n;});
+    const days=[]; for(let i=13;i>=0;i--){days.push(new Date(Date.now()+3*3600e3-i*864e5).toISOString().slice(0,10));}
+    const mx=Math.max(1,...days.map(d=>D[d]||0));
+    $('bars').innerHTML=days.map(d=>`<div class="bar"><em>${D[d]?N(D[d]):''}</em><i style="height:${Math.round(100*(D[d]||0)/mx)}%"></i>${+d.slice(8)}/${+d.slice(5,7)}</div>`).join('');
+  }catch(e){$('tiles').innerHTML='<div class="msg">تعذّر تحميل الإحصاءات. تأكدي من الإنترنت.</div>';}
+  loadReps();
+}
+let REPS=[],FIL='new';
+async function loadReps(){
+  try{REPS=(await list('adawat_reports')).map(d=>Object.assign({_n:d.name},flds(d))).sort((a,b)=>String(b.at).localeCompare(String(a.at)));drawReps();}
+  catch(e){$('reps').innerHTML='<div class="msg">تعذّر تحميل البلاغات.</div>';}
+}
+function drawReps(){
+  const R=REPS.filter(r=>FIL==='all'||r.status!=='done');
+  $('reps').innerHTML=R.length?R.map((r,i)=>`<div class="rep${r.status==='done'?' done':''}"><div class="h"><span class="pill${r.status==='done'?' ok':''}">${r.status==='done'?'تمت المراجعة':'جديد'}</span><span>${esc(r.subject||r.key)}</span><span>· ${esc(r.lesson)}</span><span>· ${esc(r.reason)}</span><span>· ${r.at?new Date(r.at).toLocaleDateString('ar-SA'):''}</span></div><div class="q">${esc(r.q)}</div><div class="a">الإجابة: ${esc(r.a)}</div>${r.note?`<div class="n">📝 ${esc(r.note)}</div>`:''}${r.status!=='done'?`<div style="margin-top:8px"><button class="btn g" data-done="${esc(r._n)}">✓ تمت المراجعة</button></div>`:''}</div>`).join(''):'<div class="msg">لا توجد بلاغات '+(FIL==='new'?'جديدة':'')+'.</div>';
+}
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-f]'); if(t){FIL=t.dataset.f;drawReps();return;}
+  const d=e.target.closest('[data-done]'); if(d){d.disabled=true;try{const r=await fetch('https://firestore.googleapis.com/v1/'+d.dataset.done+'?key='+K+'&updateMask.fieldPaths=status',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{status:{stringValue:'done'}}})});if(!r.ok)throw 0;const x=REPS.find(r=>r._n===d.dataset.done);if(x)x.status='done';drawReps();}catch(err){d.disabled=false;d.textContent='تعذّر الحفظ، أعيدي';}}
+});
+$('cpy').onclick=()=>{const R=REPS.filter(r=>r.status!=='done');const t=R.map((r,i)=>`${i+1}) [${r.key}] ${r.lesson}\nالسؤال: ${r.q}\nالإجابة: ${r.a}\nالسبب: ${r.reason}${r.note?'\nملاحظة: '+r.note:''}`).join('\n\n')||'لا توجد بلاغات جديدة';navigator.clipboard.writeText(t).then(()=>{$('cpy').textContent='تم النسخ ✓';setTimeout(()=>$('cpy').textContent='انسخي البلاغات الجديدة',2000)}).catch(()=>{});};
+load();
+</script>
+</body>
+</html>

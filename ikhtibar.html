@@ -50,6 +50,7 @@ tr:nth-child(even) td{background:#FFFBF4}
 .tools .btn{font-size:15px;padding:10px 14px}
 .pill{display:inline-block;border-radius:999px;padding:3px 12px;font-weight:800;font-size:14px}
 .pill.on{background:#E9F8F6;color:#0F8F7E}.pill.off{background:#FFF1EE;color:#C2412D}
+.fb{margin-top:8px;font-weight:800}.fb .good{color:#0f8f7e}.fb .nogood{color:#c2412d}.q.wrong{border-right-color:var(--coral)}.op.lock{cursor:default}.rp{margin-top:8px;border:1px solid #f3c2ba;background:#fff5f3;color:#c2412d;border-radius:10px;padding:5px 10px;font:inherit;font-weight:800;font-size:13px;cursor:pointer}
 .hard li{margin-bottom:6px;line-height:1.6}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;border-radius:14px;padding:12px 18px;font-weight:700;z-index:9;display:none;max-width:90vw;text-align:center}
 .dup{color:#C2412D;font-size:13px;font-weight:800}
@@ -119,7 +120,8 @@ let TEST=null, ANS={}, ORDER=[], timerId=null, endAt=0, sent=false;
 async function student(){
   let snap; try{snap=await db.collection('etests').doc(TID).get();}catch(e){return fail('تعذّر الاتصال. تأكدي من الإنترنت ثم حدّثي الصفحة.');}
   if(!snap.exists) return fail('الرابط غير صحيح. تأكدي منه مع معلمتك.');
-  TEST=snap.data(); head(TEST.title,[TEST.subj,TEST.teacher?'المعلمة: '+TEST.teacher:''].filter(Boolean).join(' · '));
+  TEST=snap.data(); head(TEST.title,[TEST.subj,TEST.teacher?'المعلمة: '+TEST.teacher:''].filter(Boolean).join(' · '),TEST.mode==='practice'?'تدريب ذاتي':null);
+  if(TEST.mode==='practice') return practice();
   const done=LS.get('et_done_'+TID,null);
   if(done) return showResult(done,true);
   if(TEST.open===false) return fail('🔒 الاختبار مغلق حاليًا.');
@@ -163,7 +165,7 @@ async function submit(name,cls){
   const qs=TEST.qs; let sc=0; const wrong=[]; const ans=qs.map((q,i)=>ANS[i]||'');
   qs.forEach((q,i)=>{if(ans[i]&&ans[i]===K.a[i]) sc++; else wrong.push(i);});
   const rec={t:TID,name,cls,sc,tot:qs.length,ans,wrong,at:firebase.firestore.FieldValue.serverTimestamp(),ms:Date.now()};
-  try{await db.collection('etests_subs').add(rec);}catch(e){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('لم يصل التسليم، تأكدي من الإنترنت وحاولي مرة أخرى');}
+  try{await db.collection('etests_subs').add(rec); try{adawatTrack(TEST.mode==='practice'?'practice':'etest','submit')}catch(x){}}catch(e){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('لم يصل التسليم، تأكدي من الإنترنت وحاولي مرة أخرى');}
   const done={name,sc,tot:qs.length,ans,key:TEST.showKey?K.a:null}; LS.set('et_done_'+TID,done); try{localStorage.removeItem('et_draft_'+TID);}catch(e){}
   const bar=document.querySelector('.bar'); if(bar) bar.remove(); scrollTo(0,0); showResult(done,false);
 }
@@ -176,13 +178,45 @@ function showResult(d,again){
   app.innerHTML=h;
 }
 
+
+/* ================= PRACTICE (self-study, instant feedback) ================= */
+async function practice(){
+  if(TEST.open===false) return fail('🔒 التدريب مغلق حاليًا.');
+  let K; try{K=(await db.collection('etests_key').doc(TID).get()).data();}catch(e){}
+  if(!K) return fail('تعذّر تحميل التدريب. تأكدي من الإنترنت ثم حدّثي الصفحة.');
+  const qs=TEST.qs.map((q,i)=>Object.assign({i},q)); const order=[]; ORD.forEach(k=>order.push(...shuffle(qs.filter(q=>q.k===k).map(q=>q.i))));
+  const OPT={}; qs.forEach(q=>{if(q.o) OPT[q.i]=q.k==='tf'?q.o.slice():shuffle(q.o.slice());});
+  const RES={}; let h=`<div class="box"><b>📚 تدريب ذاتي</b><p class="msg" style="margin:6px 0 0">اختاري الإجابة، وستعرفين فورًا إن كانت صحيحة، وتظهر لكِ الإجابة الصحيحة إن أخطأتِ. لا تُسجَّل أي درجات، فتدرّبي براحتكِ.</p></div>`, cur='', n=0;
+  order.forEach(i=>{const q=qs[i]; if(q.k!==cur){cur=q.k; n=0; h+=`<div class="sec">${SECN[cur]}<span>${qs.filter(x=>x.k===cur).length}</span></div>`;}
+    n++; const o=OPT[i]; const two=q.k==='tf'||(o&&o.every(x=>String(x).length<22));
+    h+=`<div class="q" id="q${i}"><div class="t"><span class="n">${n}</span>${TQ(q.q)}</div>`;
+    if(q.k==='mt') h+=`<select data-i="${i}" style="margin-top:12px"><option value="">— اختاري —</option>${o.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`;
+    else h+=`<div class="ops${two?' two':''}">${o.map((x,k)=>`<div class="op" data-i="${i}" data-v="${esc(x)}"><i></i><span>${q.k==='tf'?'':LET[k]+') '}${T(x)}</span></div>`).join('')}</div>`;
+    h+=`<div class="fb" id="fb${i}"></div><button class="rp" type="button" data-r="${i}">🚩 خطأ في السؤال؟</button></div>`;});
+  h+=`<div class="box center" id="pend"></div>`;
+  app.innerHTML=h;
+  document.body.insertAdjacentHTML('beforeend',`<div class="bar"><div class="pr"><b id="pc"></b><div class="trk"><div id="pb"></div></div></div></div>`);
+  const upd=()=>{const a=Object.keys(RES).length, c=Object.values(RES).filter(Boolean).length; $('pc').textContent='صحيحة '+c+' من '+a+(a<qs.length?' · بقي '+(qs.length-a):''); $('pb').style.width=(100*a/qs.length)+'%';
+    if(a===qs.length&&!$('pend').innerHTML){$('pend').innerHTML=`<div style="font-size:42px">${c/qs.length>=.8?'🌟':'💪'}</div><div class="big">${c} <span style="font-size:22px;color:#697393">من ${qs.length}</span></div><p class="msg">${c/qs.length>=.8?'أحسنتِ! استمري على هذا المستوى.':'راجعي الأسئلة التي أخطأتِ فيها، ثم أعيدي التدريب.'}</p><button class="btn t" onclick="location.reload()">أعيدي التدريب بترتيب جديد</button>`; try{adawatTrack('practice','done')}catch(e){} $('pend').scrollIntoView({behavior:'smooth'});}};
+  const mark=(i,v)=>{if(i in RES) return; const ok=v===K.a[i]; RES[i]=ok; const box=$('q'+i); box.classList.add(ok?'done':'wrong');
+    box.querySelectorAll('.op').forEach(x=>{x.classList.add('lock'); if(x.dataset.v===K.a[i]) x.classList.add('ok'); else if(x.dataset.v===v) x.classList.add('bad');});
+    const sel=box.querySelector('select'); if(sel) sel.disabled=true;
+    $('fb'+i).innerHTML=ok?'<span class="good">✓ إجابة صحيحة</span>':`<span class="nogood">✗ الإجابة الصحيحة: ${T(K.a[i])}</span>`; upd();};
+  app.addEventListener('click',e=>{const op=e.target.closest('.op'); if(op){mark(op.dataset.i,op.dataset.v);return;}
+    const r=e.target.closest('[data-r]'); if(r&&window.adawatReport){const q=qs[+r.dataset.r]; adawatReport({tool:'practice',key:TID,subject:TEST.subj,lesson:q.l||'',q:q.q+(q.o&&q.k!=='mt'?' | '+q.o.join(' / '):''),a:K.a[+r.dataset.r]});}});
+  app.addEventListener('change',e=>{const s=e.target.closest('select[data-i]'); if(s&&s.value) mark(s.dataset.i,s.value);});
+  try{adawatTrack('practice','open')}catch(e){}
+  upd();
+}
+
 /* ================= TEACHER ================= */
 let SUBS=[], SORT='name';
 async function teacher(){
   let snap; try{snap=await db.collection('etests').doc(TID).get();}catch(e){return fail('تعذّر الاتصال. تأكدي من الإنترنت.');}
   if(!snap.exists) return fail('الرابط غير صحيح.');
-  TEST=snap.data(); if(!TEST.th||await sha(KEY)!==TEST.th) return fail('رابط النتائج غير صحيح.');
-  head(TEST.title,TEST.subj,'نتائج الاختبار');
+  TEST=snap.data(); if(!TEST.th||await sha(KEY)!==TEST.th) return fail('رابط النتائج غير صحيح.'); try{adawatTrack('etest','results_view')}catch(x){}
+  head(TEST.title,TEST.subj,TEST.mode==='practice'?'إدارة التدريب':'نتائج الاختبار');
+  if(TEST.mode==='practice'){const stu0=location.href.split('?')[0]+'?t='+TID; app.innerHTML=`<div class="box"><b>📚 هذا رابط تدريب ذاتي</b><p class="msg">لا تُسجَّل فيه درجات؛ الطالبة تتدرّب وتعرف الإجابة فورًا.</p><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b>الحالة:</b><span class="pill" id="st"></span><button class="btn g" id="tog" style="font-size:15px;padding:8px 14px"></button></div><div class="tools"><button class="btn t" id="cpL">انسخي رابط الطالبات</button></div><div class="msg" style="font-size:14px;direction:ltr;text-align:left;word-break:break-all">${esc(stu0)}</div></div>`; const setSt=()=>{const o=TEST.open!==false; $('st').className='pill '+(o?'on':'off'); $('st').textContent=o?'مفتوح للطالبات':'مغلق'; $('tog').textContent=o?'أغلقي التدريب':'افتحي التدريب';}; setSt(); $('tog').onclick=async()=>{const o=TEST.open===false; try{await db.collection('etests').doc(TID).update({open:o}); TEST.open=o; setSt();}catch(e){toast('تعذّر التحديث');}}; $('cpL').onclick=()=>copy(stu0,'تم نسخ الرابط'); return;}
   const mine=LS.get('et_mine',[]); if(!mine.some(x=>x.id===TID)){mine.unshift({id:TID,k:KEY,title:TEST.title,subj:TEST.subj,at:Date.now()}); LS.set('et_mine',mine);}
   let K=null; try{K=(await db.collection('etests_key').doc(TID).get()).data();}catch(e){}
   const stu=location.href.split('?')[0]+'?t='+TID;
@@ -215,11 +249,61 @@ function copy(t,m){(navigator.clipboard?navigator.clipboard.writeText(t):Promise
 function home(){
   head('الاختبار الإلكتروني','اختباراتكِ التي أنشأتِها من هذا الجهاز');
   const mine=LS.get('et_mine',[]);
-  app.innerHTML=mine.length?`<div class="box">${mine.map(m=>`<a href="?t=${esc(m.id)}&k=${encodeURIComponent(m.k)}" style="display:block;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);padding:12px 4px"><b>${esc(m.title)}</b><div class="msg" style="font-size:14px">${esc(m.subj||'')} · ${new Date(m.at).toLocaleDateString('ar-SA')}</div></a>`).join('')}</div>`:`<div class="box center msg">أنشئي الاختبار من «مساعد المراجعة النهائية»: جهّزي الاختبار التجريبي ثم اضغطي «اختبار إلكتروني».</div>`;
+  app.innerHTML=mine.length?`<div class="box">${mine.map(m=>`<a href="?t=${esc(m.id)}&k=${encodeURIComponent(m.k)}" style="display:block;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);padding:12px 4px"><b>${esc(m.title)}</b><div class="msg" style="font-size:14px">${esc(m.subj||'')} · ${new Date(m.at).toLocaleDateString('ar-SA')}</div></a>`).join('')}</div>`:`<div class="box center msg">أنشئي الاختبار من «مساعد المراجعة النهائية» أو «مساعد قوالب الاختبارات»، ثم اضغطي «اختبار إلكتروني».</div>`;
 }
 
 if(!db) fail('تعذّر تحميل الاختبار. تأكدي من الإنترنت ثم حدّثي الصفحة.');
 else if(TID&&KEY) teacher(); else if(TID) student(); else home();
 </script>
+
+<!--REPORT--><script>/* adawat: report a wrong question */
+(function(){
+  var P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+  var URL_="https://firestore.googleapis.com/v1/projects/"+P+"/databases/(default)/documents/adawat_reports?key="+K;
+  var css=".arM{position:fixed;inset:0;background:rgba(20,27,61,.55);z-index:99999;display:flex;align-items:center;justify-content:center;padding:14px;font-family:inherit}.arB{background:#fff;border-radius:22px;max-width:440px;width:100%;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.25);direction:rtl;text-align:right}.arB h3{margin:0 0 8px;font-size:20px;font-weight:800;color:#1b2552}.arQ{background:#F6F4FF;border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.7;max-height:140px;overflow:auto;margin-bottom:10px}.arR{display:grid;gap:6px;margin:8px 0}.arR label{display:flex;gap:8px;align-items:center;font-weight:700;font-size:15px;border:1.5px solid #e2e7f1;border-radius:12px;padding:9px 10px;cursor:pointer}.arR input{width:18px;height:18px}.arB textarea{width:100%;min-height:70px;border:1.5px solid #dbe1ee;border-radius:12px;padding:10px;font:inherit;font-size:15px;box-sizing:border-box}.arF{display:flex;gap:8px;margin-top:12px}.arF button{flex:1;border:0;border-radius:13px;padding:12px;font:inherit;font-weight:800;font-size:16px;cursor:pointer}.arS{background:linear-gradient(135deg,#f47b65,#e65c4d);color:#fff}.arC{background:#EEF0F7;color:#1b2552}.arMsg{font-weight:700;color:#697393;margin-top:8px;font-size:14px}";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function sv(v){return {stringValue:String(v==null?"":v).slice(0,2000)}}
+  window.adawatReport=function(o){
+    if(!document.getElementById("arCss")){var st=document.createElement("style");st.id="arCss";st.textContent=css;document.head.appendChild(st)}
+    var m=document.createElement("div");m.className="arM";
+    var R=["السؤال فيه خطأ علمي","الإجابة خاطئة","السؤال غير واضح أو ناقص","خارج المنهج أو من درس آخر","خطأ إملائي","أخرى"];
+    m.innerHTML='<div class="arB"><h3>🚩 الإبلاغ عن خطأ في سؤال</h3><div class="arQ"><b>السؤال:</b> '+esc(o.q)+(o.a?'<br><b>الإجابة:</b> '+esc(o.a):'')+'</div><div class="arR">'+R.map(function(r,i){return '<label><input type="radio" name="arr" value="'+esc(r)+'"'+(i===0?' checked':'')+'>'+esc(r)+'</label>'}).join("")+'</div><textarea id="arN" placeholder="ملاحظة أو التصحيح المقترح (اختياري)"></textarea><div class="arF"><button class="arS" type="button">إرسال البلاغ</button><button class="arC" type="button">إلغاء</button></div><div class="arMsg"></div></div>';
+    document.body.appendChild(m);
+    var close=function(){m.remove()};
+    m.querySelector(".arC").onclick=close;m.onclick=function(e){if(e.target===m)close()};
+    m.querySelector(".arS").onclick=function(){
+      var b=this;b.disabled=true;b.textContent="جارٍ الإرسال…";
+      var r=m.querySelector('input[name=arr]:checked');
+      var body={fields:{tool:sv(o.tool),subject:sv(o.subject),key:sv(o.key),lesson:sv(o.lesson),q:sv(o.q),a:sv(o.a),reason:sv(r?r.value:""),note:sv(m.querySelector("#arN").value),status:sv("new"),at:{timestampValue:new Date().toISOString()}}};
+      fetch(URL_,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(x){if(!x.ok)throw 0;
+        m.querySelector(".arB").innerHTML='<h3>شكرًا لكِ 🌷</h3><p style="line-height:1.8;font-weight:700;color:#697393">وصل البلاغ، وسيُراجَع السؤال ويُصحَّح في البنك.</p><div class="arF"><button class="arC" type="button">إغلاق</button></div>';
+        m.querySelector(".arC").onclick=close;
+      }).catch(function(){b.disabled=false;b.textContent="إرسال البلاغ";m.querySelector(".arMsg").textContent="تعذّر الإرسال. تأكدي من الإنترنت ثم أعيدي المحاولة."});
+    };
+  };
+})();
+</script><!--/REPORT-->
+<!--TRACK--><script>/* adawat usage counter (anonymous counts only) */
+(function(){
+  var P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+  var D="projects/"+P+"/databases/(default)/documents";
+  var URL_="https://firestore.googleapis.com/v1/"+D+":commit?key="+K;
+  function day(){return new Date(Date.now()+3*3600e3).toISOString().slice(0,10)}
+  function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
+  window.adawatTrack=function(tool,ev){
+    try{
+      if(navigator.onLine===false)return;
+      var f=[inc(ev)];
+      if(ev==="open"){try{var k="adawat_dev_"+tool;if(!localStorage.getItem(k)){localStorage.setItem(k,"1");f.push(inc("devices"))}}catch(e){}}
+      var w=[{transform:{document:D+"/adawat_stats/"+tool,fieldTransforms:f}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc(tool+"_"+ev)]}}];
+      fetch(URL_,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:w}),keepalive:true}).catch(function(){});
+    }catch(e){}
+  };
+  window.adawatAutoTrack=function(tool,map){
+    try{adawatTrack(tool,"open")}catch(e){}
+    document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("button[id]");if(b&&map[b.id])adawatTrack(tool,map[b.id])},true);
+  };
+})();
+</script><!--/TRACK-->
 </body>
 </html>

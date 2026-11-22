@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--g:#538135;--g2:#70AD47;--gl:#E2F0D9;--bg:#F5F9F2;--ink:#1F2A1A;--mut:#5E6B57;--line:#CFE3C2;--card:#fff}
+:root{--g:#0c988d;--g2:#14b8a6;--gl:#E3F6F4;--bg:#f5f7fc;--ink:#1b2552;--mut:#697393;--line:#dbe2f0;--card:#fff}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal',system-ui,sans-serif;font-weight:400;font-size:16px;line-height:1.6;padding-bottom:120px}
@@ -44,7 +44,8 @@ input:focus,select:focus{outline:3px solid #C9E5B6;border-color:var(--g2)}
 .opt b{font-weight:700}
 .opt small{display:block;color:var(--mut);font-size:13px}
 .bar{position:fixed;inset-inline:0;bottom:0;background:#fff;border-top:1.5px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(60,90,40,.12)}
-.bar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px}
+@media(max-width:560px){.bar-in .go{padding:11px 12px;font-size:15px}.bar-in .sum{font-size:12px}}
 .sum{flex:1;font-weight:700;line-height:1.3}
 .sum small{display:block;color:var(--mut);font-weight:400;font-size:13px}
 .go{border:0;background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;font:inherit;font-weight:800;font-size:17px;padding:13px 20px;border-radius:13px;cursor:pointer;white-space:nowrap}
@@ -100,12 +101,43 @@ input:focus,select:focus{outline:3px solid #C9E5B6;border-color:var(--g2)}
 .res .ok{background:var(--g);color:#fff}
 .res .no{background:#fff;color:var(--g)}
 </style>
+<style media="screen" data-theme>
+header.th{width:auto!important;height:auto!important;border:0!important;border-bottom:4px solid #19b4a6!important;border-radius:0!important}
+/* shared look (matches مساعد الاسترجاع) */
+:root{--navy:#1b2552;--cream:#f5f7fc;--coral:#ef6b58;--teal:#0fa99c;--amber:#ffc64d;--purple:#7965dc;--muted:#697393;--line:#e2e7f1;
+  --shadow-soft:0 12px 32px rgba(28,39,82,.075);--shadow-card:0 16px 34px rgba(28,39,82,.09)}
+body{background-color:#f5f7fc!important;background-image:radial-gradient(ellipse at 7% 9%,rgba(20,184,170,.11),transparent 29%),radial-gradient(ellipse at 96% 28%,rgba(123,97,255,.08),transparent 30%),linear-gradient(180deg,#f8f9fd 0%,#f3f6fb 100%)!important;color:#1b2552;min-height:100vh}
+header.th{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:20px clamp(16px,3.2vw,48px);background:linear-gradient(112deg,#19234f 0%,#293566 57%,#37547e 100%);border-bottom:4px solid #19b4a6;box-shadow:0 12px 30px rgba(24,34,77,.2);color:#fff;text-align:right}
+header.th::before,header.th::after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%}
+header.th::before{width:360px;height:360px;inset-inline-end:8%;top:-265px;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 52px rgba(255,255,255,.02)}
+header.th::after{width:170px;height:170px;inset-inline-end:18%;bottom:-132px;background:rgba(20,184,170,.13)}
+header.th .logo{flex:0 0 52px;width:52px;height:52px;border-radius:17px;background:linear-gradient(145deg,#29c7b7,#0c9e91);border:3px solid rgba(255,255,255,.26);color:#fff;box-shadow:0 8px 20px rgba(9,157,144,.25);font-size:23px;font-weight:800;display:grid;place-items:center}
+header.th h1{margin:0;font-size:clamp(21px,2vw,27px);font-weight:800;color:#fff}
+header.th .slogan{font-size:14px;color:#ffda78;font-weight:700;margin-top:2px}
+header.th .hnav{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+header.th .hnav a{border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:10px 14px;background:rgba(255,255,255,.075);color:#f2f4ff;font-size:14px;font-weight:700;text-decoration:none;transition:background .18s,transform .18s}
+header.th .hnav a:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
+.btn{border-radius:13px;background:linear-gradient(140deg,#202b5c,#303e78);color:#fff;box-shadow:0 5px 12px rgba(28,39,82,.12);transition:transform .16s,box-shadow .16s,filter .16s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 18px rgba(28,39,82,.16);filter:saturate(1.08)}
+.btn.teal,.btn.t{background:linear-gradient(135deg,#11b6a7,#0c988d);color:#fff;box-shadow:0 5px 14px rgba(15,169,156,.2)}
+.btn.coral,.btn.c,.btn.big{background:linear-gradient(135deg,#f47b65,#e65c4d);color:#fff;box-shadow:0 5px 14px rgba(239,107,88,.18)}
+.btn.amber,.btn.a{background:linear-gradient(135deg,#ffd469,#ffbd3e);color:#252c56;box-shadow:0 5px 14px rgba(255,193,69,.22)}
+.btn.p,.btn.purple{background:linear-gradient(135deg,#8a76e6,#6c56d6);color:#fff;box-shadow:0 5px 14px rgba(123,97,255,.18)}
+.btn.ghost,.btn.l,.btn.g{background:#fff;color:#1b2552;border:1px solid #dfe4ef;box-shadow:0 4px 10px rgba(28,39,82,.05)}
+.panel,.card:not(a),#app>.box{background:rgba(255,255,255,.96);border:1px solid rgba(219,226,240,.95)!important;border-radius:22px;box-shadow:var(--shadow-soft)}
+input[type=date],input[type=number],input[type=text],select,textarea{border:1px solid #dbe1ee!important;border-radius:12px;background:#fff;color:#1b2552}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#19b4a6!important;box-shadow:0 0 0 3px rgba(20,184,170,.14)}
+::selection{background:rgba(20,184,170,.2);color:#1b2552}
+@media (max-width:560px){header.th{padding:14px;gap:10px}header.th .logo{flex-basis:45px;width:45px;height:45px;border-radius:14px;font-size:20px}header.th h1{font-size:20px}header.th .slogan{font-size:12px}header.th .hnav{flex:1 0 100%;margin:4px 0 0}header.th .hnav a{flex:1;text-align:center}}
+header.th>div:not(.logo){min-width:0;flex:1 1 220px}
+</style>
 </head>
 <body>
-<div class="top">
-  <h1>مساعد قوالب الاختبارات</h1>
-  <p>اختاري أنواع الأسئلة وأعدادها، ثم نزّلي ملف وورد جاهزًا تكتبين أسئلتك عليه</p>
-</div>
+<header class="th">
+  <div class="logo">📝</div>
+  <div><h1>مساعد قوالب الاختبارات</h1><div class="slogan">اختاري أنواع الأسئلة وأعدادها، ثم نزّلي ملف وورد جاهزًا، أو حوّليه إلى اختبار إلكتروني</div></div>
+  <nav class="hnav"><a href="https://rawd-chem.github.io/adawat/">🏠 كل الأدوات</a></nav>
+</header>
 
 <div class="wrap">
   <section class="card">
@@ -970,6 +1002,65 @@ var LOGO_B64="iVBORw0KGgoAAAANSUhEUgAAAaQAAAE/CAYAAAAJ7be1AADT0UlEQVR42uxdd5wdVf
     document.getElementById("gNext").addEventListener("click",function(){if(k===sl.length-1)M.hidden=true;else show(k+1)});
     var x0=null;M.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});M.addEventListener("touchend",function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)show(dx>0?k+1:k-1);x0=null});
   })();
+  /* ===== تحويل الأسئلة إلى اختبار إلكتروني ===== */
+  (function(){
+    var ET_URL="https://rawd-chem.github.io/adawat/ikhtibar.html";
+    var P="chem-labs-3c9de",AK="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+    var DOCS="https://firestore.googleapis.com/v1/projects/"+P+"/databases/(default)/documents";
+    function fsv(v){if(v===null||v===undefined)return {nullValue:null};if(typeof v==="boolean")return {booleanValue:v};if(typeof v==="number")return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};if(Array.isArray(v))return {arrayValue:{values:v.map(fsv)}};if(typeof v==="object"){var f={};for(var k in v)f[k]=fsv(v[k]);return {mapValue:{fields:f}}}return {stringValue:String(v)}}
+    function fsDoc(o){var f={};for(var k in o)f[k]=fsv(o[k]);return {fields:f}}
+    function rnd(n){var c="abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",a=crypto.getRandomValues(new Uint8Array(n)),s="";for(var i=0;i<n;i++)s+=c[a[i]%c.length];return s}
+    async function sha(s){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
+    function items(){
+      var out=[];
+      qs.forEach(function(q){q.parts.forEach(function(p){
+        if(p.type==="mcq"){K.parseMcq(p.text).forEach(function(it){var o=(it.opts||[]).map(function(x){return String(x).trim()}).filter(Boolean);if(it.q&&o.length>=2&&new Set(o).size===o.length)out.push({k:"mcq",q:it.q.trim(),o:o})})}
+        else if(p.type==="tf"){K.parseLines(p.text).forEach(function(l){l=l.replace(/\(\s*\)\s*$/,"").trim();if(l)out.push({k:"tf",q:l,o:["صح","خطأ"]})})}
+        else if(p.type==="match"){var A=K.parseLines(p.text),B=K.parseLines(p.textB);if(A.length>=2&&B.length>=2)A.forEach(function(a){out.push({k:"mt",q:a,o:B.slice()})})}
+      })});
+      return out;
+    }
+    var css=".etq{position:fixed;inset:0;background:rgba(20,30,15,.6);z-index:9998;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px 10px}.etq .bx{background:#fff;border-radius:22px;max-width:560px;width:100%;padding:18px;position:relative}.etq h3{margin:0 0 4px;color:var(--g);font-size:20px;font-weight:800}.etq .x{position:absolute;left:12px;top:12px;width:36px;height:36px;border:0;border-radius:10px;background:var(--gl);cursor:pointer;font-size:16px}.etq .it{border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0}.etq .it.ok{border-color:#70AD47;background:#F5FBF1}.etq .it b{display:block;margin-bottom:6px;line-height:1.7}.etq .ch{display:flex;flex-wrap:wrap;gap:6px}.etq .ch button{border:1.5px solid #CFE3C2;background:#fff;border-radius:10px;padding:7px 11px;font:inherit;font-weight:700;cursor:pointer}.etq .ch button.on{background:var(--g);border-color:var(--g);color:#fff}.etq select{width:100%;padding:9px;border:1.5px solid #BFD8B0;border-radius:10px;font:inherit}.etq .md{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.etq .md label{display:flex;gap:6px;align-items:center;border:2px solid var(--line);border-radius:12px;padding:9px;font-weight:800;cursor:pointer}.etq .md label:has(input:checked){border-color:var(--g);background:#F5FBF1}.etq .f{display:block;font-weight:800;margin:8px 0 4px}.etq input[type=text],.etq input[type=number]{width:100%;padding:10px;border:1.5px solid #BFD8B0;border-radius:10px;font:inherit}.etq .goet{width:100%;margin-top:12px;border:0;border-radius:13px;padding:13px;font:inherit;font-weight:800;font-size:17px;background:var(--g);color:#fff;cursor:pointer}.etq .goet:disabled{opacity:.5}.etq .lk{border:2px solid #CFE3C2;background:#F5FBF1;border-radius:16px;padding:12px;margin-top:12px}.etq .u{direction:ltr;text-align:left;word-break:break-all;font-size:12px;background:#fff;border-radius:8px;padding:7px;margin:6px 0;color:var(--mut)}.etq .lk button{border:0;border-radius:11px;padding:9px 12px;font:inherit;font-weight:800;cursor:pointer;background:var(--g);color:#fff;margin-left:6px}.etq .prog{font-weight:800;color:#E8590C;margin:6px 0}";
+    function open(){
+      var IT=items();
+      if(!document.getElementById("etqCss")){var st=document.createElement("style");st.id="etqCss";st.textContent=css;document.head.appendChild(st)}
+      var w=document.createElement("div");w.className="etq";
+      if(IT.length<2){w.innerHTML='<div class="bx"><button class="x" type="button">✕</button><h3>📱 اختبار إلكتروني</h3><p style="line-height:1.8">يحتاج الاختبار الإلكتروني إلى أسئلة مكتوبة من نوع <b>اختيار من متعدد</b> أو <b>صح وخطأ</b> أو <b>صِلي</b>. اكتبي الأسئلة في الأقسام، أو اقرئيها من صور اختباركِ، ثم أعيدي المحاولة.</p></div>';document.body.appendChild(w);w.querySelector(".x").onclick=function(){w.remove()};return}
+      var ANS={};
+      var h='<div class="bx"><button class="x" type="button">✕</button><h3>📱 حوّلي الاختبار إلى رابط إلكتروني</h3><p style="margin:0;line-height:1.8;color:var(--mut)">حدّدي الإجابة الصحيحة لكل سؤال، فيُصحَّح الاختبار تلقائيًا. الأسئلة المقالية والفراغات لا تدخل.</p><div class="prog" id="etqP"></div>';
+      IT.forEach(function(it,i){h+='<div class="it" id="etqI'+i+'"><b>'+K.toAr(i+1)+'. '+esc(it.q)+'</b>'+(it.k==="mt"?'<select data-i="'+i+'"><option value="">— اختاري ما يناسبها من العمود (ب) —</option>'+it.o.map(function(x){return '<option>'+esc(x)+'</option>'}).join("")+'</select>':'<div class="ch">'+it.o.map(function(x){return '<button type="button" data-i="'+i+'" data-v="'+esc(x)+'">'+esc(x)+'</button>'}).join("")+'</div>')+'</div>'});
+      h+='<div class="md"><label><input type="radio" name="etqM" value="exam" checked> 📝 اختبار بدرجات</label><label><input type="radio" name="etqM" value="practice"> 📚 تدريب ذاتي</label></div><label class="f">العنوان</label><input type="text" id="etqT" value="'+esc((info.subject?("اختبار "+info.subject):"اختبار إلكتروني"))+'"><div id="etqEx"><label class="f">الزمن بالدقائق (0 = دون وقت)</label><input type="number" id="etqMin" min="0" max="180" value="'+Math.min(60,Math.max(10,Math.round(IT.length*1.2)))+'"><label style="display:flex;gap:8px;align-items:center;font-weight:700;margin-top:8px"><input type="checkbox" id="etqS" checked> تظهر الدرجة للطالبة بعد التسليم</label></div><button class="goet" type="button" id="etqGo">أنشئي الرابط</button><div id="etqOut"></div></div>';
+      w.innerHTML=h;document.body.appendChild(w);
+      var prog=function(){var n=Object.keys(ANS).length;w.querySelector("#etqP").textContent="حدّدتِ إجابة "+K.toAr(n)+" من "+K.toAr(IT.length)+(n<IT.length?" · السؤال بلا إجابة لن يدخل الاختبار":"")};prog();
+      w.querySelector(".x").onclick=function(){w.remove()};
+      w.addEventListener("click",function(e){var b=e.target.closest(".ch button");if(!b)return;var i=b.dataset.i;ANS[i]=b.dataset.v;b.parentNode.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});document.getElementById("etqI"+i).classList.add("ok");prog()});
+      w.addEventListener("change",function(e){var s=e.target.closest("select[data-i]");if(s){if(s.value)ANS[s.dataset.i]=s.value;else delete ANS[s.dataset.i];document.getElementById("etqI"+s.dataset.i).classList.toggle("ok",!!s.value);prog()}
+        var m=e.target.closest("input[name=etqM]");if(m){w.querySelector("#etqEx").style.display=m.value==="practice"?"none":""}});
+      w.querySelector("#etqGo").onclick=async function(){
+        var b=this,sel=IT.map(function(it,i){return [it,ANS[i]]}).filter(function(x){return x[1]});
+        if(sel.length<2){alert0("حدّدي الإجابة الصحيحة لسؤالين على الأقل.");return}
+        b.disabled=true;b.textContent="جارٍ الإنشاء…";
+        try{
+          var pr=(w.querySelector("input[name=etqM]:checked")||{}).value==="practice";
+          var id=rnd(10),k=rnd(14);
+          var doc={title:w.querySelector("#etqT").value.trim()||"اختبار إلكتروني",subj:[info.subject,info.grade].filter(Boolean).join(" · "),teacher:info.teacher||"",school:info.school||"",mins:pr?0:Math.max(0,+w.querySelector("#etqMin").value||0),showScore:pr?true:w.querySelector("#etqS").checked,showKey:false,askCls:true,open:true,mode:pr?"practice":"exam",th:await sha(k),qs:sel.map(function(x){return {k:x[0].k,q:x[0].q,o:x[0].o,l:""}}),n:sel.length,src:"templates"};
+          var d1=fsDoc(doc);d1.fields.created={timestampValue:new Date().toISOString()};
+          var r1=await fetch(DOCS+"/etests?documentId="+id+"&key="+AK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d1)});if(!r1.ok)throw 1;
+          var r2=await fetch(DOCS+"/etests_key?documentId="+id+"&key="+AK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(fsDoc({a:sel.map(function(x){return x[1]})}))});if(!r2.ok)throw 2;
+          try{adawatTrack(pr?"practice":"etest","created")}catch(x){}
+          try{var L=JSON.parse(localStorage.getItem("mrj_tests")||"[]");L.unshift({id:id,k:k,title:doc.title,subj:doc.subj,at:Date.now()});localStorage.setItem("mrj_tests",JSON.stringify(L.slice(0,40)))}catch(x){}
+          var su=ET_URL+"?t="+id,tu=su+"&k="+k;
+          b.style.display="none";
+          w.querySelector("#etqOut").innerHTML='<div class="lk"><b>'+(pr?"رابط التدريب للطالبات":"رابط الطالبات")+'</b><div class="u">'+esc(su)+'</div><button type="button" data-c="'+esc(su)+'">انسخي رابط الطالبات</button></div><div class="lk" style="background:#FFF6EC;border-color:#F5C99B"><b>'+(pr?"رابط الإدارة (لإغلاق التدريب)":"رابط النتائج (لكِ أنتِ فقط)")+'</b><div class="u">'+esc(tu)+'</div><button type="button" data-c="'+esc(tu)+'">انسخي رابط النتائج</button><button type="button" data-o="'+esc(tu)+'">افتحي</button><p style="margin:6px 0 0;font-size:13px;color:var(--mut)">احفظيه لديكِ، ولا ترسليه للطالبات.</p></div>';
+          w.querySelectorAll("[data-c]").forEach(function(x){x.onclick=function(){var t=x.dataset.c;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){x.textContent="تم النسخ ✓"}).catch(function(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");x.textContent="تم النسخ ✓"}catch(e){}ta.remove()})}});
+          w.querySelectorAll("[data-o]").forEach(function(x){x.onclick=function(){window.open(x.dataset.o,"_blank")}});
+        }catch(e){b.disabled=false;b.textContent="أنشئي الرابط";alert0("تعذّر الإنشاء. تأكدي من الإنترنت وأعيدي المحاولة.")}
+      };
+    }
+    function alert0(m){var n=document.createElement("div");n.textContent=m;n.style.cssText="position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1F2A1A;color:#fff;padding:12px 18px;border-radius:14px;font-weight:800;z-index:99999";document.body.appendChild(n);setTimeout(function(){n.remove()},3000)}
+    var bt=document.createElement("button");bt.className="go";bt.id="goEt";bt.type="button";bt.textContent="📱 اختبار إلكتروني";bt.style.cssText="background:linear-gradient(135deg,#8a76e6,#6c56d6)";
+    var g=document.getElementById("go");g.parentNode.insertBefore(bt,g);bt.onclick=open;
+  })();
   render();refreshLive();
   loadDocx(function(){});
 })();
@@ -979,5 +1070,28 @@ var LOGO_B64="iVBORw0KGgoAAAANSUhEUgAAAaQAAAE/CAYAAAAJ7be1AADT0UlEQVR42uxdd5wdVf
 
 
 
+
+<!--TRACK--><script>/* adawat usage counter (anonymous counts only) */
+(function(){
+  var P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k";
+  var D="projects/"+P+"/databases/(default)/documents";
+  var URL_="https://firestore.googleapis.com/v1/"+D+":commit?key="+K;
+  function day(){return new Date(Date.now()+3*3600e3).toISOString().slice(0,10)}
+  function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
+  window.adawatTrack=function(tool,ev){
+    try{
+      if(navigator.onLine===false)return;
+      var f=[inc(ev)];
+      if(ev==="open"){try{var k="adawat_dev_"+tool;if(!localStorage.getItem(k)){localStorage.setItem(k,"1");f.push(inc("devices"))}}catch(e){}}
+      var w=[{transform:{document:D+"/adawat_stats/"+tool,fieldTransforms:f}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc(tool+"_"+ev)]}}];
+      fetch(URL_,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:w}),keepalive:true}).catch(function(){});
+    }catch(e){}
+  };
+  window.adawatAutoTrack=function(tool,map){
+    try{adawatTrack(tool,"open")}catch(e){}
+    document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("button[id]");if(b&&map[b.id])adawatTrack(tool,map[b.id])},true);
+  };
+})();
+adawatAutoTrack("templates",{"go": "docx", "impGo": "img_read", "gkSave": "key_saved"});</script><!--/TRACK-->
 </body>
 </html>

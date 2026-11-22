@@ -2,285 +2,152 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8b7be8">
 <title>الكتاب المحشّى · السلاسل والشبكات الغذائية وهرم الطاقة</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#2b2350;--mut:#7a7399;--lav:#8b7be8;--lav2:#b8adf5;--pink:#f08bb4;--teal:#2bb7a8;--mint:#dff6f1;--sky:#e9e5ff;--cream:#fff8fb;--amber:#ffbf47;--line:#ebe6fb;
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-800-normal.woff2) format("woff2");font-weight:800}
+:root{--ink:#2b2350;--mut:#7a7399;--lav:#8b7be8;--lav2:#b8adf5;--pink:#f08bb4;--sky:#e9e5ff;--mint:#dff6f1;--line:#ebe6fb;
 --zubda:#f2a516;--zubdaB:#fff6dc;--farq:#8b6be8;--farqB:#f1ecff;--tawdih:#1fa596;--tawdihB:#e2f7f3;--fakh:#e5577d;--fakhB:#ffe9ef;--hal:#3b82d6;--halB:#e8f1fd}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Tajawal,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f6f2ff 0,#fff8fb 340px,#fff8fb);font-size:16px;line-height:1.75}
-.wrap{max-width:1100px;margin:0 auto;padding:0 12px 40px}
-header.top{background:linear-gradient(135deg,#8b7be8,#c88ee0 55%,#f08bb4);color:#fff;border-radius:0 0 26px 26px;padding:18px 16px 22px;margin:0 -12px 14px;box-shadow:0 8px 24px #8b7be833}
-header.top .k{font-size:13px;opacity:.9;font-weight:700;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-header.top .k a{color:#fff;text-decoration:none;background:#ffffff2e;border-radius:99px;padding:2px 10px}
-header.top h1{margin:8px 0 2px;font-size:26px;font-weight:800;line-height:1.35}
-header.top .u{font-size:14px;opacity:.95}
-.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin:12px 0;box-shadow:0 4px 14px #8b7be812}
-.card h3{margin:0 0 8px;font-size:18px;font-weight:800}
-.eq{background:var(--sky);border-radius:16px;padding:10px 14px;font-weight:700}
-.eq small{display:block;color:var(--mut);font-weight:700;font-size:13px}
-.legend{display:flex;flex-wrap:wrap;gap:6px}
+body{margin:0;font-family:Tajawal,system-ui,sans-serif;color:var(--ink)}
+b{font-weight:800}
+.note{border-radius:14px;border-inline-start:6px solid}
+.note.zubda{background:var(--zubdaB);border-color:var(--zubda)}.note.farq{background:var(--farqB);border-color:var(--farq)}.note.tawdih{background:var(--tawdihB);border-color:var(--tawdih)}.note.fakh{background:var(--fakhB);border-color:var(--fakh)}.note.hal{background:var(--halB);border-color:var(--hal)}
+.nh,.note summary{font-weight:800}
+.nt table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:10px;overflow:hidden;margin:4px 0;line-height:1.45}
+.nt th,.nt td{padding:4px 5px;text-align:center;border-bottom:1px solid #0000000d;border-inline-start:1px solid #0000000d;vertical-align:top}
+.farq .nt th{background:#e3daff}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin:3px 0 5px;font-weight:800;color:var(--mut)}
+.chain span{border-radius:8px;padding:1px 7px;color:#fff}
+.c0{background:#3fb36b}.c1{background:#f2a516}.c2{background:#ee7c45}.c3{background:#e5577d}
+.map{display:flex;flex-direction:column;align-items:center}
+.mnode{border-radius:14px;padding:5px 12px;font-weight:800;text-align:center;color:#fff;min-width:140px;box-shadow:0 3px 10px #0000001a}
+.mnode small{display:block;font-weight:500;opacity:.95;line-height:1.45}
+.arr{color:var(--lav2);font-weight:800;line-height:1.1;text-align:center}.arr i{font-style:normal;color:var(--mut);display:block;font-weight:700}
+.sun{background:linear-gradient(135deg,#ffbf47,#ff9a3c)}.prod{background:#3fb36b}.cons{background:linear-gradient(135deg,#f2a516,#e5577d)}.dec{background:#8d6e63}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin-top:8px}
+.mbox{border:2px dashed var(--lav2);border-radius:14px;padding:6px 8px;background:#fff}
+.mbox h5{margin:0 0 2px;color:var(--lav);font-weight:800}.mbox ul{margin:0;padding-inline-start:14px;line-height:1.55}
+.models{display:flex;gap:5px;width:100%}.models div{flex:1;background:var(--sky);border-radius:12px;padding:5px;text-align:center;line-height:1.4}.models b{display:block}
+.cmp{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line);line-height:1.45;background:#fff}
+.cmp th,.cmp td{padding:6px 5px;text-align:center;border-bottom:1px solid #0000000d;border-inline-start:1px solid #0000000d;vertical-align:top}
+.cmp th{background:var(--lav);color:#fff;font-weight:800}.cmp td:first-child{font-weight:800;background:var(--sky)}
+.sum{margin:0;padding-inline-start:20px}.sum li{margin:4px 0}
+
+html,body{height:100%;overflow:hidden}
+body{background:linear-gradient(180deg,#f3eeff,#fff8fb);display:flex;flex-direction:column;height:100dvh;font-size:16.5px;line-height:1.75}
+.bar{flex:0 0 auto;background:linear-gradient(135deg,#8b7be8,#c88ee0 55%,#f08bb4);color:#fff;padding:10px 14px 9px;padding-top:max(10px,env(safe-area-inset-top))}
+.bar .r{display:flex;align-items:center;gap:8px}
+.bar .t{flex:1;font-weight:800;font-size:15.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar button,.bar a{border:0;background:#ffffff33;color:#fff;border-radius:99px;padding:3px 11px;font:700 13px Tajawal,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.prog{height:6px;background:#ffffff40;border-radius:9px;margin-top:8px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:#fff;border-radius:9px;transition:width .3s}
+.deck{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.deck::-webkit-scrollbar{display:none}
+.cw{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;padding:14px 14px 8px;display:flex;justify-content:center;min-width:0}
+.card{width:100%;max-width:560px;background:#fff;border-radius:24px;box-shadow:0 10px 30px #8b7be82e;padding:16px 14px 18px;overflow-y:auto;max-height:100%;-webkit-overflow-scrolling:touch}
+.chip{display:inline-block;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;border-radius:99px;padding:1px 11px;margin-bottom:12px}
+.clip{background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:0 3px 12px #2b23501a}
+.clip img{width:100%;height:auto;display:block}
+.clip img+img{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.clip img.wide{border-radius:10px}
+.note{padding:10px 13px 11px;margin-top:12px}
+.nh,.note summary{font-size:15.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.note summary{cursor:pointer;list-style:none}
+.note summary::-webkit-details-marker{display:none}
+.note summary em{font-style:normal;font-size:12.5px;color:var(--hal);font-weight:700;background:#fff;border-radius:99px;padding:0 9px;margin-inline-start:auto}
+.note[open] summary em{display:none}.note[open] .nt{margin-top:6px}
+.nt{font-size:16px}
+.nt table{font-size:14.5px}
+.cv{text-align:center;padding:6px 4px}
+.cv .emo{font-size:46px;line-height:1.2}
+.cv h1{font-size:25px;font-weight:800;margin:6px 0 2px;line-height:1.4}
+.cv .u{color:var(--mut);font-size:14px;font-weight:700}
+.eq{background:var(--sky);border-radius:16px;padding:10px 14px;font-weight:700;margin:14px 0;text-align:right}
+.eq small{display:block;color:var(--mut);font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .legend span{border-radius:99px;padding:3px 11px;font-size:13.5px;font-weight:700}
 .lg-zubda{background:var(--zubdaB);color:#9a6400}.lg-farq{background:var(--farqB);color:#5b3fc4}.lg-tawdih{background:var(--tawdihB);color:#0f7268}.lg-fakh{background:var(--fakhB);color:#b8284f}.lg-hal{background:var(--halB);color:#1f5fae}
-.vocab{display:grid;grid-template-columns:1fr;gap:6px}
-.v{display:flex;gap:10px;align-items:baseline;border-bottom:1px dashed var(--line);padding:4px 0}
-.v b{flex:0 0 auto;background:linear-gradient(transparent 55%,#ffe58a 55%);padding:0 2px;font-weight:800}
-.v span{font-size:15px}
-.wonder{display:flex;gap:10px;align-items:flex-start}
-.wonder .i{font-size:30px}
-details.w summary{cursor:pointer;color:var(--lav);font-weight:800;list-style:none}
-.toc{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none;position:sticky;top:0;z-index:5;background:linear-gradient(#fff8fbf2,#fff8fbe0);margin:0 -12px;padding-inline:12px}
-.toc a{flex:0 0 auto;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:13.5px;font-weight:700;white-space:nowrap}
-.toc a.end{background:var(--pink);color:#fff;border-color:var(--pink)}
-.spread{margin:22px 0 8px;scroll-margin-top:52px}
-.ph{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.ph h2{margin:0;font-size:21px;font-weight:800}
-.pno{background:var(--ink);color:#fff;border-radius:10px;padding:2px 10px;font-size:13px;font-weight:700;white-space:nowrap}
-.row{display:block}
-.pagebox{position:relative}
-.page{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px #2b235026;background:#fff;line-height:0}
-.page img{width:100%;height:auto;display:block}
-.pin{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;color:#fff;font-weight:800;font-size:15px;line-height:28px;text-align:center;text-decoration:none;border:2.5px solid #fff;box-shadow:0 2px 8px #0005;z-index:2}
-.pin.zubda{background:var(--zubda)}.pin.farq{background:var(--farq)}.pin.tawdih{background:var(--tawdih)}.pin.fakh{background:var(--fakh)}.pin.hal{background:var(--hal)}
-.pin.flash{animation:pf 1.2s ease 2}
-@keyframes pf{50%{transform:translate(-50%,-50%) scale(1.6)}}
-.zoom{margin:8px 0 0;border:0;background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font:700 14px Tajawal,sans-serif;color:var(--ink);cursor:pointer}
-.notes{margin-top:12px;display:flex;flex-direction:column;gap:10px}
-.note{border-radius:16px;padding:10px 13px 11px;border-inline-start:6px solid;scroll-margin-top:60px;transition:box-shadow .3s}
-.note.zubda{background:var(--zubdaB);border-color:var(--zubda)}
-.note.farq{background:var(--farqB);border-color:var(--farq)}
-.note.tawdih{background:var(--tawdihB);border-color:var(--tawdih)}
-.note.fakh{background:var(--fakhB);border-color:var(--fakh)}
-.note.hal{background:var(--halB);border-color:var(--hal)}
-.note.lit{box-shadow:0 0 0 3px #8b7be855}
-.nh,.note summary{font-weight:800;font-size:15px;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.note summary{cursor:pointer;list-style:none;margin:0}
-.note summary::-webkit-details-marker,.q summary::-webkit-details-marker,details.w summary::-webkit-details-marker{display:none}
-.note summary em,.q summary em{font-style:normal;font-size:12.5px;color:var(--hal);font-weight:700;background:#fff;border-radius:99px;padding:0 8px;margin-inline-start:auto}
-.note[open] summary em,.q[open] summary em{display:none}
-.note[open] .nt{margin-top:6px}
-.nb{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;color:#fff;font-size:13px;flex:0 0 auto}
-.zubda .nb{background:var(--zubda)}.farq .nb{background:var(--farq)}.tawdih .nb{background:var(--tawdih)}.fakh .nb{background:var(--fakh)}.hal .nb{background:var(--hal)}
-.nt{font-size:15.5px}
-.nt b{font-weight:800}
-.nt table,.cmp{width:100%;border-collapse:separate;border-spacing:0;margin:6px 0;background:#fff;border-radius:12px;overflow:hidden;font-size:14.5px;line-height:1.5}
-.nt th,.nt td,.cmp th,.cmp td{padding:6px 7px;text-align:center;border-bottom:1px solid #0000000d;border-inline-start:1px solid #0000000d;vertical-align:top}
-.nt th{background:#ffffffaa;font-weight:800}
-.farq .nt th{background:#e3daff}
-.chain{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:4px 0 6px;font-weight:800;font-size:14px;color:var(--mut)}
-.chain span{border-radius:10px;padding:2px 8px;color:#fff}
-.c0{background:#3fb36b}.c1{background:#f2a516}.c2{background:#ee7c45}.c3{background:#e5577d}
-.chain.num span{font-size:15px}
-.duo{display:flex;gap:10px;align-items:flex-start}
-.duo .pg{flex:0 0 31%;position:sticky;top:52px;transition:flex-basis .35s ease}
-.duo .notes{flex:1;margin-top:0;min-width:0;transition:font-size .3s}
-.page{cursor:zoom-in}
-.page .pin{opacity:0;pointer-events:none;transition:opacity .3s}
-.tap{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:#2b2350d9;color:#fff;font-size:11.5px;font-weight:700;border-radius:99px;padding:0 8px;line-height:20px;white-space:nowrap}
-.duo .zoom{display:none}
-.spread.big .duo{flex-direction:column}
-.spread.big .duo .pg{flex-basis:auto;width:100%;position:static}
-.spread.big .page{cursor:zoom-out}
-.spread.big .page .pin{opacity:1;pointer-events:auto}
-.spread.big .tap{display:none}
-.spread.big .duo .zoom{display:inline-block}
-.spread.big .notes{font-size:13px}
-.spread.big .note{padding:6px 10px}
-.spread.big .nt{font-size:13px;line-height:1.6}
-.spread.big .nh,.spread.big .note summary{font-size:13px}
-.spread.big .nt table{font-size:12px}
-.duo .note .nb{display:none}
-.spread.big .note .nb{display:inline-grid}
-@media (min-width:860px){.duo .pg{flex-basis:42%}}
-/* end */
-.endh{margin:30px 0 6px;text-align:center}
-.endh h2{margin:0;font-size:24px;font-weight:800;background:linear-gradient(90deg,var(--lav),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.map{display:flex;flex-direction:column;align-items:center;gap:0}
-.mnode{border-radius:16px;padding:7px 14px;font-weight:800;text-align:center;color:#fff;min-width:150px;box-shadow:0 3px 10px #0000001a}
-.mnode small{display:block;font-weight:500;font-size:13px;opacity:.95;line-height:1.45}
-.arr{color:var(--lav2);font-size:22px;line-height:1.1;font-weight:800}
-.arr i{font-style:normal;font-size:12.5px;color:var(--mut);display:block;font-weight:700}
-.sun{background:linear-gradient(135deg,#ffbf47,#ff9a3c)}
-.prod{background:#3fb36b}
-.cons{background:linear-gradient(135deg,#f2a516,#e5577d)}
-.dec{background:#8d6e63}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:10px}
-.mbox{border:2px dashed var(--lav2);border-radius:16px;padding:8px 10px;background:#fff}
-.mbox h4{margin:0 0 4px;font-size:14.5px;color:var(--lav);font-weight:800}
-.mbox ul{margin:0;padding-inline-start:16px;font-size:14px;line-height:1.6}
-.models{display:flex;gap:6px;width:100%;margin-top:8px}
-.models div{flex:1;background:var(--sky);border-radius:14px;padding:6px;text-align:center;font-size:13.5px;line-height:1.45}
-.models b{display:block;font-size:15px}
-.cmp th{background:var(--lav);color:#fff;font-weight:800}
-.cmp td:first-child{font-weight:800;background:var(--sky)}
-.cmp{box-shadow:0 0 0 1px var(--line)}
-.sum ol{margin:0;padding-inline-start:20px}
-.sum li{margin:4px 0}
-.q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 13px;margin:8px 0}
-.q summary{cursor:pointer;list-style:none;font-weight:700;display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
-.qn{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;flex:0 0 auto}
-.qa{margin-top:8px;background:var(--mint);border-radius:12px;padding:8px 12px}
-.go{display:block;text-align:center;text-decoration:none;background:linear-gradient(135deg,var(--lav),var(--pink));color:#fff;font-weight:800;font-size:18px;border-radius:18px;padding:14px;margin:16px 0 6px;box-shadow:0 6px 18px #f08bb455}
-.foot{text-align:center;color:var(--mut);font-size:13px;margin-top:14px}
-#lb{position:fixed;inset:0;background:#1b1530ee;z-index:50;display:none;flex-direction:column}
-#lb.on{display:flex}
-#lb .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;color:#fff;font-weight:700}
-#lb button{border:0;border-radius:99px;padding:6px 14px;font:800 15px Tajawal,sans-serif;background:#fff;color:var(--ink);cursor:pointer}
-#lb .sc{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
-#lb img{width:200%;max-width:none;display:block}
-@media (min-width:860px){
- .row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
- .notes{margin-top:0}
- .vocab{grid-template-columns:1fr 1fr;column-gap:20px}
- #lb img{width:130%}
- header.top{margin:0 0 14px;border-radius:0 0 26px 26px}
-}
-@media print{.toc,.zoom,.go,#lb{display:none!important}details .nt,details .qa{display:block}body{background:#fff}}
+.hint{color:var(--mut);font-size:15px;font-weight:700;margin:14px 0 0}
+.big-q{font-size:19px;font-weight:800;line-height:1.65;background:var(--sky);border-radius:18px;padding:14px}
+.vocab .v{display:flex;flex-direction:column;border-bottom:1px dashed var(--line);padding:5px 0}
+.vocab .v b{background:linear-gradient(transparent 55%,#ffe58a 55%);align-self:flex-start;padding:0 2px}
+.vocab .v span{font-size:15px}
+.map .mnode{font-size:16px}.map small{font-size:13px}.arr{font-size:20px}.arr i{font-size:12.5px}.mbox{font-size:13.5px}.mbox h5{font-size:14px}.models{font-size:13.5px;margin-top:2px}
+.cmp{font-size:14.5px}
+.go{display:block;text-align:center;text-decoration:none;background:linear-gradient(135deg,var(--lav),var(--pink));color:#fff;font:800 17px Tajawal,sans-serif;border:0;width:100%;border-radius:18px;padding:13px;margin:12px 0 0;cursor:pointer}
+.go.alt{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.nav{flex:0 0 auto;display:flex;gap:10px;padding:8px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));align-items:center}
+.nav button{flex:1;border:0;border-radius:16px;padding:11px;font:800 16px Tajawal,sans-serif;cursor:pointer}
+#prev{background:#fff;color:var(--ink);border:1.5px solid var(--line)!important}
+#next{background:linear-gradient(135deg,var(--lav),var(--pink));color:#fff}
+.nav button:disabled{opacity:.4}
+.cnt{font-weight:800;color:var(--mut);font-size:14px;min-width:62px;text-align:center}
+#toc{position:fixed;inset:0;background:#1b153088;display:none;z-index:9;align-items:flex-end;justify-content:center}
+#toc.on{display:flex}
+#toc .sh{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:560px;padding:14px;max-height:80dvh;overflow:auto}
+#toc h3{margin:0 0 8px;font-weight:800}
+#toc .sh button{display:block;width:100%;text-align:right;border:0;background:var(--sky);border-radius:14px;padding:10px 14px;margin:6px 0;font:700 15.5px Tajawal,sans-serif;color:var(--ink);cursor:pointer}
+@media (min-width:900px){.cw{padding:20px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top">
- <div class="k"><span>📖 الكتاب المحشّى · العلوم · السادس</span><a href="../">⭐ نجمات العلوم</a></div>
- <h1>السلاسل والشبكات الغذائية وهرم الطاقة</h1>
- <div class="u">الفصل الخامس: الأنظمة البيئية ومواردها · الصفحات ١٣٦ – ١٤٣</div>
-</header>
-
-<div class="card">
- <div class="eq"><small>❓ السؤال الأساسي للدرس</small>كيف تنتقل الطاقة بين المخلوقات الحية في النظام البيئي؟</div>
- <h3 style="margin-top:12px">ألوان الحواشي</h3>
+<header class="bar"><div class="r"><div class="t">📖 السلاسل والشبكات الغذائية وهرم الطاقة</div><button onclick="toco()">☰ الفهرس</button><a href="../">⭐</a></div><div class="prog"><i id="pb"></i></div></header>
+<main class="deck" id="deck"><section class="cw" data-i="0"><div class="card"><div class="cv">
+ <div class="emo">📖</div><h1>السلاسل والشبكات الغذائية وهرم الطاقة</h1><div class="u">الفصل الخامس: الأنظمة البيئية ومواردها · الصفحات ١٣٦ – ١٤٣</div>
+ <div class="eq"><small>❓ السؤال الأساسي</small>كيف تنتقل الطاقة بين المخلوقات الحية في النظام البيئي؟</div>
  <div class="legend"><span class="lg-zubda">💡 الزبدة</span><span class="lg-farq">⚖️ انتبهي للفرق</span><span class="lg-tawdih">🔍 توضيح</span><span class="lg-fakh">⚠️ فخ في الاختبار</span><span class="lg-hal">✍️ حلّ سؤال الكتاب</span></div>
- <p style="margin:8px 0 0;font-size:14.5px;color:var(--mut)">اضغطي على صورة الصفحة لتكبيرها، واضغطي عليها مرة أخرى لتصغيرها.</p>
+ <p class="hint">في كل بطاقة فكرة واحدة: اقرئي فقرة الكتاب ثم حاشيتها، ثم اسحبي إلى البطاقة التالية 👈</p>
+</div></div></section><section class="cw" data-i="1"><div class="card"><div class="chip">ص١٣٦ · أنظر وأتساءل</div><div class="big-q">🐬 الأسماك الصغيرة غذاء للدلافين، فعلامَ تتغذى الأسماك الصغيرة؟</div>
+ <details class="note hal"><summary>✍️ الجواب<em>فكّري ثم اضغطي</em></summary><div class="nt">تتغذى على مخلوقات حية أصغر منها تعيش في الماء، مثل العوالق. وهذا أول خيط في السلسلة الغذائية التي سنتعلمها.</div></details></div></section><section class="cw" data-i="2"><div class="card"><div class="chip">📝 مفرداتي في سطر</div><div class="vocab"><div class="v"><b>السلسلة الغذائية</b><span>مسار انتقال الطاقة في الغذاء من مخلوق حي إلى آخر.</span></div><div class="v"><b>المُنتِج</b><span>مخلوق حي يصنع غذاءه بنفسه.</span></div><div class="v"><b>المُستهلِك</b><span>مخلوق حي لا يصنع غذاءه، فيتغذى على مخلوقات أخرى.</span></div><div class="v"><b>المُحلِّل</b><span>يحلل بقايا المخلوقات الميتة إلى مواد أبسط.</span></div><div class="v"><b>الشبكة الغذائية</b><span>مجموعة سلاسل غذائية متداخلة في نظام بيئي.</span></div><div class="v"><b>الحيوان القارت</b><span>يتغذى على النباتات والحيوانات معًا.</span></div><div class="v"><b>الحيوان المفترس</b><span>يصطاد حيوانات أخرى ويقتلها ليتغذى عليها.</span></div><div class="v"><b>الحيوان الكانس</b><span>يتغذى على بقايا الحيوانات الميتة، ولا يصطاد.</span></div><div class="v"><b>هرم الطاقة</b><span>نموذج يبيّن كيف تنتقل الطاقة خلال سلسلة غذائية.</span></div></div></div></section><section class="cw" data-i="3"><div class="card"><div class="chip">ص١٣٨ · ما السلاسل الغذائية؟</div><div class="clip"><img src="img/c/138_0_0.jpg" width="1009" height="402" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>السلسلة الغذائية</b> طريقٌ تمشي فيه الطاقة من مخلوق إلى آخر عن طريق الغذاء.<br>تبدأ <b>دائمًا بمُنتِج</b>، ومصدر طاقتها الأول <b>الشمس</b> ☀️.</div></div></div></section><section class="cw" data-i="4"><div class="card"><div class="chip">ص١٣٨ · ما السلاسل الغذائية؟</div><div class="clip"><img src="img/c/138_1_0.jpg" width="1009" height="607" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح</div><div class="nt">المُنتِج يصنع غذاءه بعملية <b>البناء الضوئي</b>، ويُطلق <b>الأكسجين</b>.<br>يستعمل بعض الغذاء، ويخزّن الباقي في <b>الأوراق والسيقان والجذور</b>، فتأكله المخلوقات الأخرى وتأخذ طاقته.</div></div></div></section><section class="cw" data-i="5"><div class="card"><div class="chip">ص١٣٨ · ما السلاسل الغذائية؟</div><div class="clip"><img src="img/c/138_2_0.jpg" width="1009" height="235" alt="" loading="lazy" class=""></div><div class="note farq"><div class="nh">⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>على اليابسة</th><th>في البحار والمحيطات</th></tr><tr><td>المنتجات الرئيسة: <b>النباتات</b> 🌿</td><td>المنتجات: <b>الطحالب والعوالق النباتية</b> 🌊</td></tr></table>والعوالق النباتية وحيدة الخلية، وتقوم بأكثر من <b>نصف</b> البناء الضوئي على الأرض.</div></div></div></section><section class="cw" data-i="6"><div class="card"><div class="chip">ص١٣٨ · ما السلاسل الغذائية؟</div><div class="clip"><img src="img/c/138_3_0.jpg" width="1009" height="290" alt="" loading="lazy" class=""></div><div class="note fakh"><div class="nh">⚠️ فخ في الاختبار</div><div class="nt">ليست كل المنتجات تحتاج ضوء الشمس! بعض <b>البكتيريا في قاع المحيط</b> تصنع غذاءها من <b>مواد كيميائية</b>.</div></div></div></section><section class="cw" data-i="7"><div class="card"><div class="chip">ص١٣٨ · ما السلاسل الغذائية؟</div><div class="clip"><img src="img/c/138_4_0.jpg" width="1100" height="209" alt="" loading="lazy" class="wide"></div><div class="note fakh"><div class="nh">⚠️ فخ في الاختبار</div><div class="nt">الفطر 🍄 ينمو مثل النبات، لكنه <b>ليس مُنتِجًا</b>؛ فهو لا يصنع غذاءه.<br>الفطريات <b>مُحلِّلات</b>.</div></div></div></section><section class="cw" data-i="8"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_0_0.jpg" width="746" height="341" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>المُستهلِك</b> لا يصنع غذاءه، فيأكل <b>المنتجات</b> أو <b>مستهلكات أخرى</b>.</div></div></div></section><section class="cw" data-i="9"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_1_0.jpg" width="746" height="367" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح: ترتيب الحلقات</div><div class="nt"><div class='chain'><span class='c0'>منتج</span>←<span class='c1'>مستهلك أول</span>←<span class='c2'>مستهلك ثانٍ</span>←<span class='c3'>مستهلك ثالث</span></div>• <b>الأول</b> يأكل المنتجات: المواشي، الحشرات، الفئران، الفيلة.<br>• <b>الثاني</b> يأكل المستهلك الأول: طيور تأكل الحشرات.<br>• <b>الثالث</b> يأكل المستهلك الثاني: الأفعى تأكل الطير.</div></div></div></section><section class="cw" data-i="10"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_2_0.jpg" width="746" height="568" alt="" loading="lazy" class=""></div><div class="note farq"><div class="nh">⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>العوالق النباتية</th><th>العوالق الحيوانية</th></tr><tr><td><b>منتجات</b><br>تصنع غذاءها</td><td><b>مستهلكات أولى</b><br>تبتلع الغذاء</td></tr></table></div></div></div></section><section class="cw" data-i="11"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_3_0.jpg" width="745" height="162" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt">عدد <b>المنتجات</b> في النظام البيئي أكبر بكثير من عدد <b>المستهلكات</b>.</div></div></div></section><section class="cw" data-i="12"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_4_0.jpg" width="745" height="478" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح</div><div class="nt"><b>المُحلِّل</b> يحلل بقايا المخلوقات الميتة إلى مواد أبسط، فيُعيد تدوير المواد في البيئة ♻️.<br>أمثلته في الكتاب: <b>الديدان والبكتيريا والفطريات</b>.</div></div></div></section><section class="cw" data-i="13"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_5_0.jpg" width="745" height="393" alt="" loading="lazy" class=""></div><details class="note hal"><summary>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> لأنها تعيد تدوير الطاقة والمواد من المخلوقات الميتة إلى البيئة.<br><b>التفكير الناقد:</b> الإنسان <b>مستهلك</b>؛ فهو مستهلك أول حين يأكل النباتات، ومستهلك في مستوى أعلى حين يأكل اللحوم.</div></details></div></section><section class="cw" data-i="14"><div class="card"><div class="chip">ص١٣٩ · المستهلكات والمحللات</div><div class="clip"><img src="img/c/139_6_0.jpg" width="745" height="342" alt="" loading="lazy" class=""><img src="img/c/139_6_1.jpg" width="1100" height="544" alt="" loading="lazy" class="wide"></div><div class="note fakh"><div class="nh">⚠️ فخ في الاختبار</div><div class="nt">السهم يتجه من <b>المأكول</b> إلى <b>الآكل</b>، أي في اتجاه انتقال الطاقة.<br>جندب ← ببغاء تعني: <b>الببغاء يأكل الجندب</b>، لا العكس.</div></div><details class="note hal"><summary>✍️ حلّ «أقرأ الشكل»<em>اضغطي لتري الإجابة</em></summary><div class="nt">الحلقة الثانية في سلسلة الغابة هي <b>المستهلك الأول: الجندب</b> 🦗.</div></details></div></section><section class="cw" data-i="15"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_0_0.jpg" width="745" height="545" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>الشبكة الغذائية</b> = عدة سلاسل غذائية <b>متداخلة</b>.<br>هي أدق من السلسلة؛ لأن معظم الحيوانات تأكل <b>أكثر من نوع</b>.</div></div></div></section><section class="cw" data-i="16"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_1_0.jpg" width="745" height="447" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح: أسنان آكلات الأعشاب</div><div class="nt">آكلات الأعشاب <b>مستهلكات أولى</b>. أسنانها الأمامية حادة لقطع النبات، والخلفية مسطحة لطحنه ومضغه.</div></div></div></section><section class="cw" data-i="17"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_2_0.jpg" width="745" height="145" alt="" loading="lazy" class=""><img src="img/c/140_2_1.jpg" width="737" height="459" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt">آكلات اللحوم <b>مستهلكات ثانية وثالثة</b>، تمزق فريستها بالأنياب والقواطع الحادة أو بالمناقير.</div></div></div></section><section class="cw" data-i="18"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_3_0.jpg" width="737" height="665" alt="" loading="lazy" class=""></div><div class="note farq"><div class="nh">⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>آكلات أعشاب</th><th>آكلات لحوم</th><th>قارتة</th></tr><tr><td>نباتات فقط</td><td>حيوانات</td><td>نباتات <b>و</b>حيوانات</td></tr><tr><td>الغزال</td><td>الثعلب، النسر</td><td>الراكون</td></tr></table></div></div><div class="note tawdih"><div class="nh">🔍 توضيح</div><div class="nt">بعض <b>الحيتان قارتة</b>: تأخذ ماءً كثيرًا في فمها، ثم تصفّيه بتراكيب تشبه الأسنان، فيبقى فيها <b>العوالق</b> والقشريات الصغيرة.</div></div></div></section><section class="cw" data-i="19"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_4_0.jpg" width="737" height="142" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt">أي تغيّر في جزء من الشبكة يؤثر غالبًا في <b>بقية أجزائها</b>.</div></div></div></section><section class="cw" data-i="20"><div class="card"><div class="chip">ص١٤٠ · ما الشبكات الغذائية؟</div><div class="clip"><img src="img/c/140_5_0.jpg" width="1100" height="588" alt="" loading="lazy" class="wide"></div><details class="note hal"><summary>✍️ حلّ «أقرأ الصورة»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>المفترسات:</b> الأفعى والنسر والنمر.<br><b>الفرائس:</b> الحشرات والفأر والغزال، والأفعى أيضًا فريسة للنسر.<br>تذكّري: الحيوان الذي يخرج منه سهم إلى حيوان آخر هو <b>فريسة</b> له.</div></details></div></section><section class="cw" data-i="21"><div class="card"><div class="chip">ص١٤١ · المفترسات والفرائس والكانسات</div><div class="clip"><img src="img/c/141_0_0.jpg" width="746" height="426" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح</div><div class="nt">النحلة 🐝 تجمع الرحيق فتحصل على غذائها، وتنقل حبوب اللقاح من زهرة إلى أخرى فتساعد النبات على التكاثر. <b>كلاهما يستفيد.</b></div></div></div></section><section class="cw" data-i="22"><div class="card"><div class="chip">ص١٤١ · المفترسات والفرائس والكانسات</div><div class="clip"><img src="img/c/141_1_0.jpg" width="746" height="579" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>المفترس</b> يصطاد مخلوقًا حيًا ويقتله ليأكله، و<b>الفريسة</b> هي الحيوان الذي يُصطاد.</div></div><div class="note fakh"><div class="nh">⚠️ فخ في الاختبار</div><div class="nt">الحيوان الواحد قد يكون <b>مفترسًا وفريسة</b>!<br>الأفعى تبتلع الفأر (مفترس)، ثم يصطادها النسر (فريسة).</div></div></div></section><section class="cw" data-i="23"><div class="card"><div class="chip">ص١٤١ · المفترسات والفرائس والكانسات</div><div class="clip"><img src="img/c/141_2_0.jpg" width="746" height="80" alt="" loading="lazy" class=""><img src="img/c/141_2_1.jpg" width="746" height="376" alt="" loading="lazy" class=""></div><div class="note farq"><div class="nh">⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>الكانس</th><th>المحلل</th></tr><tr><td>حيوان يأكل <b>بقايا</b> الحيوانات الميتة، ولا يصطاد</td><td><b>يحلل</b> البقايا إلى مواد أبسط</td></tr><tr><td>بعض العقبان، الغربان</td><td>البكتيريا، الفطريات</td></tr></table>لاحظي: <b>الديدان</b> ذُكرت في الكتاب مع المحللات ومع الكانسات.</div></div></div></section><section class="cw" data-i="24"><div class="card"><div class="chip">ص١٤١ · المفترسات والفرائس والكانسات</div><div class="clip"><img src="img/c/141_3_0.jpg" width="800" height="477" alt="" loading="lazy" class=""></div><details class="note hal"><summary>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> يتأثر من يأكل هذا النوع فيقلّ غذاؤه، ويتأثر ما يأكله هذا النوع فيزداد عدده.<br><b>التفكير الناقد:</b> الحيوان القارت يأكل النباتات والحيوانات، فإذا نقص نوع وجد غذاءً آخر.</div></details></div></section><section class="cw" data-i="25"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_0_0.jpg" width="745" height="605" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>هرم الطاقة</b> نموذج يبيّن كيف تنتقل الطاقة خلال سلسلة غذائية.<br>جزء من الطاقة يُستعمل داخل المخلوق، وجزء يُفقد على شكل <b>حرارة</b> 🔥.</div></div></div></section><section class="cw" data-i="26"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_1_0.jpg" width="745" height="623" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt"><b>قاعدة الهرم = المنتجات</b>؛ لأنها تدعم كل المخلوقات الأخرى. وفوقها المستهلكات.</div></div><div class="note fakh"><div class="nh">⚠️ قاعدة العُشر 🔢</div><div class="nt">ينتقل <b>عُشر الطاقة فقط (١÷١٠)</b> إلى المستوى التالي.<div class='chain num'><span class='c0'>١٠٠٠٠</span>←<span class='c1'>١٠٠٠</span>←<span class='c2'>١٠٠</span>←<span class='c3'>١٠</span></div>الحيلة: احذفي صفرًا واحدًا في كل صعود ⬆️.</div></div></div></section><section class="cw" data-i="27"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_2_0.jpg" width="737" height="218" alt="" loading="lazy" class=""></div><div class="note zubda"><div class="nh">💡 الزبدة</div><div class="nt">لأن الطاقة <b>تتناقص</b> كلما صعدنا، تكون أعداد <b>المنتجات أكبر</b> من أعداد المستهلكات.</div></div></div></section><section class="cw" data-i="28"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_3_0.jpg" width="737" height="539" alt="" loading="lazy" class=""></div><div class="note tawdih"><div class="nh">🔍 توضيح</div><div class="nt">إذا نقص الغذاء زاد <b>التنافس</b> بين المخلوقات عليه، فيقلّ عدد أفراد بعض الأنواع.</div></div></div></section><section class="cw" data-i="29"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_4_0.jpg" width="737" height="319" alt="" loading="lazy" class=""></div><details class="note hal"><summary>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> تبيّن كمية الطاقة التي تنتقل من مستوى إلى المستوى الذي يليه.<br><b>التفكير الناقد:</b> يزداد التنافس على الغذاء، وقد يقلّ عدد أفراد بعض الأنواع.</div></details></div></section><section class="cw" data-i="30"><div class="card"><div class="chip">ص١٤٢ · ما هرم الطاقة؟</div><div class="clip"><img src="img/c/142_5_0.jpg" width="1100" height="644" alt="" loading="lazy" class="wide"></div><div class="note farq"><div class="nh">⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>هرم اليابسة</th><th>هرم المحيط</th></tr><tr><td>أعشاب</td><td>عوالق</td></tr><tr><td>حشرات</td><td>أسماك</td></tr><tr><td>طيور</td><td>بطاريق</td></tr><tr><td>ثعلب (القمة)</td><td>فقمة (القمة)</td></tr></table>كلما صعدنا: طاقة أقل وأعداد أقل.</div></div></div></section><section class="cw" data-i="31"><div class="card"><div class="chip">📌 الخلاصة · خريطة المفاهيم</div><div class="map">
+ <div class="mnode sun">☀️ الشمس<small>مصدر الطاقة الأول</small></div><div class="arr">⬇</div>
+ <div class="mnode prod">🌿 المنتجات<small>تصنع غذاءها بالبناء الضوئي<br>نباتات · طحالب · عوالق نباتية</small></div><div class="arr">⬇<i>تأكلها</i></div>
+ <div class="mnode cons">🦗 المستهلكات<small>أول ← ثانٍ ← ثالث</small></div><div class="arr">⬇<i>بعد موتها</i></div>
+ <div class="mnode dec">🍄 المحللات<small>تحلل البقايا وتعيد تدوير المواد<br>بكتيريا · فطريات · ديدان</small></div>
+ <div class="mgrid"><div class="mbox"><h5>المستهلكات حسب غذائها</h5><ul><li>آكلات أعشاب (مستهلك أول)</li><li>آكلات لحوم (ثانٍ وثالث)</li><li>قارتة: نبات وحيوان</li></ul></div>
+ <div class="mbox"><h5>حسب طريقة حصولها عليه</h5><ul><li>مفترس: يصطاد ويقتل</li><li>فريسة: يُصطاد</li><li>كانس: يأكل البقايا</li></ul></div></div>
+ <div class="arr">⬇<i>نمثّل انتقال الطاقة بـ</i></div>
+ <div class="models"><div><b>⛓️ السلسلة</b>مسار واحد</div><div><b>🕸️ الشبكة</b>سلاسل متداخلة</div><div><b>🔺 الهرم</b>كمية الطاقة</div></div>
 </div>
-
-<div class="card">
- <div class="wonder"><div class="i">🐬</div><div><b>أنظر وأتساءل (ص١٣٦):</b> الأسماك الصغيرة غذاء للدلافين، فعلامَ تتغذى الأسماك الصغيرة؟
- <details class="w"><summary>اضغطي لتري الجواب ▾</summary>تتغذى على مخلوقات حية أصغر منها تعيش في الماء، مثل العوالق. وهذا أول خيط في السلسلة الغذائية التي سنتعلمها.</details></div></div>
-</div>
-
-<div class="card">
- <h3>📝 مفرداتي في سطر</h3>
- <div class="vocab"><div class="v"><b>السلسلة الغذائية</b><span>مسار انتقال الطاقة في الغذاء من مخلوق حي إلى آخر.</span></div><div class="v"><b>المُنتِج</b><span>مخلوق حي يصنع غذاءه بنفسه.</span></div><div class="v"><b>المُستهلِك</b><span>مخلوق حي لا يصنع غذاءه، فيتغذى على مخلوقات أخرى.</span></div><div class="v"><b>المُحلِّل</b><span>يحلل بقايا المخلوقات الميتة إلى مواد أبسط.</span></div><div class="v"><b>الشبكة الغذائية</b><span>مجموعة سلاسل غذائية متداخلة في نظام بيئي.</span></div><div class="v"><b>الحيوان القارت</b><span>يتغذى على النباتات والحيوانات معًا.</span></div><div class="v"><b>الحيوان المفترس</b><span>يصطاد حيوانات أخرى ويقتلها ليتغذى عليها.</span></div><div class="v"><b>الحيوان الكانس</b><span>يتغذى على بقايا الحيوانات الميتة، ولا يصطاد.</span></div><div class="v"><b>هرم الطاقة</b><span>نموذج يبيّن كيف تنتقل الطاقة خلال سلسلة غذائية.</span></div></div>
-</div>
-
-<nav class="toc"><a href="#pg0">ص١٣٨ · ما السلاسل الغذائية؟</a><a href="#pg1">ص١٣٩ · المستهلكات والمحللات</a><a href="#pg2">ص١٤٠ · ما الشبكات الغذائية؟</a><a href="#pg3">ص١٤١ · المفترسات والفرائس والكانسات</a><a href="#pg4">ص١٤٢ · ما هرم الطاقة؟</a><a class="end" href="#end">📌 خلاصة الدرس</a></nav>
-
-<section class="spread" id="pg0">
- <div class="ph"><span class="pno">صفحة ١٣٨</span><h2>ما السلاسل الغذائية؟</h2></div>
- <div class="duo">
-  <div class="pg"><div class="page" role="button" aria-label="كبّري الصفحة أو صغّريها"><img src="img/p138.jpg" alt="صفحة ١٣٨" loading="eager" width="1075" height="1407"><a class="pin zubda" href="#s0n1" data-n="s0n1" style="left:4%;top:29%">١</a><a class="pin tawdih" href="#s0n2" data-n="s0n2" style="left:4%;top:45%">٢</a><a class="pin farq" href="#s0n3" data-n="s0n3" style="left:4%;top:66%">٣</a><a class="pin fakh" href="#s0n4" data-n="s0n4" style="left:4%;top:80%">٤</a><a class="pin fakh" href="#s0n5" data-n="s0n5" style="left:58%;top:86%">٥</a><span class="tap">🔍 كبّري</span></div>
-   <button class="zoom" data-src="img/p138.jpg">🔎 تكبير أكثر</button></div>
-  <div class="notes"><div class="note zubda" id="s0n1"><div class="nh"><span class="nb">١</span>💡 الزبدة</div><div class="nt"><b>السلسلة الغذائية</b> طريقٌ تمشي فيه الطاقة من مخلوق إلى آخر عن طريق الغذاء.<br>تبدأ <b>دائمًا بمُنتِج</b>، ومصدر طاقتها الأول <b>الشمس</b> ☀️.</div></div><div class="note tawdih" id="s0n2"><div class="nh"><span class="nb">٢</span>🔍 توضيح</div><div class="nt">المُنتِج يصنع غذاءه بعملية <b>البناء الضوئي</b>، ويُطلق <b>الأكسجين</b>.<br>يستعمل بعض الغذاء، ويخزّن الباقي في <b>الأوراق والسيقان والجذور</b>، فتأكله المخلوقات الأخرى وتأخذ طاقته.</div></div><div class="note farq" id="s0n3"><div class="nh"><span class="nb">٣</span>⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>على اليابسة</th><th>في البحار والمحيطات</th></tr><tr><td>المنتجات الرئيسة: <b>النباتات</b> 🌿</td><td>المنتجات: <b>الطحالب والعوالق النباتية</b> 🌊</td></tr></table>والعوالق النباتية وحيدة الخلية، وتقوم بأكثر من <b>نصف</b> البناء الضوئي على الأرض.</div></div><div class="note fakh" id="s0n4"><div class="nh"><span class="nb">٤</span>⚠️ فخ في الاختبار</div><div class="nt">ليست كل المنتجات تحتاج ضوء الشمس! بعض <b>البكتيريا في قاع المحيط</b> تصنع غذاءها من <b>مواد كيميائية</b>.</div></div><div class="note fakh" id="s0n5"><div class="nh"><span class="nb">٥</span>⚠️ فخ في الاختبار</div><div class="nt">الفطر 🍄 ينمو مثل النبات، لكنه <b>ليس مُنتِجًا</b>؛ فهو لا يصنع غذاءه.<br>الفطريات <b>مُحلِّلات</b>.</div></div></div>
- </div></section>
-<section class="spread" id="pg1">
- <div class="ph"><span class="pno">صفحة ١٣٩</span><h2>المستهلكات والمحللات</h2></div>
- <div class="duo">
-  <div class="pg"><div class="page" role="button" aria-label="كبّري الصفحة أو صغّريها"><img src="img/p139.jpg" alt="صفحة ١٣٩" loading="lazy" width="1075" height="1407"><a class="pin zubda" href="#s1n1" data-n="s1n1" style="left:94%;top:19%">١</a><a class="pin tawdih" href="#s1n2" data-n="s1n2" style="left:94%;top:30%">٢</a><a class="pin farq" href="#s1n3" data-n="s1n3" style="left:94%;top:38%">٣</a><a class="pin zubda" href="#s1n4" data-n="s1n4" style="left:4.5%;top:6%">٤</a><a class="pin tawdih" href="#s1n5" data-n="s1n5" style="left:4.5%;top:20%">٥</a><a class="pin hal" href="#s1n6" data-n="s1n6" style="left:4.5%;top:43%">٦</a><a class="pin hal" href="#s1n7" data-n="s1n7" style="left:4.5%;top:60%">٧</a><a class="pin fakh" href="#s1n8" data-n="s1n8" style="left:55%;top:75%">٨</a><span class="tap">🔍 كبّري</span></div>
-   <button class="zoom" data-src="img/p139.jpg">🔎 تكبير أكثر</button></div>
-  <div class="notes"><div class="note zubda" id="s1n1"><div class="nh"><span class="nb">١</span>💡 الزبدة</div><div class="nt"><b>المُستهلِك</b> لا يصنع غذاءه، فيأكل <b>المنتجات</b> أو <b>مستهلكات أخرى</b>.</div></div><div class="note tawdih" id="s1n2"><div class="nh"><span class="nb">٢</span>🔍 توضيح: ترتيب الحلقات</div><div class="nt"><div class='chain'><span class='c0'>منتج</span>←<span class='c1'>مستهلك أول</span>←<span class='c2'>مستهلك ثانٍ</span>←<span class='c3'>مستهلك ثالث</span></div>• <b>الأول</b> يأكل المنتجات: المواشي، الحشرات، الفئران، الفيلة.<br>• <b>الثاني</b> يأكل المستهلك الأول: طيور تأكل الحشرات.<br>• <b>الثالث</b> يأكل المستهلك الثاني: الأفعى تأكل الطير.</div></div><div class="note farq" id="s1n3"><div class="nh"><span class="nb">٣</span>⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>العوالق النباتية</th><th>العوالق الحيوانية</th></tr><tr><td><b>منتجات</b><br>تصنع غذاءها</td><td><b>مستهلكات أولى</b><br>تبتلع الغذاء</td></tr></table></div></div><div class="note zubda" id="s1n4"><div class="nh"><span class="nb">٤</span>💡 الزبدة</div><div class="nt">عدد <b>المنتجات</b> في النظام البيئي أكبر بكثير من عدد <b>المستهلكات</b>.</div></div><div class="note tawdih" id="s1n5"><div class="nh"><span class="nb">٥</span>🔍 توضيح</div><div class="nt"><b>المُحلِّل</b> يحلل بقايا المخلوقات الميتة إلى مواد أبسط، فيُعيد تدوير المواد في البيئة ♻️.<br>أمثلته في الكتاب: <b>الديدان والبكتيريا والفطريات</b>.</div></div><details class="note hal" id="s1n6"><summary><span class="nb">٦</span>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> لأنها تعيد تدوير الطاقة والمواد من المخلوقات الميتة إلى البيئة.<br><b>التفكير الناقد:</b> الإنسان <b>مستهلك</b>؛ فهو مستهلك أول حين يأكل النباتات، ومستهلك في مستوى أعلى حين يأكل اللحوم.</div></details><details class="note hal" id="s1n7"><summary><span class="nb">٧</span>✍️ حلّ «أقرأ الشكل»<em>اضغطي لتري الإجابة</em></summary><div class="nt">الحلقة الثانية في سلسلة الغابة هي <b>المستهلك الأول: الجندب</b> 🦗.</div></details><div class="note fakh" id="s1n8"><div class="nh"><span class="nb">٨</span>⚠️ فخ في الاختبار</div><div class="nt">السهم يتجه من <b>المأكول</b> إلى <b>الآكل</b>، أي في اتجاه انتقال الطاقة.<br>جندب ← ببغاء تعني: <b>الببغاء يأكل الجندب</b>، لا العكس.</div></div></div>
- </div></section>
-<section class="spread" id="pg2">
- <div class="ph"><span class="pno">صفحة ١٤٠</span><h2>ما الشبكات الغذائية؟</h2></div>
- <div class="duo">
-  <div class="pg"><div class="page" role="button" aria-label="كبّري الصفحة أو صغّريها"><img src="img/p140.jpg" alt="صفحة ١٤٠" loading="lazy" width="1075" height="1407"><a class="pin zubda" href="#s2n1" data-n="s2n1" style="left:94%;top:15%">١</a><a class="pin tawdih" href="#s2n2" data-n="s2n2" style="left:94%;top:34%">٢</a><a class="pin zubda" href="#s2n3" data-n="s2n3" style="left:94%;top:52%">٣</a><a class="pin farq" href="#s2n4" data-n="s2n4" style="left:4.5%;top:30%">٤</a><a class="pin tawdih" href="#s2n5" data-n="s2n5" style="left:4.5%;top:44%">٥</a><a class="pin zubda" href="#s2n6" data-n="s2n6" style="left:4.5%;top:57%">٦</a><a class="pin hal" href="#s2n7" data-n="s2n7" style="left:7%;top:92%">٧</a><span class="tap">🔍 كبّري</span></div>
-   <button class="zoom" data-src="img/p140.jpg">🔎 تكبير أكثر</button></div>
-  <div class="notes"><div class="note zubda" id="s2n1"><div class="nh"><span class="nb">١</span>💡 الزبدة</div><div class="nt"><b>الشبكة الغذائية</b> = عدة سلاسل غذائية <b>متداخلة</b>.<br>هي أدق من السلسلة؛ لأن معظم الحيوانات تأكل <b>أكثر من نوع</b>.</div></div><div class="note tawdih" id="s2n2"><div class="nh"><span class="nb">٢</span>🔍 توضيح: أسنان آكلات الأعشاب</div><div class="nt">آكلات الأعشاب <b>مستهلكات أولى</b>. أسنانها الأمامية حادة لقطع النبات، والخلفية مسطحة لطحنه ومضغه.</div></div><div class="note zubda" id="s2n3"><div class="nh"><span class="nb">٣</span>💡 الزبدة</div><div class="nt">آكلات اللحوم <b>مستهلكات ثانية وثالثة</b>، تمزق فريستها بالأنياب والقواطع الحادة أو بالمناقير.</div></div><div class="note farq" id="s2n4"><div class="nh"><span class="nb">٤</span>⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>آكلات أعشاب</th><th>آكلات لحوم</th><th>قارتة</th></tr><tr><td>نباتات فقط</td><td>حيوانات</td><td>نباتات <b>و</b>حيوانات</td></tr><tr><td>الغزال</td><td>الثعلب، النسر</td><td>الراكون</td></tr></table></div></div><div class="note tawdih" id="s2n5"><div class="nh"><span class="nb">٥</span>🔍 توضيح</div><div class="nt">بعض <b>الحيتان قارتة</b>: تأخذ ماءً كثيرًا في فمها، ثم تصفّيه بتراكيب تشبه الأسنان، فيبقى فيها <b>العوالق</b> والقشريات الصغيرة.</div></div><div class="note zubda" id="s2n6"><div class="nh"><span class="nb">٦</span>💡 الزبدة</div><div class="nt">أي تغيّر في جزء من الشبكة يؤثر غالبًا في <b>بقية أجزائها</b>.</div></div><details class="note hal" id="s2n7"><summary><span class="nb">٧</span>✍️ حلّ «أقرأ الصورة»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>المفترسات:</b> الأفعى والنسر والنمر.<br><b>الفرائس:</b> الحشرات والفأر والغزال، والأفعى أيضًا فريسة للنسر.<br>تذكّري: الحيوان الذي يخرج منه سهم إلى حيوان آخر هو <b>فريسة</b> له.</div></details></div>
- </div></section>
-<section class="spread" id="pg3">
- <div class="ph"><span class="pno">صفحة ١٤١</span><h2>المفترسات والفرائس والكانسات</h2></div>
- <div class="duo">
-  <div class="pg"><div class="page" role="button" aria-label="كبّري الصفحة أو صغّريها"><img src="img/p141.jpg" alt="صفحة ١٤١" loading="lazy" width="1075" height="1407"><a class="pin tawdih" href="#s3n1" data-n="s3n1" style="left:94%;top:42%">١</a><a class="pin zubda" href="#s3n2" data-n="s3n2" style="left:94%;top:63%">٢</a><a class="pin fakh" href="#s3n3" data-n="s3n3" style="left:94%;top:71%">٣</a><a class="pin farq" href="#s3n4" data-n="s3n4" style="left:94%;top:82%">٤</a><a class="pin hal" href="#s3n5" data-n="s3n5" style="left:4.5%;top:83%">٥</a><span class="tap">🔍 كبّري</span></div>
-   <button class="zoom" data-src="img/p141.jpg">🔎 تكبير أكثر</button></div>
-  <div class="notes"><div class="note tawdih" id="s3n1"><div class="nh"><span class="nb">١</span>🔍 توضيح</div><div class="nt">النحلة 🐝 تجمع الرحيق فتحصل على غذائها، وتنقل حبوب اللقاح من زهرة إلى أخرى فتساعد النبات على التكاثر. <b>كلاهما يستفيد.</b></div></div><div class="note zubda" id="s3n2"><div class="nh"><span class="nb">٢</span>💡 الزبدة</div><div class="nt"><b>المفترس</b> يصطاد مخلوقًا حيًا ويقتله ليأكله، و<b>الفريسة</b> هي الحيوان الذي يُصطاد.</div></div><div class="note fakh" id="s3n3"><div class="nh"><span class="nb">٣</span>⚠️ فخ في الاختبار</div><div class="nt">الحيوان الواحد قد يكون <b>مفترسًا وفريسة</b>!<br>الأفعى تبتلع الفأر (مفترس)، ثم يصطادها النسر (فريسة).</div></div><div class="note farq" id="s3n4"><div class="nh"><span class="nb">٤</span>⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>الكانس</th><th>المحلل</th></tr><tr><td>حيوان يأكل <b>بقايا</b> الحيوانات الميتة، ولا يصطاد</td><td><b>يحلل</b> البقايا إلى مواد أبسط</td></tr><tr><td>بعض العقبان، الغربان</td><td>البكتيريا، الفطريات</td></tr></table>لاحظي: <b>الديدان</b> ذُكرت في الكتاب مع المحللات ومع الكانسات.</div></div><details class="note hal" id="s3n5"><summary><span class="nb">٥</span>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> يتأثر من يأكل هذا النوع فيقلّ غذاؤه، ويتأثر ما يأكله هذا النوع فيزداد عدده.<br><b>التفكير الناقد:</b> الحيوان القارت يأكل النباتات والحيوانات، فإذا نقص نوع وجد غذاءً آخر.</div></details></div>
- </div></section>
-<section class="spread" id="pg4">
- <div class="ph"><span class="pno">صفحة ١٤٢</span><h2>ما هرم الطاقة؟</h2></div>
- <div class="duo">
-  <div class="pg"><div class="page" role="button" aria-label="كبّري الصفحة أو صغّريها"><img src="img/p142.jpg" alt="صفحة ١٤٢" loading="lazy" width="1075" height="1407"><a class="pin zubda" href="#s4n1" data-n="s4n1" style="left:97%;top:25%">١</a><a class="pin zubda" href="#s4n2" data-n="s4n2" style="left:97%;top:37%">٢</a><a class="pin fakh" href="#s4n3" data-n="s4n3" style="left:97%;top:50%">٣</a><a class="pin zubda" href="#s4n4" data-n="s4n4" style="left:4.5%;top:8%">٤</a><a class="pin tawdih" href="#s4n5" data-n="s4n5" style="left:4.5%;top:21%">٥</a><a class="pin hal" href="#s4n6" data-n="s4n6" style="left:4.5%;top:46%">٦</a><a class="pin farq" href="#s4n7" data-n="s4n7" style="left:47%;top:70%">٧</a><span class="tap">🔍 كبّري</span></div>
-   <button class="zoom" data-src="img/p142.jpg">🔎 تكبير أكثر</button></div>
-  <div class="notes"><div class="note zubda" id="s4n1"><div class="nh"><span class="nb">١</span>💡 الزبدة</div><div class="nt"><b>هرم الطاقة</b> نموذج يبيّن كيف تنتقل الطاقة خلال سلسلة غذائية.<br>جزء من الطاقة يُستعمل داخل المخلوق، وجزء يُفقد على شكل <b>حرارة</b> 🔥.</div></div><div class="note zubda" id="s4n2"><div class="nh"><span class="nb">٢</span>💡 الزبدة</div><div class="nt"><b>قاعدة الهرم = المنتجات</b>؛ لأنها تدعم كل المخلوقات الأخرى. وفوقها المستهلكات.</div></div><div class="note fakh" id="s4n3"><div class="nh"><span class="nb">٣</span>⚠️ قاعدة العُشر 🔢</div><div class="nt">ينتقل <b>عُشر الطاقة فقط (١÷١٠)</b> إلى المستوى التالي.<div class='chain num'><span class='c0'>١٠٠٠٠</span>←<span class='c1'>١٠٠٠</span>←<span class='c2'>١٠٠</span>←<span class='c3'>١٠</span></div>الحيلة: احذفي صفرًا واحدًا في كل صعود ⬆️.</div></div><div class="note zubda" id="s4n4"><div class="nh"><span class="nb">٤</span>💡 الزبدة</div><div class="nt">لأن الطاقة <b>تتناقص</b> كلما صعدنا، تكون أعداد <b>المنتجات أكبر</b> من أعداد المستهلكات.</div></div><div class="note tawdih" id="s4n5"><div class="nh"><span class="nb">٥</span>🔍 توضيح</div><div class="nt">إذا نقص الغذاء زاد <b>التنافس</b> بين المخلوقات عليه، فيقلّ عدد أفراد بعض الأنواع.</div></div><details class="note hal" id="s4n6"><summary><span class="nb">٦</span>✍️ حلّ «أختبر نفسي»<em>اضغطي لتري الإجابة</em></summary><div class="nt"><b>أتتبع:</b> تبيّن كمية الطاقة التي تنتقل من مستوى إلى المستوى الذي يليه.<br><b>التفكير الناقد:</b> يزداد التنافس على الغذاء، وقد يقلّ عدد أفراد بعض الأنواع.</div></details><div class="note farq" id="s4n7"><div class="nh"><span class="nb">٧</span>⚖️ انتبهي للفرق</div><div class="nt"><table><tr><th>هرم اليابسة</th><th>هرم المحيط</th></tr><tr><td>أعشاب</td><td>عوالق</td></tr><tr><td>حشرات</td><td>أسماك</td></tr><tr><td>طيور</td><td>بطاريق</td></tr><tr><td>ثعلب (القمة)</td><td>فقمة (القمة)</td></tr></table>كلما صعدنا: طاقة أقل وأعداد أقل.</div></div></div>
- </div></section>
-
-<section id="end" class="spread">
-<div class="endh"><h2>📌 خلاصة الدرس</h2></div>
-
-<div class="card">
- <h3>🗺️ خريطة المفاهيم</h3>
- <div class="map">
-  <div class="mnode sun">☀️ الشمس<small>مصدر الطاقة الأول</small></div>
-  <div class="arr">⬇</div>
-  <div class="mnode prod">🌿 المنتجات<small>تصنع غذاءها بالبناء الضوئي<br>نباتات · طحالب · عوالق نباتية</small></div>
-  <div class="arr">⬇<i>تأكلها</i></div>
-  <div class="mnode cons">🦗 المستهلكات<small>أول ← ثانٍ ← ثالث</small></div>
-  <div class="arr">⬇<i>بعد موتها</i></div>
-  <div class="mnode dec">🍄 المحللات<small>تحلل البقايا وتعيد تدوير المواد<br>بكتيريا · فطريات · ديدان</small></div>
-  <div class="mgrid">
-   <div class="mbox"><h4>المستهلكات حسب غذائها</h4><ul><li>آكلات أعشاب (مستهلك أول)</li><li>آكلات لحوم (ثانٍ وثالث)</li><li>قارتة: نبات وحيوان</li></ul></div>
-   <div class="mbox"><h4>حسب طريقة حصولها عليه</h4><ul><li>مفترس: يصطاد ويقتل</li><li>فريسة: يُصطاد</li><li>كانس: يأكل البقايا</li></ul></div>
-  </div>
-  <div class="arr" style="margin-top:6px">⬇<i>نمثّل انتقال الطاقة بـ</i></div>
-  <div class="models"><div><b>⛓️ السلسلة</b>مسار واحد</div><div><b>🕸️ الشبكة</b>سلاسل متداخلة</div><div><b>🔺 الهرم</b>كمية الطاقة</div></div>
- </div>
-</div>
-
-<div class="card">
- <h3>⚖️ لا تخلطي بينها</h3>
- <table class="cmp">
-  <tr><th></th><th>⛓️ السلسلة</th><th>🕸️ الشبكة</th><th>🔺 الهرم</th></tr>
-  <tr><td>ماذا يبيّن؟</td><td>مسار الطاقة من مخلوق إلى آخر</td><td>تداخل السلاسل في النظام البيئي</td><td>كيف تتناقص الطاقة من مستوى إلى آخر</td></tr>
-  <tr><td>ميزته</td><td>بسيط وسهل التتبع</td><td>أدق؛ لأن الحيوان يأكل أكثر من نوع</td><td>يفسّر كثرة المنتجات</td></tr>
- </table>
- <table class="cmp" style="margin-top:10px">
-  <tr><th></th><th>🐍 المفترس</th><th>🦅 الكانس</th><th>🍄 المحلل</th></tr>
-  <tr><td>غذاؤه</td><td>حيوانات حية يصطادها</td><td>بقايا الحيوانات الميتة</td><td>بقايا المخلوقات الميتة</td></tr>
-  <tr><td>هل يقتل؟</td><td>نعم</td><td>لا</td><td>لا</td></tr>
-  <tr><td>أمثلة</td><td>الأفعى، النمر</td><td>بعض العقبان، الغربان</td><td>البكتيريا، الفطريات</td></tr>
- </table>
-</div>
-
-<div class="card sum">
- <h3>✨ الملخص في خمس نقاط</h3>
- <ol><li>مصدر الطاقة الأول هو <b>الشمس</b>، وتأخذها <b>المنتجات</b> لتصنع غذاءها.</li><li>تنتقل الطاقة: <b>منتج ← مستهلك أول ← مستهلك ثانٍ ← مستهلك ثالث</b>، والمحللات تعيد تدوير المواد.</li><li><b>السلسلة</b> مسار واحد، و<b>الشبكة</b> سلاسل متداخلة وهي أدق.</li><li>المستهلكات: آكلات أعشاب، وآكلات لحوم، وقارتة. ومنها <b>المفترس</b> و<b>الكانس</b>.</li><li>في <b>هرم الطاقة</b> ينتقل <b>العُشر</b> فقط، لذلك المنتجات أكثر عددًا في القاعدة.</li></ol>
-</div>
-
-<div class="card">
- <h3>🧠 اختبري نفسك</h3>
- <details class="q"><summary><span class="qn">١</span>في السلسلة: أعشاب ← جندب ← ببغاء ← أسد الجبال، ما المستهلك الثاني؟<em>اضغطي لتري الإجابة</em></summary><div class="qa"><b>الببغاء</b>؛ لأنه يأكل الجندب (المستهلك الأول).</div></details><details class="q"><summary><span class="qn">٢</span>في مستوى المنتجات ٢٠٠٠٠ وحدة طاقة. كم يصل إلى المستهلك الأول؟ وكم يصل إلى المستهلك الثاني؟<em>اضغطي لتري الإجابة</em></summary><div class="qa">المستهلك الأول <b>٢٠٠٠</b>، والمستهلك الثاني <b>٢٠٠</b>. (احذفي صفرًا في كل مستوى)</div></details><details class="q"><summary><span class="qn">٣</span>صوابٌ أم خطأ؟ الحيوان الكانس يصطاد فريسته ويقتلها.<em>اضغطي لتري الإجابة</em></summary><div class="qa"><b>خطأ</b>؛ الكانس يأكل بقايا الحيوانات الميتة ولا يصطاد. الذي يصطاد هو المفترس.</div></details><details class="q"><summary><span class="qn">٤</span>لماذا تكون أعداد المنتجات أكبر من أعداد المستهلكات؟<em>اضغطي لتري الإجابة</em></summary><div class="qa">لأن الطاقة <b>تتناقص</b> من مستوى إلى الذي يليه، فلا تكفي إلا أعدادًا أقل في المستويات العليا.</div></details>
-</div>
-
-<a class="go" href="../">🎮 العبي ألعاب هذا الدرس في «نجمات العلوم»</a>
-<div class="foot">المعلمة عبير الخماش · مجمع الفيضة التعليمي</div>
-</section>
-</div>
-
-<div id="lb"><div class="bar"><span>حرّكي الصفحة بإصبعك</span><button id="lbx">✕ إغلاق</button></div><div class="sc"><img id="lbi" alt=""></div></div>
-
+</div></section><section class="cw" data-i="32"><div class="card"><div class="chip">📌 الخلاصة · لا تخلطي بينها</div><table class="cmp"><tr><th></th><th>⛓️ السلسلة</th><th>🕸️ الشبكة</th><th>🔺 الهرم</th></tr>
+<tr><td>ماذا يبيّن؟</td><td>مسار الطاقة من مخلوق إلى آخر</td><td>تداخل السلاسل في النظام البيئي</td><td>كيف تتناقص الطاقة من مستوى إلى آخر</td></tr>
+<tr><td>ميزته</td><td>بسيط وسهل التتبع</td><td>أدق؛ لأن الحيوان يأكل أكثر من نوع</td><td>يفسّر كثرة المنتجات</td></tr></table>
+</div></section><section class="cw" data-i="33"><div class="card"><div class="chip">📌 الخلاصة · لا تخلطي بينها</div>
+<table class="cmp"><tr><th></th><th>🐍 المفترس</th><th>🦅 الكانس</th><th>🍄 المحلل</th></tr>
+<tr><td>غذاؤه</td><td>حيوانات حية يصطادها</td><td>بقايا الحيوانات الميتة</td><td>بقايا المخلوقات الميتة</td></tr>
+<tr><td>هل يقتل؟</td><td>نعم</td><td>لا</td><td>لا</td></tr>
+<tr><td>أمثلة</td><td>الأفعى، النمر</td><td>بعض العقبان، الغربان</td><td>البكتيريا، الفطريات</td></tr></table>
+</div></section><section class="cw" data-i="34"><div class="card"><div class="chip">📌 الخلاصة · خمس نقاط</div><ol class="sum"><li>مصدر الطاقة الأول هو <b>الشمس</b>، وتأخذها <b>المنتجات</b> لتصنع غذاءها.</li><li>تنتقل الطاقة: <b>منتج ← مستهلك أول ← مستهلك ثانٍ ← مستهلك ثالث</b>، والمحللات تعيد تدوير المواد.</li><li><b>السلسلة</b> مسار واحد، و<b>الشبكة</b> سلاسل متداخلة وهي أدق.</li><li>المستهلكات: آكلات أعشاب، وآكلات لحوم، وقارتة. ومنها <b>المفترس</b> و<b>الكانس</b>.</li><li>في <b>هرم الطاقة</b> ينتقل <b>العُشر</b> فقط، لذلك المنتجات أكثر عددًا في القاعدة.</li></ol></div></section><section class="cw" data-i="35"><div class="card"><div class="chip">🧠 اختبري نفسك · ١ من ٤</div><div class="big-q">في السلسلة: أعشاب ← جندب ← ببغاء ← أسد الجبال، ما المستهلك الثاني؟</div><details class="note hal"><summary>✅ الجواب<em>فكّري ثم اضغطي</em></summary><div class="nt"><b>الببغاء</b>؛ لأنه يأكل الجندب (المستهلك الأول).</div></details></div></section><section class="cw" data-i="36"><div class="card"><div class="chip">🧠 اختبري نفسك · ٢ من ٤</div><div class="big-q">في مستوى المنتجات ٢٠٠٠٠ وحدة طاقة. كم يصل إلى المستهلك الأول؟ وكم يصل إلى المستهلك الثاني؟</div><details class="note hal"><summary>✅ الجواب<em>فكّري ثم اضغطي</em></summary><div class="nt">المستهلك الأول <b>٢٠٠٠</b>، والمستهلك الثاني <b>٢٠٠</b>. (احذفي صفرًا في كل مستوى)</div></details></div></section><section class="cw" data-i="37"><div class="card"><div class="chip">🧠 اختبري نفسك · ٣ من ٤</div><div class="big-q">صوابٌ أم خطأ؟ الحيوان الكانس يصطاد فريسته ويقتلها.</div><details class="note hal"><summary>✅ الجواب<em>فكّري ثم اضغطي</em></summary><div class="nt"><b>خطأ</b>؛ الكانس يأكل بقايا الحيوانات الميتة ولا يصطاد. الذي يصطاد هو المفترس.</div></details></div></section><section class="cw" data-i="38"><div class="card"><div class="chip">🧠 اختبري نفسك · ٤ من ٤</div><div class="big-q">لماذا تكون أعداد المنتجات أكبر من أعداد المستهلكات؟</div><details class="note hal"><summary>✅ الجواب<em>فكّري ثم اضغطي</em></summary><div class="nt">لأن الطاقة <b>تتناقص</b> من مستوى إلى الذي يليه، فلا تكفي إلا أعدادًا أقل في المستويات العليا.</div></details></div></section><section class="cw" data-i="39"><div class="card"><div class="cv"><div class="emo">🌟</div><h1>أحسنتِ!</h1><p class="hint">أنهيتِ الدرس. ثبّتي ما تعلمتِه باللعب.</p>
+ <a class="go" href="../">🎮 العبي ألعاب الدرس في «نجمات العلوم»</a><a class="go alt" href="5-1-print.pdf" download>🖨️ نسخة الطباعة A5</a>
+ <button class="go alt" onclick="go(0)">↺ من البداية</button></div></div></section></main>
+<nav class="nav"><button id="prev" onclick="step(-1)">→ السابقة</button><span class="cnt" id="cnt"></span><button id="next" onclick="step(1)">التالية ←</button></nav>
+<div id="toc" onclick="if(event.target===this)tocx()"><div class="sh"><h3>☰ الفهرس</h3><button onclick="go(3);tocx()">ص١٣٨ · ما السلاسل الغذائية؟</button><button onclick="go(8);tocx()">ص١٣٩ · المستهلكات والمحللات</button><button onclick="go(15);tocx()">ص١٤٠ · ما الشبكات الغذائية؟</button><button onclick="go(21);tocx()">ص١٤١ · المفترسات والفرائس والكانسات</button><button onclick="go(25);tocx()">ص١٤٢ · ما هرم الطاقة؟</button><button onclick="go(31);tocx()">📌 خلاصة الدرس</button></div></div>
 <script>
-(function(){
- document.querySelectorAll('.pin').forEach(function(p){p.addEventListener('click',function(e){
-  var n=document.getElementById(p.dataset.n);if(!n)return;e.preventDefault();
-  n.scrollIntoView({behavior:'smooth',block:'center'});if(n.tagName==='DETAILS')n.open=true;
-  n.classList.add('lit');setTimeout(function(){n.classList.remove('lit')},1800);});});
- document.querySelectorAll('.note .nb').forEach(function(b){b.style.cursor='pointer';b.addEventListener('click',function(e){
-  e.preventDefault();e.stopPropagation();var id=b.closest('.note').id,p=document.querySelector('.pin[data-n="'+id+'"]');if(!p)return;
-  p.scrollIntoView({behavior:'smooth',block:'center'});p.classList.remove('flash');void p.offsetWidth;p.classList.add('flash');});});
- document.querySelectorAll('.page').forEach(function(pg){pg.addEventListener('click',function(e){if(e.target.closest('.pin'))return;var sp=pg.closest('.spread');sp.classList.toggle('big');if(sp.classList.contains('big'))sp.scrollIntoView({behavior:'smooth',block:'start'});});});
- var lb=document.getElementById('lb'),li=document.getElementById('lbi');
- document.querySelectorAll('.zoom').forEach(function(z){z.addEventListener('click',function(){li.src=z.dataset.src;lb.classList.add('on');});});
- document.getElementById('lbx').onclick=function(){lb.classList.remove('on')};
-})();
+var N=40,cur=0,deck=document.getElementById('deck'),cs=deck.children,K='mahshi_5-1';
+var AR='٠١٢٣٤٥٦٧٨٩';function ar(n){return String(n).replace(/\d/g,function(d){return AR[d]})}
+function ui(){document.getElementById('pb').style.width=((cur+1)/N*100)+'%';document.getElementById('cnt').textContent=ar(cur+1)+' / '+ar(N);
+ document.getElementById('prev').disabled=cur==0;document.getElementById('next').disabled=cur==N-1;try{localStorage.setItem(K,cur)}catch(e){}}
+function go(i,inst){i=Math.max(0,Math.min(N-1,i));cs[i].scrollIntoView({behavior:inst?'auto':'smooth',inline:'start',block:'nearest'});cur=i;ui()}
+function step(d){go(cur+d)}
+function toco(){document.getElementById('toc').classList.add('on')}
+function tocx(){document.getElementById('toc').classList.remove('on')}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>.6){cur=+e.target.dataset.i;ui()}})},{root:deck,threshold:[.6]});
+Array.prototype.forEach.call(cs,function(c){io.observe(c)});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')step(1);if(e.key==='ArrowRight')step(-1)});
+var s=0;try{s=+localStorage.getItem(K)||0}catch(e){}
+window.addEventListener('load',function(){if(s>0&&s<N)go(s,true);else ui();
+ for(var j=1;j<4&&j<N;j++)cs[j].querySelectorAll('img').forEach(function(im){im.loading='eager'})});
+ui();
 </script>
 <script>
 (function(){var P="chem-labs-3c9de",K="AIzaSyA8feIuu619z53rYQ4soTE15E0wD2x4k1k",D="projects/"+P+"/databases/(default)/documents";
-function day(){return new Date(Date.now()+3*3600e3).toISOString().slice(0,10)}
-function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
-try{if(navigator.onLine===false)return;var ev="kitab";
-fetch("https://firestore.googleapis.com/v1/"+D+":commit?key="+K,{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,
-body:JSON.stringify({writes:[{transform:{document:D+"/adawat_stats/olum6",fieldTransforms:[inc(ev)]}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc("olum6_"+ev)]}}]})}).catch(function(){});}catch(e){}})();
+function day(){return new Date(Date.now()+3*3600e3).toISOString().slice(0,10)}function inc(f){return {fieldPath:f,increment:{integerValue:"1"}}}
+try{if(navigator.onLine===false)return;fetch("https://firestore.googleapis.com/v1/"+D+":commit?key="+K,{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,
+body:JSON.stringify({writes:[{transform:{document:D+"/adawat_stats/olum6",fieldTransforms:[inc("kitab")]}},{transform:{document:D+"/adawat_daily/"+day(),fieldTransforms:[inc("olum6_kitab")]}}]})}).catch(function(){});}catch(e){}})();
 </script>
 </body>
 </html>

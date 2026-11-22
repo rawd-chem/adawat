@@ -62,7 +62,22 @@ main{max-width:720px;margin:0 auto;padding:14px 12px 90px}
 .seq{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;margin:8px 0 12px;padding:8px;border-radius:14px;background:#f6f3ff}
 .seq span{background:var(--lav);color:#fff;border-radius:12px;padding:7px 12px;font-weight:800}
 .clock{font-size:34px;font-weight:800;text-align:center;color:var(--lav)}
-.res{text-align:center}.res .e{font-size:56px}.res .sc{font-size:46px;font-weight:800;color:var(--lav)}
+.res{text-align:center}.res .e{font-size:64px;display:inline-block;animation:pop .7s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pop{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
+.res .sc{animation:pop .6s .15s both}.res .cheer{font-size:20px;font-weight:800;margin:4px 0 2px;background:linear-gradient(90deg,var(--lav),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.res.win{background:linear-gradient(180deg,#fff8e6,#fff)}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:99}
+.mtn{position:relative;border-radius:22px;overflow:hidden;margin:-4px -4px 6px;background:linear-gradient(180deg,#bfe8ff 0,#e9e5ff 55%,#fff8fb 100%)}
+.mtn svg{display:block;width:100%;height:auto}
+.mtn .who{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;pointer-events:none;transition:none}
+.mtn .who .b{width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 3px 10px #2b235040;border:3px solid #fff}
+.mtn .who.me .b{border-color:#ff6fa6;box-shadow:0 0 0 4px #ff6fa655,0 3px 10px #2b235040;animation:glow 1.4s infinite}
+@keyframes glow{50%{box-shadow:0 0 0 9px #ff6fa622,0 3px 10px #2b235040}}
+.mtn .who .n{margin-top:2px;background:#ffffffe6;border-radius:99px;padding:0 7px;font-size:11.5px;font-weight:800;white-space:nowrap;color:var(--ink)}
+.mtn .who.top .b{background:#ffe27a}
+.mtn .who .cr{position:absolute;top:-17px;font-size:18px}
+.motiv{margin:8px 0 2px;background:linear-gradient(135deg,#fff0f7,#f1ecff);border-radius:16px;padding:10px 12px;font-weight:800;text-align:center;font-size:15px}
+.res .sc{font-size:46px;font-weight:800;color:var(--lav)}
 .rank{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px dashed var(--line);font-weight:800}
 .rank .p{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#f2efff}
 .rank.r1 .p{background:#ffd76a}.rank.r2 .p{background:#e3e3ee}.rank.r3 .p{background:#f6c59a}.rank.meR{background:#fff6fb;border-radius:12px}
@@ -142,6 +157,16 @@ async function goStudy(id){
   track('kitab_go'); location.href='kitab/'+id+'.html';
 }
 
+/* ---------- celebration ---------- */
+function confetti(n,dur){try{n=n||160;dur=dur||2600;let c=$('cf');if(!c){c=document.createElement('canvas');c.id='cf';document.body.appendChild(c);}
+  const W=c.width=innerWidth*devicePixelRatio,H=c.height=innerHeight*devicePixelRatio,x=c.getContext('2d'),C=['#8b7be8','#f08bb4','#ffbf47','#2bb7a8','#5fc4ff','#ff6fa6','#7ee0a1'],t0=performance.now();
+  const P=[...Array(n)].map(()=>({x:W*(.15+.7*Math.random()),y:H*(.35+.1*Math.random()),vx:(Math.random()-.5)*W*.018,vy:-H*(.012+Math.random()*.016),r:Math.random()*6.3,vr:(Math.random()-.5)*.3,s:(5+Math.random()*7)*devicePixelRatio,c:C[Math.floor(Math.random()*7)],k:Math.random()<.35}));
+  (function f(t){const e=t-t0;x.clearRect(0,0,W,H);P.forEach(p=>{p.vy+=H*.00045;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.globalAlpha=Math.max(0,1-e/dur);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;if(p.k){x.beginPath();x.arc(0,0,p.s/2,0,7);x.fill();}else x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});if(e<dur)requestAnimationFrame(f);else x.clearRect(0,0,W,H);})(t0);
+}catch(e){}}
+function chime(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();[523,659,784,1046].forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+i*.09;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.35);o.start(t);o.stop(t+.4);});}catch(e){}}
+const CHEER={hi:['رائعة! 🌟','مذهلة! أنتِ نجمة','ممتاز جدًا! 👏','عالمة صغيرة! 🔬'],mid:['أحسنتِ! واصلي','جميل! تقدّم رائع','خطوة ممتازة نحو القمة ⛰️'],lo:['لا بأس، المحاولة تعلّم 💪','راجعي كتابي الذكي وستتحسنين','كل محاولة تقرّبكِ من القمة']};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
 /* ---------- screens ---------- */
 function hdr(btns){$('hb').innerHTML=btns||'';}
 function welcome(){hdr('');
@@ -162,7 +187,7 @@ function pickGroup(){hdr('<button id="bk">رجوع</button>');$('bk').onclick=we
   app.innerHTML=`<div class="card"><b>اختاري مجموعتكن</b><div class="names" style="margin-top:10px">${GROUPS.map((g,i)=>`<button data-i="${i}">👭 ${g}</button>`).join('')}</div></div>`;
   app.querySelectorAll('.names button').forEach(b=>b.onclick=()=>{WHO={t:'g',id:'g'+b.dataset.i,name:GROUPS[+b.dataset.i]}; LS.set('who',WHO); home();});}
 async function home(){
-  hdr('<button id="lb">🏆 الترتيب</button><button id="out">خروج</button>'); $('lb').onclick=board; $('out').onclick=()=>{LS.del('who');WHO=null;welcome();};
+  hdr('<button id="lb">🏔️ القمة</button><button id="out">خروج</button>'); $('lb').onclick=board; $('out').onclick=()=>{LS.del('who');WHO=null;welcome();};
   let pts=0,best={};
   if(WHO.t==='s'){try{const d=await db.collection('olum6_players').doc(WHO.id).get(); ME=d.exists?d.data():{}; best=ME.best||{}; pts=ME.total||0;}catch(e){}}
   else{try{const d=await db.collection('olum6_groups').doc(WHO.id).get(); pts=d.exists?(d.data().total||0):0; best=(d.exists&&d.data().best)||{}; LS.set('gbest_'+WHO.id,best);}catch(e){}}
@@ -190,8 +215,10 @@ function lesson(id){const l=LES.find(x=>x.id===id); const best=myDone(); hdr('<b
 function frame(l,title,inner){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=()=>l?lesson(l.id):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
 async function finish(l,game,score,extra){const key=l?l.id+'_'+game:'speed'; track('game_'+game); const r=await saveScore(key,score);
   const e=score>=90?'🏆':score>=70?'🌟':score>=50?'👏':'💪';
-  app.innerHTML=`<div class="card res"><div class="e">${e}</div><div class="sc">${AR(score)}</div><div class="msg">${extra||''}</div>${r.first?`<p style="font-weight:800;color:var(--ok)">🎯 هذه نتيجتكِ المحسوبة: +${AR(r.gain)} نقطة${WHO.t==='g'?' لمجموعتكن':' إلى رصيدكِ'}</p>`:`<p class="msg">💪 هذه محاولة تدريب للفائدة، لا تغيّر النقاط.${r.rec!=null?'<br>نتيجتكِ المحسوبة هنا: <b>'+AR(r.rec)+'</b>':''}${r.gain?'<br>+'+AR(r.gain)+' نقاط ليوم التدرّب':''}</p>`}
+  const ch=score>=80?pick(CHEER.hi):score>=50?pick(CHEER.mid):pick(CHEER.lo);
+  app.innerHTML=`<div class="card res${score>=80?' win':''}"><div class="cheer">${ch}</div><div class="e">${e}</div><div class="sc">${AR(score)}</div><div class="msg">${extra||''}</div>${r.first?`<p style="font-weight:800;color:var(--ok)">🎯 هذه نتيجتكِ المحسوبة: +${AR(r.gain)} نقطة${WHO.t==='g'?' لمجموعتكن':' إلى رصيدكِ'}</p>`:`<p class="msg">💪 هذه محاولة تدريب للفائدة، لا تغيّر النقاط.${r.rec!=null?'<br>نتيجتكِ المحسوبة هنا: <b>'+AR(r.rec)+'</b>':''}${r.gain?'<br>+'+AR(r.gain)+' نقاط ليوم التدرّب':''}</p>`}
   <div style="display:grid;gap:8px;margin-top:10px"><button class="btn" id="again">تدرّبي مرة أخرى</button><button class="btn gh" id="back">${l?'ألعاب الدرس':'الرئيسية'}</button></div></div>`;
+  if(score>=50){setTimeout(()=>{confetti(score>=80?220:110);chime();},250);}
   $('again').onclick=()=>l?({quiz,pairs,sort,diff,order})[game](l):speed(); $('back').onclick=()=>l?lesson(l.id):home();}
 const setBar=(i,n)=>{$('pb').style.width=(100*i/n)+'%';};
 
@@ -229,12 +256,34 @@ function speed(){const pool=shuffle(LES.filter(l=>isOpen(l.id)).flatMap(l=>l.qui
   show(); tm=setInterval(()=>{left--; const e=$('ck'); if(e) e.textContent=AR(Math.max(0,left)); if(left<=0) end();},1000);}
 
 /* ---------- leaderboard ---------- */
+const MP=[[52,452],[300,412],[78,352],[286,300],[96,248],[262,196],[132,150],[230,112],[180,62]];
+function mPt(t){const seg=[];let L=0;for(let i=1;i<MP.length;i++){const d=Math.hypot(MP[i][0]-MP[i-1][0],MP[i][1]-MP[i-1][1]);seg.push(d);L+=d;}
+  let r=t*L;for(let i=0;i<seg.length;i++){if(r<=seg[i]){const k=r/seg[i];return [MP[i][0]+(MP[i+1][0]-MP[i][0])*k,MP[i][1]+(MP[i+1][1]-MP[i][1])*k];}r-=seg[i];}return MP[MP.length-1];}
+function mountain(){const path=MP.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+  return `<svg viewBox="0 0 360 480" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9d8cf0"/><stop offset="1" stop-color="#6fcfb6"/></linearGradient><linearGradient id="mg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7bdf7"/><stop offset="1" stop-color="#a8e6d4"/></linearGradient></defs>
+  <circle cx="300" cy="64" r="26" fill="#ffd76a" opacity=".9"/><g fill="#fff" opacity=".85"><ellipse cx="62" cy="80" rx="34" ry="12"/><ellipse cx="86" cy="72" rx="22" ry="12"/><ellipse cx="292" cy="150" rx="30" ry="10"/></g>
+  <path d="M-10 480 L70 300 L110 340 L180 40 L250 330 L290 290 L370 480Z" fill="url(#mg2)" opacity=".7"/>
+  <path d="M-10 480 L180 40 L370 480Z" fill="url(#mg)"/><path d="M180 40 L150 110 L166 102 L180 120 L196 100 L210 110Z" fill="#fff"/>
+  <path d="${path}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 12" opacity=".9"/>
+  <line x1="180" y1="40" x2="180" y2="8" stroke="#2b2350" stroke-width="3"/><path d="M180 8 L208 16 L180 25Z" fill="#ff6fa6"/>
+  <text x="180" y="474" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">البداية</text></svg>`;}
 async function board(){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=home;
-  app.innerHTML=`<div class="card"><b style="font-size:19px">🏆 لوحة الشرف</b><div id="pl" class="msg" style="margin-top:8px">جارٍ التحميل…</div></div><div class="card"><b style="font-size:17px">👭 المجموعات</b><div id="gl" class="msg" style="margin-top:8px"></div></div>`;
+  app.innerHTML=`<div class="card"><b style="font-size:19px">🏔️ تحدّي القمة</b><div class="msg" style="font-size:13px">كل نقطة ترفعكِ خطوة نحو القمة 🚩</div><div class="mtn" id="mt" style="margin-top:8px">${mountain()}</div><div id="mv"></div><div id="pl" class="msg" style="margin-top:6px">جارٍ التحميل…</div></div><div class="card"><b style="font-size:17px">👭 المجموعات</b><div id="gl" class="msg" style="margin-top:8px"></div></div>`;
   try{const q=await db.collection('olum6_players').get(); const L=q.docs.map(d=>Object.assign({id:d.id},d.data())).filter(p=>p.id[0]==='s'&&(p.total||0)>0).sort((a,b)=>(b.total||0)-(a.total||0));
     $('pl').innerHTML=L.length?L.map((p,i)=>`<div class="rank r${i+1}${WHO&&WHO.id===p.id?' meR':''}"><div class="p">${i<3?['🥇','🥈','🥉'][i]:AR(i+1)}</div><span>${AVS[+p.id.slice(1)]||''} ${esc((p.name||'').split(' ')[0])}</span><b>${AR(p.total||0)}</b></div>`).join(''):'لم تبدأ أي طالبة بعد، كوني الأولى!';
+    const top=L.length?(L[0].total||1):1, mt=$('mt'), used={};
+    const els=L.map((p,i)=>{const t=Math.min(.97,.05+.92*(p.total||0)/top); const k=Math.round(t*16); used[k]=(used[k]||0)+1; const u=used[k]-1, off=u?Math.ceil(u/2)*(u%2?1:-1)*44:0;
+      const d=document.createElement('div'); d.className='who'+(WHO&&WHO.id===p.id?' me':'')+(i===0?' top':''); d.innerHTML=`${i===0?'<span class="cr">👑</span>':''}<div class="b">${AVS[+p.id.slice(1)]||'🙂'}</div><div class="n">${WHO&&WHO.id===p.id?'أنتِ':esc((p.name||'').split(' ')[0])}</div>`; mt.appendChild(d); return {d,t,off,delay:300+i*160};});
+    const t0=performance.now(), place=(o,t)=>{const [x,y]=mPt(t); o.d.style.left=((x+o.off)/360*100)+'%'; o.d.style.top=(y/480*100)+'%';};
+    els.forEach(o=>place(o,0));
+    (function f(now){let busy=false; els.forEach(o=>{const e=Math.max(0,Math.min(1,(now-t0-o.delay)/1800)); if(e<1)busy=true; const k=1-Math.pow(1-e,3); place(o,o.t*k);}); if(busy) requestAnimationFrame(f); else {if(L.length){confetti(90,2000);}}})(t0);
+    if(WHO&&WHO.t==='s'&&!isT()){const i=L.findIndex(p=>p.id===WHO.id); let m='';
+      if(i===0) m='👑 أنتِ على القمة! حافظي على مكانكِ';
+      else if(i>0){const gap=(L[i-1].total||0)-(L[i].total||0)+1; m=`⛰️ باقي لكِ ${AR(gap)} نقطة لتصعدي إلى المركز ${AR(i)}`;}
+      else m='🚶‍♀️ العبي أول تحدٍّ لتبدئي الصعود نحو القمة';
+      $('mv').innerHTML=`<div class="motiv">${m}</div>`;}
     const g=await db.collection('olum6_groups').get(); const G=g.docs.map(d=>d.data()).sort((a,b)=>(b.total||0)-(a.total||0));
-    $('gl').innerHTML=G.length?G.map((x,i)=>`<div class="rank r${i+1}"><div class="p">${AR(i+1)}</div><span>${esc(x.name)}</span><b>${AR(x.total||0)}</b></div>`).join(''):'لا توجد نقاط للمجموعات بعد.';}
+    $('gl').innerHTML=G.length?G.map((x,i)=>`<div class="rank r${i+1}"><div class="p">${i<3?['🥇','🥈','🥉'][i]:AR(i+1)}</div><span>${esc(x.name)}</span><b>${AR(x.total||0)}</b></div>`).join(''):'لا توجد نقاط للمجموعات بعد.';}
   catch(e){$('pl').textContent='تعذّر التحميل، تأكدي من الإنترنت.';}}
 
 /* ---------- teacher ---------- */

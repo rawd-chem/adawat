@@ -138,9 +138,10 @@ body{background:linear-gradient(180deg,#f3eeff,#fff8fb);display:flex;flex-direct
 var N=30,cur=0,deck=document.getElementById('deck'),cs=deck.children,K='mahshi_4-2';
 var AR='٠١٢٣٤٥٦٧٨٩';function ar(n){return String(n).replace(/\d/g,function(d){return AR[d]})}
 function ui(){document.getElementById('pb').style.width=((cur+1)/N*100)+'%';document.getElementById('cnt').textContent=ar(cur+1)+' / '+ar(N);
- document.getElementById('prev').disabled=cur==0;document.getElementById('next').disabled=cur==N-1;try{localStorage.setItem(K,cur)}catch(e){}}
+ document.getElementById('prev').disabled=cur==0;document.getElementById('next').disabled=cur==N-1;try{localStorage.setItem(K,cur)}catch(e){} if(cur==N-1)setTimeout(confetti,350);}
 function go(i,inst){i=Math.max(0,Math.min(N-1,i));cs[i].scrollIntoView({behavior:inst?'auto':'smooth',inline:'start',block:'nearest'});cur=i;ui()}
 function step(d){go(cur+d)}
+var CF=false;function confetti(){if(CF)return;CF=true;try{var c=document.createElement('canvas');c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99;width:100%;height:100%';document.body.appendChild(c);var W=c.width=innerWidth*devicePixelRatio,H=c.height=innerHeight*devicePixelRatio,x=c.getContext('2d'),C=['#8b7be8','#f08bb4','#ffbf47','#2bb7a8','#5fc4ff','#ff6fa6','#7ee0a1'],t0=performance.now(),P=[];for(var i=0;i<200;i++)P.push({x:W*(.15+.7*Math.random()),y:H*.4,vx:(Math.random()-.5)*W*.018,vy:-H*(.012+Math.random()*.016),r:Math.random()*6,vr:(Math.random()-.5)*.3,s:(5+Math.random()*7)*devicePixelRatio,c:C[Math.floor(Math.random()*7)]});(function f(t){var e=t-t0;x.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=H*.00045;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.globalAlpha=Math.max(0,1-e/2800);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});if(e<2800)requestAnimationFrame(f);else c.remove();})(t0);}catch(e){}}
 function toco(){document.getElementById('toc').classList.add('on')}
 function tocx(){document.getElementById('toc').classList.remove('on')}
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>.6){cur=+e.target.dataset.i;ui()}})},{root:deck,threshold:[.6]});

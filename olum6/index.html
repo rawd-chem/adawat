@@ -116,7 +116,7 @@ async function saveScore(key,score){
 function hdr(btns){$('hb').innerHTML=btns||'';}
 function welcome(){hdr('');
   app.innerHTML=`<div class="card"><div class="q" style="text-align:center">أهلًا بكِ في نجمات العلوم 🌟</div><p class="msg" style="text-align:center;margin-top:0">ألعاب تساعدكِ على الاستعداد لاختبار العلوم، وكل لعبة تجمع لكِ نقاطًا في لوحة الشرف.</p>
-  <div class="big2"><div class="choice" id="cS"><div>👩‍🎓</div>أنا طالبة<br><small class="msg">من جوالي</small></div><div class="choice" id="cG"><div>👭</div>مجموعة في الفصل<br><small class="msg">جهاز المجموعة</small></div></div></div>`;
+  <div class="big2"><div class="choice" id="cS"><div>👩‍🎓</div>أنا طالبة<br><small class="msg">من جوالي</small></div><div class="choice" id="cG"><div>👭</div>مجموعة في الفصل<br><small class="msg">جهاز المجموعة</small></div></div><a href="kitab/" style="display:block;text-align:center;margin-top:12px;font-weight:800;color:#8b7be8;text-decoration:none">📖 الكتاب المحشّى للمذاكرة</a></div>`;
   $('cS').onclick=loginStudent; $('cG').onclick=pickGroup;}
 function loginStudent(){hdr('<button id="bk">رجوع</button>');$('bk').onclick=welcome; let sel=null;
   app.innerHTML=`<div class="card"><b>اختاري اسمكِ</b><div class="names" style="margin-top:10px">${ROSTER.map((n,i)=>`<button data-i="${i}">${AVS[i]} ${esc(n.split(' ')[0])}</button>`).join('')}</div><div id="pinBox"></div></div>`;
@@ -138,6 +138,7 @@ async function home(){
   else{try{const d=await db.collection('olum6_groups').doc(WHO.id).get(); pts=d.exists?(d.data().total||0):0;}catch(e){}}
   const av=WHO.t==='s'?AVS[+WHO.id.slice(1)]:'👭';
   let h=`<div class="card me"><div class="av">${av}</div><div><b style="font-size:18px">${esc(WHO.t==='s'?WHO.name.split(' ')[0]:WHO.name)}</b><div class="msg" style="font-size:13px">${WHO.t==='s'?'نقاطكِ = أفضل نتيجة في كل لعبة + ٥ لكل يوم تتدرّبين فيه':'نقاط المجموعة تُجمع من كل لعبة'}</div></div><div class="pts"><b>${AR(pts)}</b><span>نقطة</span></div></div>
+  <a class="card" href="kitab/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;background:linear-gradient(135deg,#f3efff,#eafaf6)"><div style="font-size:36px">📖</div><div><b style="font-size:17px">الكتاب المحشّى</b><div class="msg" style="font-size:13px">صفحات الكتاب مع الزبدة والفروق والفخاخ · للمذاكرة قبل اللعب</div></div><div style="margin-inline-start:auto;font-size:22px">◀</div></a>
   <div class="card" style="display:flex;align-items:center;gap:10px;cursor:pointer;background:linear-gradient(135deg,#fff4fa,#f3efff)" id="spd"><div style="font-size:36px">⏱️</div><div><b style="font-size:17px">تحدّي الدقيقة</b><div class="msg" style="font-size:13px">أسئلة مخلوطة من كل الدروس المفتوحة · أجيبي أكبر عدد في ٦٠ ثانية${best.speed?' · أفضل نتيجة: '+AR(best.speed):''}</div></div><div style="margin-inline-start:auto;font-size:22px">◀</div></div>`;
   let cu='';
   LES.forEach(l=>{if(l.unit!==cu){cu=l.unit;h+=`<div class="unit">الوحدة ${AR(cu)}: ${UNITS[cu]||''}</div>`;}
@@ -148,7 +149,7 @@ async function home(){
   app.querySelectorAll('.les:not(.lock)').forEach(e=>e.onclick=()=>lesson(e.dataset.l,best));
 }
 function lesson(id,best){const l=LES.find(x=>x.id===id); hdr('<button id="bk">الدروس</button>'); $('bk').onclick=home;
-  app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">الوحدة ${AR(l.unit)} · الدرس ${AR(l.id.split("-")[1])}</div><div class="q" style="margin:2px 0 0">${esc(l.title)}</div></div><div class="games">${GAMES.filter(g=>l[g.k]).map(g=>`<div class="gm" data-g="${g.k}"><div>${g.e}</div><b>${g.n}</b><small>${g.d}</small><br>${WHO.t==='s'&&best[l.id+'_'+g.k]?`<span class="best">أفضل: ${AR(best[l.id+'_'+g.k])}</span>`:''}</div>`).join('')}</div>`;
+  app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">الوحدة ${AR(l.unit)} · الدرس ${AR(l.id.split("-")[1])}</div><div class="q" style="margin:2px 0 0">${esc(l.title)}</div><a href="kitab/${l.id}.html" style="display:inline-block;margin-top:8px;background:#f1ecff;color:#5b3fc4;border-radius:99px;padding:3px 14px;font-weight:800;text-decoration:none">📖 ذاكري الدرس في الكتاب المحشّى</a></div><div class="games">${GAMES.filter(g=>l[g.k]).map(g=>`<div class="gm" data-g="${g.k}"><div>${g.e}</div><b>${g.n}</b><small>${g.d}</small><br>${WHO.t==='s'&&best[l.id+'_'+g.k]?`<span class="best">أفضل: ${AR(best[l.id+'_'+g.k])}</span>`:''}</div>`).join('')}</div>`;
   app.querySelectorAll('.gm').forEach(e=>e.onclick=()=>({quiz,pairs,sort,diff,order})[e.dataset.g](l));}
 function frame(l,title,inner){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=()=>l?lesson(l.id,(ME&&ME.best)||{}):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
 async function finish(l,game,score,extra){const key=l?l.id+'_'+game:'speed'; track('game_'+game); const r=await saveScore(key,score);

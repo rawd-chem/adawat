@@ -130,7 +130,7 @@ function todayList(){return (WHO.t==='s'&&ME&&ME.dl&&ME.dl[today()])||[];}
 async function enterLesson(id){
   if(WHO.t==='s'){ME=ME||{};const L=todayList();
     if(!L.includes(id)){
-      if(L.length>=MAXDAY&&!isT()){app.insertAdjacentHTML('afterbegin',`<div class="card" style="text-align:center;background:#fff8e6;border:2px solid #f2c15a"><div style="font-size:40px">🌙</div><b style="font-size:18px">أنهيتِ درسَي اليوم، أحسنتِ!</b><p class="msg">مسموح درسان في اليوم حتى لا تتعبي ولا تختلط عليكِ المعلومات.<br>يمكنكِ اليوم العودة إلى: ${L.map(x=>esc(LES.find(l=>l.id===x).title)).join(' و')}.<br>وغدًا يُفتح لكِ درسان جديدان 🌟</p></div>`);window.scrollTo(0,0);return;}
+      if(L.length>=MAXDAY&&!isT()){app.insertAdjacentHTML('afterbegin',`<div class="card" style="text-align:center;background:#fff8e6;border:2px solid #f2c15a"><div style="font-size:40px">🌙</div><b style="font-size:19px">لكي لا تختلط معلوماتكِ<br>ذاكري درسين فقط في اليوم</b><p class="msg" style="font-size:15px;line-height:1.9">درسا اليوم: ${L.map(x=>'<b>'+esc(LES.find(l=>l.id===x).title)+'</b>').join(' و')}<br>وغدًا تذاكرين درسين جديدين 🌟</p></div>`);window.scrollTo(0,0);return;}
       L.push(id); ME.dl=ME.dl||{}; ME.dl={[today()]:L};
       try{await db.collection('olum6_players').doc(WHO.id).set({dl:ME.dl},{merge:true});}catch(e){}
     }}

@@ -42,6 +42,11 @@ main{max-width:720px;margin:0 auto;padding:14px 12px 90px}
 .games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gm{border:2px solid var(--line);border-radius:20px;padding:14px 10px;text-align:center;background:#fff;cursor:pointer}
 .gm div{font-size:34px}.gm b{display:block;font-size:16px;margin-top:4px}.gm small{color:var(--mut);font-weight:700}
+.way{background:linear-gradient(135deg,#f3efff,#eafaf6)}.steps{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}.steps span{background:#fff;border-radius:999px;padding:4px 12px;font-weight:800;display:flex;align-items:center;gap:6px}.steps i{font-style:normal;background:var(--lav);color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;font-size:13px}.steps em{font-style:normal;color:var(--lav);font-weight:800}
+.stp{display:flex;align-items:center;gap:10px}.stp .sn{flex:0 0 38px;height:38px;border-radius:50%;background:var(--lav);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px}.stp.done .sn{background:var(--ok)}.stp.off{opacity:.6}
+.games.locked .gm{opacity:.45;filter:grayscale(.6)}
+.gm .nw{display:inline-block;margin-top:6px;background:#e8f1fd;color:#1f5fae;border-radius:999px;padding:2px 10px;font-weight:800;font-size:12px}.gm .tr{display:block;font-size:11.5px;color:var(--mut);font-weight:700;margin-top:3px}
+.tday{background:#fff4d6;color:#8a6200;border-radius:999px;padding:0 8px;font-size:11.5px;font-weight:800;margin-inline-start:4px}
 .gm .best{display:inline-block;margin-top:6px;background:#fff4d6;color:#8a6200;border-radius:999px;padding:2px 10px;font-weight:800;font-size:12px}
 .bar{height:10px;background:#efeafd;border-radius:999px;overflow:hidden;margin:6px 0 12px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#2bb7a8,#8b7be8);width:0;transition:width .3s}
 .q{font-size:21px;font-weight:800;line-height:1.7;margin:4px 0 12px}
@@ -102,21 +107,46 @@ function track(ev){try{window.adawatTrack&&adawatTrack('olum6',ev)}catch(e){}}
 async function loadCfg(){try{const d=await db.collection('olum6_cfg').doc('main').get(); if(d.exists&&Array.isArray(d.data().open)) OPEN=d.data().open;}catch(e){} if(!OPEN) OPEN=LES.filter(l=>!DATES[l.id]||DATES[l.id]<=today()).map(l=>l.id);}
 const isOpen=id=>OPEN.includes(id);
 function totalOf(p){const b=p.best||{};return Object.values(b).reduce((a,x)=>a+(+x||0),0)+5*((p.days||[]).length);}
+const MAXDAY=2;
 async function saveScore(key,score){
-  if(!WHO) return;
-  if(WHO.t==='g'){try{await db.collection('olum6_groups').doc(WHO.id).set({name:GROUPS[+WHO.id.slice(1)],total:firebase.firestore.FieldValue.increment(score)},{merge:true});}catch(e){toast('لم تُحفظ النقاط، تأكدي من الإنترنت');} return {gain:score};}
+  if(!WHO) return {gain:0};
+  if(WHO.t==='g'){const ref=db.collection('olum6_groups').doc(WHO.id);
+    try{const d=await ref.get(); const g=d.exists?d.data():{}; const bs=g.best||{};
+      if(bs[key]!=null) return {gain:0,first:false,rec:bs[key]};
+      bs[key]=score; await ref.set({name:GROUPS[+WHO.id.slice(1)],best:bs,total:firebase.firestore.FieldValue.increment(score)},{merge:true}); return {gain:score,first:true};}
+    catch(e){toast('لم تُحفظ النقاط، تأكدي من الإنترنت'); return {gain:0};}}
   const ref=db.collection('olum6_players').doc(WHO.id);
   try{const d=await ref.get(); const p=d.exists?d.data():{name:ROSTER[+WHO.id.slice(1)],best:{},days:[]}; p.best=p.best||{}; p.days=p.days||[];
-    const old=+p.best[key]||0; let gain=0; if(score>old){gain+=score-old;p.best[key]=score;} if(!p.days.includes(today())){p.days.push(today());gain+=5;}
-    p.total=totalOf(p); p.at=Date.now(); await ref.set({best:p.best,days:p.days,total:p.total,at:p.at,name:p.name},{merge:true}); ME=p; return {gain,old};}
+    let gain=0, first=false; const rec=p.best[key];
+    if(rec==null){p.best[key]=score; gain+=score; first=true;}
+    if(!p.days.includes(today())){p.days.push(today());gain+=5;}
+    p.total=totalOf(p); p.at=Date.now(); await ref.set({best:p.best,days:p.days,total:p.total,at:p.at,name:p.name},{merge:true}); ME=Object.assign(ME||{},p); return {gain,first,rec};}
   catch(e){toast('لم تُحفظ النقاط، تأكدي من الإنترنت'); return {gain:0};}
+}
+/* ---------- daily limit + study ---------- */
+function myDone(){return WHO&&WHO.t==='g'?LS.get('gbest_'+WHO.id,{}):((ME&&ME.best)||{});}
+function studied(id){return WHO.t==='s'?!!(ME&&ME.studied&&ME.studied[id]):!!LS.get('st_'+WHO.id+'_'+id,false);}
+function todayList(){return (WHO.t==='s'&&ME&&ME.dl&&ME.dl[today()])||[];}
+async function enterLesson(id){
+  if(WHO.t==='s'){ME=ME||{};const L=todayList();
+    if(!L.includes(id)){
+      if(L.length>=MAXDAY){app.insertAdjacentHTML('afterbegin',`<div class="card" style="text-align:center;background:#fff8e6;border:2px solid #f2c15a"><div style="font-size:40px">🌙</div><b style="font-size:18px">أنهيتِ درسَي اليوم، أحسنتِ!</b><p class="msg">مسموح درسان في اليوم حتى لا تتعبي ولا تختلط عليكِ المعلومات.<br>يمكنكِ اليوم العودة إلى: ${L.map(x=>esc(LES.find(l=>l.id===x).title)).join(' و')}.<br>وغدًا يُفتح لكِ درسان جديدان 🌟</p></div>`);window.scrollTo(0,0);return;}
+      L.push(id); ME.dl=ME.dl||{}; ME.dl={[today()]:L};
+      try{await db.collection('olum6_players').doc(WHO.id).set({dl:ME.dl},{merge:true});}catch(e){}
+    }}
+  lesson(id);
+}
+async function goStudy(id){
+  if(WHO.t==='s'){ME.studied=Object.assign(ME.studied||{},{[id]:today()}); try{await db.collection('olum6_players').doc(WHO.id).set({studied:{[id]:today()}},{merge:true});}catch(e){}}
+  else LS.set('st_'+WHO.id+'_'+id,true);
+  track('kitab_go'); location.href='kitab/'+id+'.html';
 }
 
 /* ---------- screens ---------- */
 function hdr(btns){$('hb').innerHTML=btns||'';}
 function welcome(){hdr('');
   app.innerHTML=`<div class="card"><div class="q" style="text-align:center">أهلًا بكِ في نجمات العلوم 🌟</div><p class="msg" style="text-align:center;margin-top:0">ألعاب تساعدكِ على الاستعداد لاختبار العلوم، وكل لعبة تجمع لكِ نقاطًا في لوحة الشرف.</p>
-  <div class="big2"><div class="choice" id="cS"><div>👩‍🎓</div>أنا طالبة<br><small class="msg">من جوالي</small></div><div class="choice" id="cG"><div>👭</div>مجموعة في الفصل<br><small class="msg">جهاز المجموعة</small></div></div><a href="kitab/" style="display:block;text-align:center;margin-top:12px;font-weight:800;color:#8b7be8;text-decoration:none">📖 الكتاب المحشّى للمذاكرة</a></div>`;
+  <div class="big2"><div class="choice" id="cS"><div>👩‍🎓</div>أنا طالبة<br><small class="msg">من جوالي</small></div><div class="choice" id="cG"><div>👭</div>مجموعة في الفصل<br><small class="msg">جهاز المجموعة</small></div></div><a href="kitab/" style="display:block;text-align:center;margin-top:12px;font-weight:800;color:#8b7be8;text-decoration:none">📖 كتابي الذكي</a></div>`;
   $('cS').onclick=loginStudent; $('cG').onclick=pickGroup;}
 function loginStudent(){hdr('<button id="bk">رجوع</button>');$('bk').onclick=welcome; let sel=null;
   app.innerHTML=`<div class="card"><b>اختاري اسمكِ</b><div class="names" style="margin-top:10px">${ROSTER.map((n,i)=>`<button data-i="${i}">${AVS[i]} ${esc(n.split(' ')[0])}</button>`).join('')}</div><div id="pinBox"></div></div>`;
@@ -135,28 +165,34 @@ async function home(){
   hdr('<button id="lb">🏆 الترتيب</button><button id="out">خروج</button>'); $('lb').onclick=board; $('out').onclick=()=>{LS.del('who');WHO=null;welcome();};
   let pts=0,best={};
   if(WHO.t==='s'){try{const d=await db.collection('olum6_players').doc(WHO.id).get(); ME=d.exists?d.data():{}; best=ME.best||{}; pts=ME.total||0;}catch(e){}}
-  else{try{const d=await db.collection('olum6_groups').doc(WHO.id).get(); pts=d.exists?(d.data().total||0):0;}catch(e){}}
+  else{try{const d=await db.collection('olum6_groups').doc(WHO.id).get(); pts=d.exists?(d.data().total||0):0; best=(d.exists&&d.data().best)||{}; LS.set('gbest_'+WHO.id,best);}catch(e){}}
   const av=WHO.t==='s'?AVS[+WHO.id.slice(1)]:'👭';
-  let h=`<div class="card me"><div class="av">${av}</div><div><b style="font-size:18px">${esc(WHO.t==='s'?WHO.name.split(' ')[0]:WHO.name)}</b><div class="msg" style="font-size:13px">${WHO.t==='s'?'نقاطكِ = أفضل نتيجة في كل لعبة + ٥ لكل يوم تتدرّبين فيه':'نقاط المجموعة تُجمع من كل لعبة'}</div></div><div class="pts"><b>${AR(pts)}</b><span>نقطة</span></div></div>
-  <a class="card" href="kitab/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;background:linear-gradient(135deg,#f3efff,#eafaf6)"><div style="font-size:36px">📖</div><div><b style="font-size:17px">الكتاب المحشّى</b><div class="msg" style="font-size:13px">صفحات الكتاب مع الزبدة والفروق والفخاخ · للمذاكرة قبل اللعب</div></div><div style="margin-inline-start:auto;font-size:22px">◀</div></a>
-  <div class="card" style="display:flex;align-items:center;gap:10px;cursor:pointer;background:linear-gradient(135deg,#fff4fa,#f3efff)" id="spd"><div style="font-size:36px">⏱️</div><div><b style="font-size:17px">تحدّي الدقيقة</b><div class="msg" style="font-size:13px">أسئلة مخلوطة من كل الدروس المفتوحة · أجيبي أكبر عدد في ٦٠ ثانية${best.speed?' · أفضل نتيجة: '+AR(best.speed):''}</div></div><div style="margin-inline-start:auto;font-size:22px">◀</div></div>`;
+  let h=`<div class="card me"><div class="av">${av}</div><div><b style="font-size:18px">${esc(WHO.t==='s'?WHO.name.split(' ')[0]:WHO.name)}</b><div class="msg" style="font-size:13px">${WHO.t==='s'?'نقاطكِ = نتيجتكِ في أول محاولة لكل تحدٍّ + ٥ لكل يوم':'نقاط المجموعة من أول محاولة لكل تحدٍّ'}</div></div><div class="pts"><b>${AR(pts)}</b><span>نقطة</span></div></div>
+  <div class="card way"><b style="font-size:16px">🧭 طريقتي في كل درس</b><div class="steps"><span><i>١</i>📖 كتابي الذكي</span><em>←</em><span><i>٢</i>🎮 التحديات</span></div><div class="msg" style="font-size:13px;margin-top:6px">🎯 أول محاولة في كل تحدٍّ هي المحسوبة، والباقي تدريب${WHO.t==='s'?`<br>📅 دروس اليوم: <b>${AR(todayList().length)} من ${AR(MAXDAY)}</b>`:''}</div></div>
+  <div class="card" style="display:flex;align-items:center;gap:10px;cursor:pointer;background:linear-gradient(135deg,#fff4fa,#f3efff)" id="spd"><div style="font-size:36px">⏱️</div><div><b style="font-size:17px">تحدّي الدقيقة</b><div class="msg" style="font-size:13px">أسئلة مخلوطة من كل الدروس المفتوحة · أجيبي أكبر عدد في ٦٠ ثانية${best.speed!=null?' · نتيجتكِ المحسوبة: '+AR(best.speed):''}</div></div><div style="margin-inline-start:auto;font-size:22px">◀</div></div>`;
   let cu='';
   LES.forEach(l=>{if(l.unit!==cu){cu=l.unit;h+=`<div class="unit">الوحدة ${AR(cu)}: ${UNITS[cu]||''}</div>`;}
-    const op=isOpen(l.id); const gs=GAMES.filter(g=>l[g.k]); const stars=gs.filter(g=>(best[l.id+'_'+g.k]||0)>=80).length;
-    h+=`<div class="les${op?'':' lock'}" data-l="${l.id}"><div class="n">${AR(l.id.split("-")[1])}</div><div><div class="t">${esc(l.title)}</div><div class="st">${op?('★'.repeat(stars)+'☆'.repeat(gs.length-stars)):'🔒 لم يُفتح بعد'}</div></div><div class="go">${op?'◀':''}</div></div>`;});
+    const op=isOpen(l.id); const gs=GAMES.filter(g=>l[g.k]); const stars=gs.filter(g=>(best[l.id+'_'+g.k]||0)>=80).length; const tl=WHO.t==='s'&&todayList().includes(l.id);
+    h+=`<div class="les${op?'':' lock'}" data-l="${l.id}"><div class="n">${AR(l.id.split("-")[1])}</div><div><div class="t">${esc(l.title)}</div><div class="st">${op?('★'.repeat(stars)+'☆'.repeat(gs.length-stars))+(tl?' <span class="tday">من دروس اليوم</span>':''):'🔒 لم يُفتح بعد'}</div></div><div class="go">${op?'◀':''}</div></div>`;});
   app.innerHTML=h;
   $('spd').onclick=()=>speed();
-  app.querySelectorAll('.les:not(.lock)').forEach(e=>e.onclick=()=>lesson(e.dataset.l,best));
+  app.querySelectorAll('.les:not(.lock)').forEach(e=>e.onclick=()=>enterLesson(e.dataset.l));
+  const want=P.get('l'); P.delete('l'); if(want&&isOpen(want)){history.replaceState(null,'',location.pathname); enterLesson(want);}
 }
-function lesson(id,best){const l=LES.find(x=>x.id===id); hdr('<button id="bk">الدروس</button>'); $('bk').onclick=home;
-  app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">الوحدة ${AR(l.unit)} · الدرس ${AR(l.id.split("-")[1])}</div><div class="q" style="margin:2px 0 0">${esc(l.title)}</div><a href="kitab/${l.id}.html" style="display:inline-block;margin-top:8px;background:#f1ecff;color:#5b3fc4;border-radius:99px;padding:3px 14px;font-weight:800;text-decoration:none">📖 ذاكري الدرس في الكتاب المحشّى</a></div><div class="games">${GAMES.filter(g=>l[g.k]).map(g=>`<div class="gm" data-g="${g.k}"><div>${g.e}</div><b>${g.n}</b><small>${g.d}</small><br>${WHO.t==='s'&&best[l.id+'_'+g.k]?`<span class="best">أفضل: ${AR(best[l.id+'_'+g.k])}</span>`:''}</div>`).join('')}</div>`;
-  app.querySelectorAll('.gm').forEach(e=>e.onclick=()=>({quiz,pairs,sort,diff,order})[e.dataset.g](l));}
-function frame(l,title,inner){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=()=>l?lesson(l.id,(ME&&ME.best)||{}):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
+function lesson(id){const l=LES.find(x=>x.id===id); const best=myDone(); hdr('<button id="bk">الدروس</button>'); $('bk').onclick=home;
+  const st=studied(id);
+  app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">الوحدة ${AR(l.unit)} · الدرس ${AR(l.id.split("-")[1])}</div><div class="q" style="margin:2px 0 0">${esc(l.title)}</div></div>
+  <div class="card stp${st?' done':''}"><div class="sn">١</div><div style="flex:1"><b style="font-size:17px">📖 كتابي الذكي</b><div class="msg" style="font-size:13px">ذاكري الدرس أولًا: صفحات الكتاب مع الزبدة والفروق والفخاخ${st?' · ✔️ ذاكرتِه':''}</div></div><button class="btn" id="study" style="padding:8px 14px">${st?'راجعي':'ابدئي'}</button></div>
+  <div class="card stp${st?'':' off'}"><div class="sn">٢</div><div style="flex:1"><b style="font-size:17px">🎮 التحديات</b><div class="msg" style="font-size:13px">${st?'🎯 أول محاولة هي المحسوبة، والباقي تدريب':'🔒 تُفتح بعد أن تذاكري الدرس في كتابي الذكي'}</div></div></div>
+  <div class="games${st?'':' locked'}">${GAMES.filter(g=>l[g.k]).map(g=>{const r=best[l.id+'_'+g.k]; return `<div class="gm" data-g="${g.k}"><div>${g.e}</div><b>${g.n}</b><small>${g.d}</small><br>${r!=null?`<span class="best">✔️ نتيجتكِ: ${AR(r)}</span><span class="tr">والآن تدريب</span>`:`<span class="nw">🎯 محاولة محسوبة</span>`}</div>`;}).join('')}</div>`;
+  $('study').onclick=()=>goStudy(id);
+  app.querySelectorAll('.gm').forEach(e=>e.onclick=()=>{if(!studied(id)){toast('ذاكري الدرس في كتابي الذكي أولًا 📖');return;} ({quiz,pairs,sort,diff,order})[e.dataset.g](l);});}
+function frame(l,title,inner){hdr('<button id="bk">رجوع</button>'); $('bk').onclick=()=>l?lesson(l.id):home(); app.innerHTML=`<div class="card"><div class="msg" style="font-size:14px">${l?esc(l.title)+' · ':''}${title}</div><div class="bar"><i id="pb"></i></div>${inner}</div>`;}
 async function finish(l,game,score,extra){const key=l?l.id+'_'+game:'speed'; track('game_'+game); const r=await saveScore(key,score);
   const e=score>=90?'🏆':score>=70?'🌟':score>=50?'👏':'💪';
-  app.innerHTML=`<div class="card res"><div class="e">${e}</div><div class="sc">${AR(score)}</div><div class="msg">${extra||''}</div>${WHO.t==='s'?(r.gain?`<p style="font-weight:800;color:var(--ok)">+${AR(r.gain)} نقطة إلى رصيدكِ</p>`:`<p class="msg">أفضل نتيجة لكِ هنا ${AR(r.old||score)}. تفوّقي عليها لتكسبي نقاطًا!</p>`):`<p style="font-weight:800;color:var(--ok)">+${AR(score)} نقطة لمجموعتكن</p>`}
-  <div style="display:grid;gap:8px;margin-top:10px"><button class="btn" id="again">العبي مرة أخرى</button><button class="btn gh" id="back">${l?'ألعاب الدرس':'الرئيسية'}</button></div></div>`;
-  $('again').onclick=()=>l?({quiz,pairs,sort,diff,order})[game](l):speed(); $('back').onclick=()=>l?lesson(l.id,(ME&&ME.best)||{}):home();}
+  app.innerHTML=`<div class="card res"><div class="e">${e}</div><div class="sc">${AR(score)}</div><div class="msg">${extra||''}</div>${r.first?`<p style="font-weight:800;color:var(--ok)">🎯 هذه نتيجتكِ المحسوبة: +${AR(r.gain)} نقطة${WHO.t==='g'?' لمجموعتكن':' إلى رصيدكِ'}</p>`:`<p class="msg">💪 هذه محاولة تدريب للفائدة، لا تغيّر النقاط.${r.rec!=null?'<br>نتيجتكِ المحسوبة هنا: <b>'+AR(r.rec)+'</b>':''}${r.gain?'<br>+'+AR(r.gain)+' نقاط ليوم التدرّب':''}</p>`}
+  <div style="display:grid;gap:8px;margin-top:10px"><button class="btn" id="again">تدرّبي مرة أخرى</button><button class="btn gh" id="back">${l?'ألعاب الدرس':'الرئيسية'}</button></div></div>`;
+  $('again').onclick=()=>l?({quiz,pairs,sort,diff,order})[game](l):speed(); $('back').onclick=()=>l?lesson(l.id):home();}
 const setBar=(i,n)=>{$('pb').style.width=(100*i/n)+'%';};
 
 /* ---------- games ---------- */

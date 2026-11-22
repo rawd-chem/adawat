@@ -56,7 +56,7 @@ tr:nth-child(even) td{background:#FFFBF4}
 @media (max-width:520px){.ops.two{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.stat b{font-size:22px}}
 </style>
 <style media="screen" data-theme>
-/* shared look (matches مولّد الاسترجاع) */
+/* shared look (matches مساعد الاسترجاع) */
 :root{--navy:#1b2552;--cream:#f5f7fc;--coral:#ef6b58;--teal:#0fa99c;--amber:#ffc64d;--purple:#7965dc;--muted:#697393;--line:#e2e7f1;
   --shadow-soft:0 12px 32px rgba(28,39,82,.075);--shadow-card:0 16px 34px rgba(28,39,82,.09)}
 body{background-color:#f5f7fc!important;background-image:radial-gradient(ellipse at 7% 9%,rgba(20,184,170,.11),transparent 29%),radial-gradient(ellipse at 96% 28%,rgba(123,97,255,.08),transparent 30%),linear-gradient(180deg,#f8f9fd 0%,#f3f6fb 100%)!important;color:#1b2552;min-height:100vh}
@@ -128,7 +128,7 @@ async function student(){
   <label class="f">اسمك الثلاثي</label><input type="text" id="nm" autocomplete="name" value="${esc(saved&&saved.name||'')}">
   ${TEST.askCls!==false?`<label class="f">الفصل / الشعبة</label><input type="text" id="cl" value="${esc(saved&&saved.cls||'')}" placeholder="مثال: 2/1">`:''}
   <div style="margin-top:16px"><button class="btn w t" id="go">ابدئي الاختبار</button></div>
-  <p class="msg" style="font-size:14px;margin:12px 0 0">اقرئي كل سؤال بهدوء، وتقدرين ترجعين وتغيّرين إجابتك قبل التسليم.</p></div>`;
+  <p class="msg" style="font-size:14px;margin:12px 0 0">اقرئي كل سؤال بهدوء، ويمكنكِ الرجوع وتغيير إجابتكِ قبل التسليم.</p></div>`;
   $('go').onclick=()=>{const name=$('nm').value.trim().replace(/\s+/g,' '); if(name.split(' ').length<2){toast('اكتبي اسمك الثلاثي');return;} const cls=$('cl')?$('cl').value.trim():''; start(name,cls,saved);};
 }
 function start(name,cls,saved){
@@ -152,25 +152,25 @@ function start(name,cls,saved){
   const upd=()=>{const c=Object.keys(ANS).filter(k=>ANS[k]).length; $('pc').textContent='أجبتِ '+c+' من '+qs.length; $('pb').style.width=(100*c/qs.length)+'%'; qs.forEach(q=>{const e=$('q'+q.i); if(e) e.classList.toggle('done',!!ANS[q.i]);});};
   app.addEventListener('click',e=>{const op=e.target.closest('.op'); if(!op||sent) return; const i=op.dataset.i; ANS[i]=op.dataset.v; op.parentNode.querySelectorAll('.op').forEach(x=>x.classList.toggle('on',x===op)); draft(); upd();});
   app.addEventListener('change',e=>{const s=e.target.closest('select[data-i]'); if(!s) return; ANS[s.dataset.i]=s.value; draft(); upd();});
-  $('send').onclick=()=>{const left=qs.length-Object.keys(ANS).filter(k=>ANS[k]).length; if(left&&!$('send').dataset.sure){$('send').dataset.sure=1; $('send').textContent='باقي '+left+' بدون إجابة · اضغطي مرة ثانية للتسليم'; const f=qs.find(q=>!ANS[q.i]); if(f) $('q'+f.i).scrollIntoView({behavior:'smooth',block:'center'}); return;} submit(name,cls);};
+  $('send').onclick=()=>{const left=qs.length-Object.keys(ANS).filter(k=>ANS[k]).length; if(left&&!$('send').dataset.sure){$('send').dataset.sure=1; $('send').textContent='بقي '+left+' دون إجابة · اضغطي مرة أخرى للتسليم'; const f=qs.find(q=>!ANS[q.i]); if(f) $('q'+f.i).scrollIntoView({behavior:'smooth',block:'center'}); return;} submit(name,cls);};
   upd();
   if(TEST.mins){const st=(saved&&saved.started)||Date.now(); endAt=st+TEST.mins*60000; const tick=()=>{const s=Math.max(0,Math.round((endAt-Date.now())/1000)); $('ck').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); $('ck').classList.toggle('low',s<=60); if(s<=0){clearInterval(timerId); toast('انتهى الوقت، تم تسليم إجاباتك'); submit(name,cls);}}; tick(); timerId=setInterval(tick,1000);}
 }
 async function submit(name,cls){
   if(sent) return; sent=true; clearInterval(timerId); const b=$('send'); if(b){b.disabled=true; b.textContent='جاري التسليم…';}
   let K; try{K=(await db.collection('etests_key').doc(TID).get()).data();}catch(e){}
-  if(!K){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('تعذّر الاتصال، حاولي مرة ثانية');}
+  if(!K){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('تعذّر الاتصال، حاولي مرة أخرى');}
   const qs=TEST.qs; let sc=0; const wrong=[]; const ans=qs.map((q,i)=>ANS[i]||'');
   qs.forEach((q,i)=>{if(ans[i]&&ans[i]===K.a[i]) sc++; else wrong.push(i);});
   const rec={t:TID,name,cls,sc,tot:qs.length,ans,wrong,at:firebase.firestore.FieldValue.serverTimestamp(),ms:Date.now()};
-  try{await db.collection('etests_subs').add(rec);}catch(e){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('ما وصل التسليم، تأكدي من الإنترنت وحاولي مرة ثانية');}
+  try{await db.collection('etests_subs').add(rec);}catch(e){sent=false; if(b){b.disabled=false; b.textContent='سلّمي الاختبار';} return toast('لم يصل التسليم، تأكدي من الإنترنت وحاولي مرة أخرى');}
   const done={name,sc,tot:qs.length,ans,key:TEST.showKey?K.a:null}; LS.set('et_done_'+TID,done); try{localStorage.removeItem('et_draft_'+TID);}catch(e){}
   const bar=document.querySelector('.bar'); if(bar) bar.remove(); scrollTo(0,0); showResult(done,false);
 }
 function showResult(d,again){
   let h=`<div class="box center"><div style="font-size:46px">🎉</div><div style="font-weight:800;font-size:22px">${again?'سلّمتِ هذا الاختبار من قبل':'تم تسليم اختبارك'}</div><div class="msg">${esc(d.name)}</div>`;
-  if(TEST.showScore!==false) h+=`<div class="big">${d.sc} <span style="font-size:24px;color:#5B6180">من ${d.tot}</span></div><div class="msg">${d.sc/d.tot>=.9?'ممتاز! استمري 🌟':d.sc/d.tot>=.7?'أحسنتِ، راجعي الأسئلة اللي أخطأتِ فيها':'راجعي دروسك مرة ثانية، وتقدرين تتحسنين 💪'}</div>`;
-  else h+=`<div class="msg" style="margin-top:8px">وصلت إجاباتك لمعلمتك.</div>`;
+  if(TEST.showScore!==false) h+=`<div class="big">${d.sc} <span style="font-size:24px;color:#5B6180">من ${d.tot}</span></div><div class="msg">${d.sc/d.tot>=.9?'ممتاز! استمري 🌟':d.sc/d.tot>=.7?'أحسنتِ، راجعي الأسئلة التي أخطأتِ فيها':'راجعي دروسكِ مرة أخرى، وستتحسّنين بإذن الله 💪'}</div>`;
+  else h+=`<div class="msg" style="margin-top:8px">وصلت إجاباتكِ إلى معلمتكِ.</div>`;
   h+=`</div>`;
   if(TEST.showKey&&d.key){h+=`<div class="sec">الإجابات الصحيحة</div>`; TEST.qs.forEach((q,i)=>{const ok=d.ans[i]===d.key[i]; h+=`<div class="q ${ok?'done':''}"><div class="t"><span class="n">${ok?'✓':'✗'}</span>${TQ(q.q)}</div><div class="ops"><div class="op ok"><span>${T(d.key[i])}</span></div>${ok||!d.ans[i]?'':`<div class="op bad"><span>إجابتك: ${T(d.ans[i])}</span></div>`}</div></div>`;});}
   app.innerHTML=h;
@@ -206,16 +206,16 @@ async function teacher(){
     if(S.length) $('tb').innerHTML=S.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.name)}${cnt[s.name.replace(/\s+/g,' ').trim()]>1?' <span class="dup">مكرر</span>':''}</td><td>${esc(s.cls||'')}</td><td><b>${s.sc}</b> من ${s.tot}</td></tr>`).join('');
     const W=TEST.qs.map(()=>0); SUBS.forEach(s=>(s.wrong||[]).forEach(i=>W[i]++));
     const top=W.map((w,i)=>[w,i]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,3);
-    $('hd').innerHTML=top.length?top.map(([w,i])=>`<li>${TQ(TEST.qs[i].q)}<div class="msg" style="font-size:14px">أخطأت فيه ${w} من ${SUBS.length}${K?' · الصحيح: '+T(K.a[i]):''}</div></li>`).join(''):'<li class="msg">ما فيه أخطاء متكررة</li>';}
+    $('hd').innerHTML=top.length?top.map(([w,i])=>`<li>${TQ(TEST.qs[i].q)}<div class="msg" style="font-size:14px">أخطأت فيه ${w} من ${SUBS.length}${K?' · الصحيح: '+T(K.a[i]):''}</div></li>`).join(''):'<li class="msg">لا توجد أخطاء متكررة</li>';}
   db.collection('etests_subs').where('t','==',TID).onSnapshot(q=>{SUBS=q.docs.map(d=>d.data()); render();},()=>toast('تعذّر تحديث النتائج'));
 }
 function copy(t,m){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(m)).catch(()=>{const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy'); toast(m);}catch(e){toast('تعذّر النسخ');} a.remove();});}
 
 /* ================= HOME (teacher's list) ================= */
 function home(){
-  head('الاختبار الإلكتروني','اختباراتك اللي أنشأتيها من هذا الجهاز');
+  head('الاختبار الإلكتروني','اختباراتكِ التي أنشأتِها من هذا الجهاز');
   const mine=LS.get('et_mine',[]);
-  app.innerHTML=mine.length?`<div class="box">${mine.map(m=>`<a href="?t=${esc(m.id)}&k=${encodeURIComponent(m.k)}" style="display:block;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);padding:12px 4px"><b>${esc(m.title)}</b><div class="msg" style="font-size:14px">${esc(m.subj||'')} · ${new Date(m.at).toLocaleDateString('ar-SA')}</div></a>`).join('')}</div>`:`<div class="box center msg">أنشئي الاختبار من «مولّد المراجعة النهائية»: جهّزي الاختبار التجريبي ثم اضغطي «اختبار إلكتروني».</div>`;
+  app.innerHTML=mine.length?`<div class="box">${mine.map(m=>`<a href="?t=${esc(m.id)}&k=${encodeURIComponent(m.k)}" style="display:block;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);padding:12px 4px"><b>${esc(m.title)}</b><div class="msg" style="font-size:14px">${esc(m.subj||'')} · ${new Date(m.at).toLocaleDateString('ar-SA')}</div></a>`).join('')}</div>`:`<div class="box center msg">أنشئي الاختبار من «مساعد المراجعة النهائية»: جهّزي الاختبار التجريبي ثم اضغطي «اختبار إلكتروني».</div>`;
 }
 
 if(!db) fail('تعذّر تحميل الاختبار. تأكدي من الإنترنت ثم حدّثي الصفحة.');
